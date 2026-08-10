@@ -90,7 +90,7 @@
   <div id="modal-login" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
     <div class="bg-[#011c14]/90 border-2 border-neon-teal/40 rounded-3xl max-w-sm w-full p-6 shadow-[0_0_40px_rgba(0,243,255,0.3)] backdrop-blur-xl">
       <h3 class="text-lg font-black text-white mb-2 flex items-center gap-2 text-glow"><i data-lucide="key" class="text-neon-teal w-5 h-5"></i> Verifikasi Sistem</h3>
-      <p class="text-xs text-eco-100/70 mb-5">Masukkan kredensial owner untuk mengakses data klinik.</p>
+      <p class="text-xs text-eco-100/70 mb-5">Masukkan sandi owner untuk mengakses data klinik.</p>
       <form id="form-login" onsubmit="handleLoginSubmit(event)">
         <div class="space-y-4 mb-6">
           <input type="text" id="login-username" required placeholder="Username" class="inp">
@@ -278,7 +278,6 @@
       <div id="sub-master-kepatuhan" class="sub-tab-content grid grid-cols-1 md:grid-cols-3 gap-6 hidden"><div class="neon-glass-card md:col-span-1"><h4 class="text-xs font-bold text-white mb-3 text-glow">Tambah Opsi Kepatuhan</h4><form onsubmit="handleSaveKepatuhanMaster(event)" class="space-y-3"><div><label class="lbl">Kategori Kepatuhan</label><select id="kp-kategori" class="inp"><option value="nutrisi">Status Nutrisi</option><option value="keluarga">Dukungan Keluarga</option><option value="kontrol">Kepatuhan Kontrol</option></select></div><div><label class="lbl">Nama Opsi / Keterangan</label><input type="text" id="kp-opsi" required class="inp" placeholder="Cth: Sangat Baik / Cukup"></div><div class="flex gap-2"><button type="submit" id="btn-save-kepatuhan" class="btn-save">Simpan</button><button type="button" id="btn-cancel-kepatuhan" onclick="cancelEdit('kepatuhan')" class="btn-cancel hidden w-auto">Batal</button></div></form></div><div class="neon-glass-card md:col-span-2 overflow-x-auto"><table class="w-full text-left border-collapse"><thead><tr><th class="th-cls">Kategori</th><th class="th-cls">Opsi / Nilai</th><th class="th-cls text-center">Aksi</th></tr></thead><tbody id="tbody-master-kepatuhan"></tbody></table></div></div>
       <div id="sub-master-pasien" class="sub-tab-content grid grid-cols-1 md:grid-cols-3 gap-6 hidden"><div class="neon-glass-card md:col-span-1"><h4 id="form-title-pasien-master" class="text-xs font-bold text-white mb-3">Edit Data Pasien</h4><form onsubmit="handleSavePasienMaster(event)" class="space-y-3"><input type="text" id="mp-no-rm" readonly placeholder="No RM" class="inp text-neon-green font-mono"><input type="date" id="mp-tgl-masuk" class="inp" title="Tanggal Masuk"><input type="text" id="mp-nik" placeholder="NIK KTP" class="inp"><input type="text" id="mp-nama" required placeholder="Nama Lengkap" class="inp"><input type="text" id="mp-whatsapp" required placeholder="No WhatsApp" class="inp"><textarea id="mp-alamat" required placeholder="Alamat" rows="2" class="inp h-auto py-2.5"></textarea><div class="grid grid-cols-2 gap-2"><input type="text" id="mp-sosial" placeholder="Faktor Sosial" class="inp"><input type="text" id="mp-alergi" placeholder="Alergi" class="inp"></div><input type="text" id="mp-komorbid" placeholder="Komorbid" class="inp"><div class="flex gap-2"><button type="submit" id="btn-save-pasien-master" class="btn-save" disabled>Simpan Edit</button><button type="button" id="btn-cancel-pasien-master" onclick="cancelEdit('pasien-master')" class="btn-cancel hidden w-auto">Batal</button></div></form></div><div class="neon-glass-card md:col-span-2 overflow-x-auto shadow-md"><table class="w-full text-left border-collapse"><thead><tr><th class="th-cls">No RM</th><th class="th-cls">Nama</th><th class="th-cls">No. WA</th><th class="th-cls text-center">Aksi</th></tr></thead><tbody id="tbody-master-pasien"></tbody></table></div></div>
       
-      <!-- SUB TAB SISTEM & ANTENA SUPABASE REAL-TIME -->
       <div id="sub-master-branding" class="sub-tab-content space-y-6 hidden">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="neon-glass-card space-y-4 shadow-lg border-neon-teal/40">
@@ -382,27 +381,55 @@
     }
   }
 
-  function setupSupabaseRealtimeChannel(){
+  async function setupSupabaseRealtimeChannel(){
     if(!supabaseClient) return;
-    if(realtimeChannel) supabaseClient.removeChannel(realtimeChannel);
+    if(realtimeChannel){
+      try{ supabaseClient.removeChannel(realtimeChannel); }catch(e){}
+    }
     
-    realtimeChannel = supabaseClient.channel('system_config_realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'system_config' }, payload => {
-        showToast("Konfigurasi Diperbarui dari Supabase Realtime!");
-        pullAnchorConfigFromSupabase();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'clinic_config' }, payload => {
+    // Menggunakan channel 'public:system_config' sebagai pemicu pemancaran sinyal
+    realtimeChannel = supabaseClient.channel('public:system_config')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'system_config' }, (payload) => {
+        console.log('⚡ Sinyal diterima: Ada perubahan data dari petugas lain!', payload);
+        showToast("⚡ Sinyal Real-Time: Data Diperbarui!");
+        // Otomatis jalankan fungsi penarikan data terbaru dari Google Sheets (GAS)
         pullAnchorConfigFromSupabase();
       })
       .on('broadcast', { event: 'data_sync' }, payload => {
-        showToast("Sinyal Real-Time Diterima Dari Perangkat Lain!");
+        console.log('⚡ Sinyal Broadcast Diterima!', payload);
+        showToast("⚡ Sinyal Real-Time Diterima Dari Perangkat Lain!");
         fetchApiData();
-      })
-      .subscribe((status) => {
+      });
+
+    try {
+      await realtimeChannel.subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          console.log('Terhubung Murni ke Pemancar Real-Time Supabase!');
+          console.log('⚡ Terhubung murni ke Pemancar Real-Time Supabase WebSocket!');
         }
       });
+    } catch(err) {
+      console.warn("Gagal subscribe channel realtime:", err);
+    }
+  }
+
+  async function pingSupabase() {
+    if (!supabaseClient) return;
+    try {
+      const appId = dbState.branding.app_id || 'arkcare';
+      await supabaseClient
+        .from('system_config')
+        .upsert({ 
+          app_id: appId, 
+          gas_url: dbState.branding.api_url,
+          nama_klinik: dbState.branding.nama_klinik,
+          subtitle_klinik: dbState.branding.subtitle_klinik,
+          logo_url: dbState.branding.logo_url,
+          last_updated_at: new Date().toISOString()
+        }, { onConflict: 'app_id' });
+      console.log('⚡ Ping Supabase terkirim! Sinyal dipancarkan ke semua perangkat.');
+    } catch (e) {
+      console.warn("Ping Supabase warning:", e);
+    }
   }
 
   async function pullAnchorConfigFromSupabase(){
@@ -434,12 +461,6 @@
             .select('*')
             .eq('id', appId)
             .maybeSingle();
-          if(!resClinic || !resClinic.data){
-            resClinic = await supabaseClient.from('clinic_config')
-              .select('*')
-              .limit(1)
-              .maybeSingle();
-          }
           if(resClinic && resClinic.data) data = resClinic.data;
         }
 
@@ -454,7 +475,9 @@
           
           applyBranding();
         }
-      }catch(e){console.warn("Gagal menarik konfigurasi Supabase:", e);}
+      }catch(e){
+        console.warn("Gagal terhubung ke Supabase:", e);
+      }
     }
     fetchApiData();
   }
@@ -552,9 +575,11 @@
         body: JSON.stringify({ action: "sync", state: dbState })
       })
       .then(r=>r.json())
-      .then(r=>{
+      .then(async r=>{
         if(r.success){
           showToast("Sinkronisasi Cloud Sukses!");
+          // Ping Supabase untuk memancarkan sinyal WebSocket ke browser lain
+          await pingSupabase();
           if(realtimeChannel){
             realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { updated: true } });
           }
@@ -848,36 +873,12 @@
 
     if(supabaseClient){
       try{
-        const { error: err1 } = await supabaseClient.from('system_config').upsert({
-          app_id: appId,
-          gas_url: dbState.branding.api_url,
-          supabase_url: dbState.branding.supa_url,
-          supabase_anon_key: dbState.branding.supa_key,
-          nama_klinik: dbState.branding.nama_klinik,
-          subtitle_klinik: dbState.branding.subtitle_klinik,
-          logo_url: dbState.branding.logo_url,
-          updated_at: new Date().toISOString()
-        });
-
-        const { error: err2 } = await supabaseClient.from('clinic_config').upsert({
-          id: appId,
-          nama_registrasi: appId,
-          nama_klinik: dbState.branding.nama_klinik,
-          subtitle_klinik: dbState.branding.subtitle_klinik,
-          logo_url: dbState.branding.logo_url,
-          gas_url: dbState.branding.api_url,
-          updated_at: new Date().toISOString()
-        });
-
-        if(!err1 && !err2){
-          showToast("ID Aplikasi (" + appId + ") Dipancarkan ke Supabase terpusat!");
-          if(realtimeChannel){
-            realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { updated: true } });
-          }
-          fetchApiData();
-        }else{
-          showToast("Error Supabase: " + (err1?.message || err2?.message), false);
+        await pingSupabase();
+        showToast("Konfigurasi Dipancarkan ke Supabase terpusat!");
+        if(realtimeChannel){
+          realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { updated: true } });
         }
+        fetchApiData();
       }catch(err){
         showToast("Gagal pancar ke Supabase: " + err.toString(), false);
       }
