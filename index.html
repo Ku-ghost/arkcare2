@@ -47,14 +47,13 @@
     .btn-cancel{height:38px;padding:0 1.25rem;background:linear-gradient(to bottom,#7f1d1d,#450a0a);border:1px solid rgba(239,68,68,0.5);color:#fca5a5;border-radius:0.5rem;font-weight:900;font-size:0.75rem;letter-spacing:0.05em;transition:all 0.15s ease-in-out;box-shadow:0 4px 12px rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;}
     .btn-cancel:hover{background:linear-gradient(to bottom,#991b1b,#7f1d1d);color:#ffffff;}
     .btn-cancel:active{transform:scale(0.95);}
-    .th-cls{padding:0.875rem;border-bottom:1px solid #064e3b;color:#10b981;font-weight:700;text-transform:uppercase;font-size:9px;letter-spacing:0.05em;background-color:rgba(1,28,20,0.85);}
-    .td-cls{padding:0.875rem;border-bottom:1px solid #022c20;color:#dcfce7;font-weight:700;font-size:0.75rem;}
+    .th-cls{padding:0.75rem 0.875rem;border-bottom:1px solid #064e3b;color:#10b981;font-weight:700;text-transform:uppercase;font-size:9px;letter-spacing:0.05em;background-color:rgba(1,28,20,0.85);}
+    .td-cls{padding:0.625rem 0.875rem;border-bottom:1px solid #022c20;color:#dcfce7;font-weight:700;font-size:0.75rem;}
     .act-e{color:#facc15;margin:0 0.25rem;padding:0.375rem;background-color:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.2);border-radius:0.25rem;transition:all 0.15s;cursor:pointer;box-shadow:0 1px 2px 0 rgba(0,0,0,0.05);display:inline-flex;align-items:center;justify-content:center;}
     .act-e:hover{background-color:rgba(250,204,21,0.3);}
     .act-x{color:#ef4444;padding:0.375rem;background-color:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:0.25rem;transition:all 0.15s;cursor:pointer;box-shadow:0 1px 2px 0 rgba(0,0,0,0.05);display:inline-flex;align-items:center;justify-content:center;}
     .act-x:hover{background-color:rgba(239,68,68,0.3);}
     .active-tab{border-color:#00f3ff!important;background-color:rgba(0,243,255,0.15)!important;box-shadow:0 0 20px rgba(0,243,255,0.4)!important;}
-    .pulse-glow{animation:nav-glow 2.5s infinite ease-in-out;}
     body{background-color:#010604;background-image:radial-gradient(circle at 15% 25%,rgba(16,185,129,0.05) 0%,transparent 45%),radial-gradient(circle at 85% 75%,rgba(0,243,255,0.05) 0%,transparent 45%),linear-gradient(rgba(16,185,129,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,0.02) 1px,transparent 1px);background-size:100% 100%,100% 100%,32px 32px,32px 32px;font-size:13px;line-height:1.5;color:#e2e8f0;}
     .bg-glow-aurora-1{position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(57,255,20,0.04) 0%,transparent 70%);top:5%;left:-5%;filter:blur(80px);pointer-events:none;z-index:0;}
     .bg-glow-aurora-2{position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(0,243,255,0.04) 0%,transparent 70%);bottom:10%;right:-5%;filter:blur(100px);pointer-events:none;z-index:0;}
@@ -76,12 +75,12 @@
       <div class="flex items-center gap-4">
         <div id="clinic-logo-container" class="w-12 h-12 rounded-xl overflow-hidden border border-neon-teal/50 bg-eco-950/60 flex items-center justify-center shadow-[0_0_15px_rgba(0,243,255,0.3)]">
           <img id="clinic-logo-img" src="" class="hidden w-full h-full object-cover aspect-square rounded-xl" onerror="handleLogoError(this)">
-          <i id="clinic-default-logo" data-lucide="activity" class="w-6 h-6 text-neon-teal text-glow animate-pulse"></i>
+          <i id="clinic-default-logo" data-lucide="activity" class="w-6 h-6 text-neon-teal text-glow"></i>
         </div>
         <div><h1 id="brand-title" class="text-xl font-black text-white tracking-widest text-glow">ARK CARE</h1><p id="brand-subtitle" class="text-[10px] text-neon-green font-bold tracking-widest uppercase text-glow">Smart Wound Care System</p></div>
       </div>
       <div class="flex items-center gap-3">
-        <div id="sync-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-eco-800 text-[11px] backdrop-blur-md"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_8px_rgba(250,204,21,0.8)]" id="login-dot"></span><span id="login-text" class="font-bold text-yellow-400 tracking-wider">Menghubungkan...</span></div>
+        <div id="sync-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-eco-800 text-[11px] backdrop-blur-md"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]" id="login-dot"></span><span id="login-text" class="font-bold text-yellow-400 tracking-wider">Menghubungkan...</span></div>
         <button id="btn-login-logout" class="px-4 py-1.5 text-[11px] font-bold rounded-xl bg-gradient-to-r from-eco-600 to-eco-500 hover:from-eco-500 hover:to-eco-400 border border-eco-400/50 text-white flex items-center gap-2 shadow-lg active:scale-95 cursor-pointer" onclick="toggleLogin()"><span id="btn-login-icon-container"><i data-lucide="lock" class="w-3.5 h-3.5"></i></span><span id="btn-login-text">Akses Owner</span></button>
       </div>
     </div>
@@ -125,7 +124,7 @@
     <div id="tab-registrasi" class="tab-content space-y-6">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="neon-glass-card lg:col-span-1">
-          <h2 class="text-xs font-black text-white mb-4 flex items-center gap-2 border-b border-eco-800/50 pb-2 text-glow"><i data-lucide="user-plus" class="text-neon-green w-4 h-4 animate-bounce"></i> Pendaftaran Baru</h2>
+          <h2 class="text-xs font-black text-white mb-4 flex items-center gap-2 border-b border-eco-800/50 pb-2 text-glow"><i data-lucide="user-plus" class="text-neon-green w-4 h-4"></i> Pendaftaran Baru</h2>
           <form id="form-pasien" onsubmit="handleSavePasien(event)" class="space-y-4">
             <div><label class="lbl">Nomor Rekam Medis (Otomatis)</label><input type="text" id="reg-no-rm" readonly class="inp text-neon-green font-mono font-bold bg-[#010c09]/50" placeholder="RM0001"></div>
             <div><label class="lbl">Tanggal Masuk (Otomatis Hari Ini)</label><input type="date" id="reg-tgl-masuk" class="inp text-eco-100 font-mono"></div>
@@ -145,7 +144,7 @@
               <input type="text" id="search-pasien" oninput="renderTablePasien()" placeholder="Cari Nama, No RM, NIK atau WA..." class="inp pl-9 border-neon-teal/50 bg-[#000000]/70">
             </div>
           </div>
-          <div class="overflow-x-auto flex-1 max-h-[400px]">
+          <div class="overflow-x-auto flex-1 max-h-[550px]">
             <table class="w-full text-left border-collapse text-xs">
               <thead><tr class="bg-[#000000]/60"><th class="th-cls rounded-tl-lg">No RM</th><th class="th-cls">Nama Pasien</th><th class="th-cls">Gender</th><th class="th-cls">WhatsApp</th><th class="th-cls text-center rounded-tr-lg">Tindakan</th></tr></thead>
               <tbody id="tbody-pasien"></tbody>
@@ -173,7 +172,7 @@
       </div>
 
       <div id="dossier-info-box" class="neon-glass-inner hidden shadow-lg">
-        <div class="flex items-center gap-2 mb-2 border-b border-eco-900 pb-1.5"><i data-lucide="trending-up" class="w-4 h-4 text-neon-teal animate-pulse"></i><span class="text-xs font-bold text-white uppercase tracking-wider text-glow">Perbandingan Evaluasi Luka Pasien (Kondisi Awal vs Terakhir)</span></div>
+        <div class="flex items-center gap-2 mb-2 border-b border-eco-900 pb-1.5"><i data-lucide="trending-up" class="w-4 h-4 text-neon-teal"></i><span class="text-xs font-bold text-white uppercase tracking-wider text-glow">Perbandingan Evaluasi Luka Pasien (Kondisi Awal vs Terakhir)</span></div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div class="p-2.5 rounded bg-eco-950 border border-eco-900 shadow-sm"><span class="block text-[9px] text-eco-500 font-bold uppercase">Kunjungan Awal (Base Line)</span><div id="dos-awal-tgl" class="font-mono text-[10px] text-neon-green mt-0.5">-</div><div id="dos-awal-kondisi" class="text-white mt-1 font-semibold">-</div><div id="dos-awal-jaringan" class="text-[10px] text-eco-100 mt-1"></div></div>
           <div class="p-2.5 rounded bg-eco-950 border border-eco-900 shadow-sm"><span class="block text-[9px] text-eco-500 font-bold uppercase font-black text-neon-teal">Kunjungan Terakhir (Kondisi Saat Ini)</span><div id="dos-akhir-tgl" class="font-mono text-[10px] text-neon-green mt-0.5">-</div><div id="dos-akhir-kondisi" class="text-white mt-1 font-semibold">-</div><div id="dos-akhir-jaringan" class="text-[10px] text-eco-100 mt-1"></div></div>
@@ -183,7 +182,7 @@
       <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
         <div class="xl:col-span-7 space-y-6">
           <div class="neon-glass-card">
-            <h3 class="text-xs font-black text-white mb-4 flex items-center gap-2 border-b border-eco-800/60 pb-2 text-glow"><i data-lucide="file-signature" class="text-neon-green w-4 h-4 animate-pulse"></i> Data Klinis Kunjungan</h3>
+            <h3 class="text-xs font-black text-white mb-4 flex items-center gap-2 border-b border-eco-800/60 pb-2 text-glow"><i data-lucide="file-signature" class="text-neon-green w-4 h-4"></i> Data Klinis Kunjungan</h3>
             <form id="form-medis-kunjungan" class="space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div><label class="lbl">Petugas Medis Penanggung Jawab *</label><select id="med-petugas" required class="inp"></select></div>
@@ -196,7 +195,7 @@
             </form>
           </div>
           <div class="neon-glass-card border-neon-teal/30 bg-gradient-to-br from-[#01140e]/80 to-transparent">
-            <h3 class="text-xs font-black text-white mb-4 flex items-center gap-2 border-b border-eco-800/60 pb-2 text-glow"><i data-lucide="microscope" class="text-neon-teal w-4 h-4 animate-pulse"></i> Pengkajian Luka (T.I.M.E.R.S)</h3>
+            <h3 class="text-xs font-black text-white mb-4 flex items-center gap-2 border-b border-eco-800/60 pb-2 text-glow"><i data-lucide="microscope" class="text-neon-teal w-4 h-4"></i> Pengkajian Luka (T.I.M.E.R.S)</h3>
             <div class="space-y-5">
               <div class="neon-glass-inner"><h4 class="text-[10px] font-black text-neon-teal uppercase mb-3 border-b border-eco-800/50 pb-1.5 text-glow">T - Tissue Management (Persentase Jaringan)</h4><div class="grid grid-cols-4 gap-2"><div><label class="lbl text-center !text-gray-400">Hitam %</label><input type="number" id="t-hitam" min="0" max="100" placeholder="0" class="inp text-center font-mono focus:border-gray-400"></div><div><label class="lbl text-center !text-yellow-500">Kuning %</label><input type="number" id="t-kuning" min="0" max="100" placeholder="0" class="inp text-center font-mono focus:border-yellow-500"></div><div><label class="lbl text-center !text-red-500">Merah %</label><input type="number" id="t-merah" min="0" max="100" placeholder="0" class="inp text-center font-mono focus:border-red-500"></div><div><label class="lbl text-center !text-pink-400">Pink %</label><input type="number" id="t-pink" min="0" max="100" placeholder="0" class="inp text-center font-mono focus:border-pink-400"></div></div></div>
               <div class="neon-glass-inner"><h4 class="text-[10px] font-black text-red-400 uppercase mb-3 border-b border-eco-800/50 pb-1.5 text-glow">I - Infection / Inflammation</h4><div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-3"><label class="flex items-center gap-2 cursor-pointer bg-[#000000]/40 p-2 rounded-lg border border-red-900/30 hover:border-red-500/50 transition"><input type="checkbox" id="i-nyeri" class="w-3.5 h-3.5 rounded bg-[#010c09] border border-eco-750 text-red-500 focus:ring-0 cursor-pointer"><span class="text-[10px] font-bold text-eco-100 cursor-pointer">Nyeri</span></label><label class="flex items-center gap-2 cursor-pointer bg-[#000000]/40 p-2 rounded-lg border border-red-900/30 hover:border-red-500/50 transition"><input type="checkbox" id="i-panas" class="w-3.5 h-3.5 rounded bg-[#010c09] border border-eco-750 text-red-500 focus:ring-0 cursor-pointer"><span class="text-[10px] font-bold text-eco-100 cursor-pointer">Panas</span></label><label class="flex items-center gap-2 cursor-pointer bg-[#000000]/40 p-2 rounded-lg border border-red-900/30 hover:border-red-500/50 transition"><input type="checkbox" id="i-bengkak" class="w-3.5 h-3.5 rounded bg-[#010c09] border border-eco-750 text-red-500 focus:ring-0 cursor-pointer"><span class="text-[10px] font-bold text-eco-100 cursor-pointer">Bengkak</span></label><label class="flex items-center gap-2 cursor-pointer bg-[#000000]/40 p-2 rounded-lg border border-red-900/30 hover:border-red-500/50 transition"><input type="checkbox" id="i-kemerahan" class="w-3.5 h-3.5 rounded bg-[#010c09] border border-eco-750 text-red-500 focus:ring-0 cursor-pointer"><span class="text-[10px] font-bold text-eco-100 cursor-pointer">Kemerahan</span></label><label class="flex items-center gap-2 cursor-pointer bg-[#000000]/40 p-2 rounded-lg border border-red-900/30 hover:border-red-500/50 transition"><input type="checkbox" id="i-bau" class="w-3.5 h-3.5 rounded bg-[#010c09] border border-eco-750 text-red-500 focus:ring-0 cursor-pointer"><span class="text-[10px] font-bold text-eco-100 cursor-pointer">Bau</span></label></div></div>
@@ -245,7 +244,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="neon-glass-card p-4 flex flex-col justify-between h-28"><div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-eco-500 tracking-wider">Total Omzet</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-teal"><i data-lucide="wallet" class="w-4 h-4"></i></div></div><div><div id="dash-omzet" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div></div></div>
         <div class="neon-glass-card p-4 flex flex-col justify-between h-28"><div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-eco-500 tracking-wider">HPP BHP Terpakai</span><div class="p-1.5 bg-eco-950 rounded-lg text-yellow-500"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div></div><div><div id="dash-hpp" class="text-xl font-bold text-white font-mono">Rp 0</div></div></div>
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-28 border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.15)] bg-gradient-to-br from-[#01140e] to-[#010c09]"><div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-neon-green tracking-wider text-glow animate-pulse">Laba Bersih</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-green"><i data-lucide="trending-up" class="w-4 h-4"></i></div></div><div><div id="dash-laba" class="text-xl font-bold text-neon-green font-mono text-glow">Rp 0</div></div></div>
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-28 border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.15)] bg-gradient-to-br from-[#01140e] to-[#010c09]"><div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-neon-green tracking-wider text-glow">Laba Bersih</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-green"><i data-lucide="trending-up" class="w-4 h-4"></i></div></div><div><div id="dash-laba" class="text-xl font-bold text-neon-green font-mono text-glow">Rp 0</div></div></div>
         <div id="dash-critical-card" class="p-4 rounded-2xl flex flex-col justify-between h-28 bg-red-950/30 border border-red-900 shadow-lg"><div class="flex justify-between items-center border-b border-red-900/60 pb-1"><span class="font-bold text-red-400 uppercase tracking-wider text-[9px] flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-red-500"></i> Kritis</span><span id="dash-critical-count" class="px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 text-[8px] font-black border border-red-800/40">0 Items</span></div><div id="dash-critical-list" class="space-y-1 my-1 max-h-[40px] overflow-y-auto"><p class="text-red-400 italic text-[9px]">Stok aman.</p></div></div>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -360,12 +359,15 @@
   const $=id=>document.getElementById(id); const v=id=>$(id)?$(id).value:""; const setV=(id,val)=>{if($(id))$(id).value=val;}; const pCN=val=>parseCleanNumber(val);
   
   let dbState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  let isDataLoadedFromCloud = false;
 
   ['pasien','kunjungan','sdm','layanan','luka','bhp_dressing','retail','kepatuhan_options','users'].forEach(k=>{if(!Array.isArray(dbState[k]))dbState[k]=[];});
 
   let isOwnerLoggedIn=false,selectedPasienRM=null,billingCart=[],kasirCart=[];
   let editSDMIndex=null,editLayananIndex=null,editLukaIndex=null,editBHPDressingIndex=null,donutChartInstance=null;
   let editRetailIndex=null,editPasienIndex=null,editUserIndex=null,editKepatuhanIndex=null,pendingCheckoutVisitId=null;
+  let debounceSyncTimer = null;
+  const myClientId = 'client_' + Math.random().toString(36).substring(2, 9);
   
   let supabaseClient = null;
   let realtimeChannel = null;
@@ -405,39 +407,44 @@
     const key = dbState.branding.supa_key || DEFAULT_SUPABASE_KEY;
     if(url && key && window.supabase){
       try{
-        supabaseClient = window.supabase.createClient(url, key);
-        setupSupabaseRealtimeChannel();
+        if(!supabaseClient){
+          supabaseClient = window.supabase.createClient(url, key);
+          setupSupabaseRealtimeChannel();
+        }
       }catch(e){console.warn("Gagal init Supabase Client:", e);}
     }
   }
 
   async function setupSupabaseRealtimeChannel(){
-    if(!supabaseClient) return;
-    if(realtimeChannel){
-      try{ supabaseClient.removeChannel(realtimeChannel); }catch(e){}
-    }
+    if(!supabaseClient || realtimeChannel) return;
     
     realtimeChannel = supabaseClient.channel('public:system_config')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'system_config' }, (payload) => {
-        console.log('⚡ Sinyal diterima: Ada perubahan konfigurasi dari perangkat lain!', payload);
-        showToast("⚡ Sinyal Real-Time: Data Diperbarui!");
-        pullAnchorConfigFromSupabase();
+        console.log('⚡ Sinyal Realtime Supabase diterima!', payload);
+        triggerDebouncedFetch();
       })
       .on('broadcast', { event: 'data_sync' }, payload => {
-        console.log('⚡ Sinyal Broadcast Diterima!', payload);
-        showToast("⚡ Sinyal Real-Time Diterima Dari Perangkat Lain!");
-        fetchApiData();
+        if(payload && payload.sender === myClientId) return;
+        console.log('⚡ Broadcast Realtime diterima dari perangkat lain!', payload);
+        triggerDebouncedFetch();
       });
 
     try {
       await realtimeChannel.subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          console.log('⚡ Terhubung murni ke Pemancar Real-Time Supabase WebSocket!');
+          console.log('⚡ Terhubung ke Supabase WebSocket Channel');
         }
       });
     } catch(err) {
       console.warn("Gagal subscribe channel realtime:", err);
     }
+  }
+
+  function triggerDebouncedFetch(){
+    if(debounceSyncTimer) clearTimeout(debounceSyncTimer);
+    debounceSyncTimer = setTimeout(() => {
+      fetchApiData();
+    }, 2000);
   }
 
   async function pingSupabase() {
@@ -456,23 +463,18 @@
         updated_at: new Date().toISOString()
       };
 
-      await supabaseClient
-        .from('system_config')
-        .upsert(payload, { onConflict: 'app_id' });
+      await supabaseClient.from('system_config').upsert(payload, { onConflict: 'app_id' });
+      await supabaseClient.from('clinic_config').upsert({
+        id: appId,
+        nama_registrasi: appId,
+        nama_klinik: dbState.branding.nama_klinik,
+        subtitle_klinik: dbState.branding.subtitle_klinik,
+        logo_url: dbState.branding.logo_url,
+        gas_url: dbState.branding.api_url,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'id' });
 
-      await supabaseClient
-        .from('clinic_config')
-        .upsert({
-          id: appId,
-          nama_registrasi: appId,
-          nama_klinik: dbState.branding.nama_klinik,
-          subtitle_klinik: dbState.branding.subtitle_klinik,
-          logo_url: dbState.branding.logo_url,
-          gas_url: dbState.branding.api_url,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'id' });
-
-      console.log('⚡ Ping Supabase terkirim! Konfigurasi tersimpan permanen.');
+      console.log('⚡ Konfigurasi tersimpan ke Supabase Cloud.');
     } catch (e) {
       console.warn("Ping Supabase warning:", e);
     }
@@ -482,34 +484,14 @@
     loadConfigFromLocalStorage();
     applyBranding();
 
-    if(!window.supabase){
-      setTimeout(pullAnchorConfigFromSupabase, 300);
-      return;
-    }
-
     initSupabaseClient();
     if(supabaseClient){
       try{
         const appId = dbState.branding.app_id || 'arkcare';
-        
-        let { data, error } = await supabaseClient.from('system_config')
-          .select('*')
-          .eq('app_id', appId)
-          .maybeSingle();
+        let { data, error } = await supabaseClient.from('system_config').select('*').eq('app_id', appId).maybeSingle();
 
         if(!data || error){
-          const resLimit = await supabaseClient.from('system_config')
-            .select('*')
-            .limit(1)
-            .maybeSingle();
-          if(resLimit && resLimit.data) data = resLimit.data;
-        }
-
-        if(!data){
-          let resClinic = await supabaseClient.from('clinic_config')
-            .select('*')
-            .eq('id', appId)
-            .maybeSingle();
+          let resClinic = await supabaseClient.from('clinic_config').select('*').eq('id', appId).maybeSingle();
           if(resClinic && resClinic.data) data = resClinic.data;
         }
 
@@ -520,13 +502,12 @@
           if(data.gas_url || data.api_url) dbState.branding.api_url = data.gas_url || data.api_url;
           if(data.supabase_url) dbState.branding.supa_url = data.supabase_url;
           if(data.supabase_anon_key) dbState.branding.supa_key = data.supabase_anon_key;
-          if(data.app_id || data.id) dbState.branding.app_id = data.app_id || data.id;
           
           saveConfigToLocalStorage();
           applyBranding();
         }
       }catch(e){
-        console.warn("Gagal terhubung ke Supabase Anchor:", e);
+        console.warn("Supabase Anchor offline, memakai LocalStorage config:", e);
       }
     }
     fetchApiData();
@@ -550,7 +531,7 @@
     
     if(sD && sT && sB){
       sB.className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-yellow-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(250,204,21,0.15)]";
-      sD.className="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_8px_rgba(250,204,21,0.8)]";
+      sD.className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]";
       sT.className="font-black text-yellow-500 tracking-wider";
       sT.innerText="MEMUAT DATA...";
     }
@@ -569,12 +550,13 @@
         })
         .then(d => {
           if(d.success){
+            isDataLoadedFromCloud = true;
             overwriteLocalWithCloudData(d);
             if(sD&&sT&&sB){
               sB.className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-emerald-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]";
               sD.className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]";
               sT.className="font-black text-emerald-400 tracking-wider";
-              sT.innerText="ONLINE (REAL-TIME)";
+              sT.innerText="ONLINE (TERHUBUNG)";
             }
           }else{
             showToast("Error Load API: "+d.error, false);
@@ -582,7 +564,11 @@
           }
         }).catch(e => {
           console.warn("Gagal fetch data dari GAS:", e);
-          showToast(e.message || "Gagal menghubungkan ke Google Apps Script", false);
+          let errMsg = e.message || "Gagal menghubungkan ke Google Apps Script";
+          if (errMsg.includes("Failed to fetch") || errMsg.includes("fetch")) {
+            errMsg = "Gagal Akses GAS: Pastikan URL berakhiran /exec & Akses 'Who has access' = 'Anyone'!";
+          }
+          showToast(errMsg, false);
           fallbackToLocalStorage();
         });
     }else{
@@ -595,9 +581,9 @@
     overwriteLocalWithCloudData(dbState);
     if(sD&&sT&&sB){
       sB.className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-yellow-700 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(234,179,8,0.15)]";
-      sD.className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)] animate-pulse";
+      sD.className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]";
       sT.className="font-black text-yellow-500 tracking-wider";
-      sT.innerText="OFFLINE (CLOUD UNREACHABLE)";
+      sT.innerText="MODE OFFLINE / CACHE LOKAL";
     }
   }
 
@@ -701,13 +687,8 @@
       })).filter(r => r.nama_produk);
     }
 
-    if(Array.isArray(c.kepatuhan_options) && c.kepatuhan_options.length > 0){
-      dbState.kepatuhan_options = c.kepatuhan_options;
-    }
-
-    if(Array.isArray(c.users) && c.users.length > 0){
-      dbState.users = c.users;
-    }
+    if(Array.isArray(c.kepatuhan_options) && c.kepatuhan_options.length > 0) dbState.kepatuhan_options = c.kepatuhan_options;
+    if(Array.isArray(c.users) && c.users.length > 0) dbState.users = c.users;
   }
 
   function overwriteLocalWithCloudData(c){
@@ -741,6 +722,10 @@
   }
 
   function saveState(){
+    if(!isDataLoadedFromCloud){
+      return showToast("Gagal Simpan: Data dari Cloud belum selesai ditarik!", false);
+    }
+
     const b=$('btn-finalisasi');
     if(b) b.innerHTML=`<i data-lucide="loader" class="w-4 h-4 animate-spin font-bold"></i> Menyimpan...`;
     if(typeof lucide!=='undefined') lucide.createIcons();
@@ -760,7 +745,7 @@
           showToast("Sinkronisasi Cloud Sukses!");
           await pingSupabase();
           if(realtimeChannel){
-            realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { updated: true } });
+            realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { sender: myClientId, updated: true } });
           }
         } else {
           showToast("Gagal Sync: "+r.error, false);
@@ -786,7 +771,7 @@
   function handleLoginSubmit(e){e.preventDefault();const u=v('login-username').trim(),p=v('login-password').trim();const us=dbState.users.find(x=>x.username===u&&x.password===p);if(us||(u===dbState.branding?.admin_user&&p===dbState.branding?.admin_pass)||(u==="Nersrisman"&&p==="Rismanners1")){isOwnerLoggedIn=true;triggerOwnerUIMode(true);closeLoginModal();showToast("Otentikasi Berhasil!");if(window.pendingTab){switchTab(window.pendingTab);window.pendingTab=null;}}else{if($('login-error'))$('login-error').classList.remove('hidden');}}
   function triggerOwnerUIMode(on){const bT=$('btn-login-text'),iC=$('btn-login-icon-container');if(on){if(bT)bT.innerText="Akhiri Sesi";if(iC)iC.innerHTML=`<i data-lucide="unlock" class="w-3.5 h-3.5 font-bold"></i>`;}else{if(bT)bT.innerText="Akses Owner";if(iC)iC.innerHTML=`<i data-lucide="lock" class="w-3.5 h-3.5 font-bold"></i>`;}if(typeof lucide!=='undefined')lucide.createIcons();}
 
-  function switchTab(id){document.querySelectorAll('.tab-content').forEach(e=>e.classList.add('hidden'));if($(id))$(id).classList.remove('hidden');document.querySelectorAll('[id^="nav-tab-"]').forEach(b=>{b.classList.remove('active-tab');b.classList.add('border-eco-500/20');const i=b.querySelector('i');if(i)i.classList.remove('pulse-glow','text-neon-teal','text-glow');});const a=$('nav-'+id);if(a){a.classList.add('active-tab');a.classList.remove('border-eco-500/20');const i=a.querySelector('i');if(i)i.classList.add('pulse-glow','text-neon-teal','text-glow');}if(id==='tab-pelaporan')renderPelaporanTab();if(id==='tab-master'){renderMasterSDMTable();renderMasterLayananTable();renderMasterLukaTable();renderMasterBHPDressingTable();renderMasterRetailTable();renderMasterKepatuhan();renderMasterPasienTable();renderMasterUserTable();switchMasterSubTab('sub-sdm');}if(id==='tab-registrasi'){renderTablePasien();populateMedicalRecordLookup();generateNextNoRM();}if(id==='tab-kasir')renderKasirPending();}
+  function switchTab(id){document.querySelectorAll('.tab-content').forEach(e=>e.classList.add('hidden'));if($(id))$(id).classList.remove('hidden');document.querySelectorAll('[id^="nav-tab-"]').forEach(b=>{b.classList.remove('active-tab');b.classList.add('border-eco-500/20');const i=b.querySelector('i');if(i)i.classList.remove('text-neon-teal','text-glow');});const a=$('nav-'+id);if(a){a.classList.add('active-tab');a.classList.remove('border-eco-500/20');const i=a.querySelector('i');if(i)i.classList.add('text-neon-teal','text-glow');}if(id==='tab-pelaporan')renderPelaporanTab();if(id==='tab-master'){renderMasterSDMTable();renderMasterLayananTable();renderMasterLukaTable();renderMasterBHPDressingTable();renderMasterRetailTable();renderMasterKepatuhan();renderMasterPasienTable();renderMasterUserTable();switchMasterSubTab('sub-sdm');}if(id==='tab-registrasi'){renderTablePasien();populateMedicalRecordLookup();generateNextNoRM();}if(id==='tab-kasir')renderKasirPending();}
   function requestSecureAccess(id){if(isOwnerLoggedIn)switchTab(id);else{window.pendingTab=id;$('modal-login').classList.remove('hidden');}}
   function switchMasterSubTab(id){document.querySelectorAll('.sub-tab-content').forEach(e=>e.classList.add('hidden'));if($(`sub-master-${id.split('-')[1]}`)) $(`sub-master-${id.split('-')[1]}`).classList.remove('hidden');document.querySelectorAll('[id^="subnav-"]').forEach(b=>{b.className="px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-eco-500 hover:text-white rounded-t-xl transition cursor-pointer";if(b.id==='subnav-retail')b.className="px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-neon-orange hover:text-white rounded-t-xl transition cursor-pointer";if(b.id==='subnav-kepatuhan'||b.id==='subnav-branding')b.className="px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-neon-teal hover:text-white rounded-t-xl transition cursor-pointer";});const a=$('subnav-'+id.split('-')[1]);if(a)a.className="px-5 py-2.5 text-[11px] font-black tracking-widest bg-eco-900 border-t border-x border-eco-700/80 rounded-t-xl text-white shadow-[0_-5px_15px_rgba(16,185,129,0.1)] cursor-pointer";}
   function convertToDirectDriveLink(u){if(!u)return"";const m=u.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)||u.match(/[\?&]id=([a-zA-Z0-9_-]+)/)||u.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?"https://lh3.googleusercontent.com/d/"+m[1]:u;}
@@ -822,6 +807,7 @@
     if(!tb)return; tb.innerHTML="";
     const cleanSearch = sv.replace(/\D/g,'');
     
+    // Urutkan pasien berdasarkan waktu kunjungan medis terbaru
     const sortedPasien = [...dbState.pasien].sort((a, b) => {
       const visitsA = dbState.kunjungan.filter(x => x.no_rm === a.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan));
       const visitsB = dbState.kunjungan.filter(x => x.no_rm === b.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan));
@@ -984,7 +970,7 @@
     const gt=Math.max(0,kasirCart.reduce((s,i)=>s+(i.price*i.qty),0)+sr-dk);
     const lg=dbState.branding.logo_url?`<div style="text-align:center;margin-bottom:8px"><img src="${convertToDirectDriveLink(dbState.branding.logo_url)}" style="width:40px;border-radius:6px"></div>`:"";
     const w=window.open('','_blank');
-    w.document.write(`<html><body style="font-family:monospace;width:300px;padding:10px;margin:0 auto">${lg}<div style="text-align:center;font-weight:bold;font-size:14px">${dbState.branding.nama_klinik}<br><span style="font-size:10px;font-weight:normal">${dbState.branding.subtitle_klinik}</span></div><hr style="border-top:1px dashed #000"><div style="font-size:10px">Tgl: ${new Date().toLocaleDateString('id-ID')}<br>Customer: ${pN}</div><hr style="border-top:1px dashed #000">${it}<div style="display:flex;justify-content:space-between;font-size:10px;margin-top:5px"><span>Sarana:</span><span>Rp${sr.toLocaleString('id-ID')}</span></div><div style="display:flex;justify-content:space-between;font-size:10px"><span>Diskon:</span><span>-Rp${dk.toLocaleString('id-ID')}</span></div><hr style="border-top:1px solid #000"><div style="display:flex;justify-content:space-between;font-weight:bold;font-size:12px"><span>TOTAL:</span><span>Rp${gt.toLocaleString('id-ID')}</span></div><hr style="border-top:1px dashed #000"><p style="text-align:center;font-size:9px;margin-top:10px">Terima Kasih</p></body></html>`);
+    w.document.write(`<html><body style="font-family:monospace;width:300px;padding:10px;margin:0 auto">${lg}<div style="text-align:center;font-weight:bold;font-size:14px">${dbState.branding.nama_klinik}<br><span style="font-size:10px;font-weight:normal">${dbState.branding.subtitle_klinik}</span></div><hr style="border-top:1px dashed #000"><div style="font-size:10px">Tgl: ${new Date().toLocaleDateString('id-ID')}<br>Customer: ${pN}</div><hr style="border-top:1px dashed #000">${it}<div style="display:flex;justify-content:space-between;font-size:10px;margin-top:5px"><span>Sarana:</span><span>Rp${sr.toLocaleString('id-ID')}</span></div><div style="display:flex;justify-content:space-between;font-size:10px"><span>Diskon:</span><span>-Rp${dk.toLocaleString('id-ID')}</span></div><hr style="border-top:1px solid #000"><div style="display:flex;justify-weight:bold;font-size:12px"><span>TOTAL:</span><span>Rp${gt.toLocaleString('id-ID')}</span></div><hr style="border-top:1px dashed #000"><p style="text-align:center;font-size:9px;margin-top:10px">Terima Kasih</p></body></html>`);
     w.document.close();
     w.print();
   }
@@ -993,19 +979,35 @@
     let o=0,h=0,k=0;
     dbState.kunjungan.forEach(vO=>{
       if(vO.status_bayar==='Lunas'){
-        o += pCN(vO.grand_total);
-        h += pCN(vO.modal_hpp);
+        const omzet = pCN(vO.grand_total);
+        o += omzet;
+
+        let visitHpp = pCN(vO.modal_hpp);
+        let calcHpp = 0;
+
         try{
-          JSON.parse(vO.items_json).forEach(i=>{
+          JSON.parse(vO.items_json || '[]').forEach(i=>{
+            const qty = pCN(i.qty) || 1;
             if(i.type==='jasa'){
               const price = pCN(i.price);
               const pct = pCN(i.komisi_persen);
               const fee = pCN(i.fee_custom);
-              const qty = pCN(i.qty) || 1;
               k += ((price * (pct / 100)) + fee) * qty;
+            } else {
+              let itemHpp = pCN(i.hpp);
+              if (itemHpp === 0) {
+                const bMatch = dbState.bhp_dressing.find(b => b.kode_item === i.code || b.nama_item === i.name);
+                const rMatch = dbState.retail.find(r => r.kode_retail === i.code || r.nama_produk === i.name);
+                if (bMatch) itemHpp = pCN(bMatch.harga_beli_grosir);
+                else if (rMatch) itemHpp = pCN(rMatch.harga_modal);
+              }
+              calcHpp += (itemHpp * qty);
             }
           });
         }catch(e){}
+
+        if (visitHpp === 0) visitHpp = calcHpp;
+        h += visitHpp;
       }
     });
 
@@ -1089,7 +1091,7 @@
         await pingSupabase();
         showToast("Konfigurasi Dipancarkan ke Supabase terpusat!");
         if(realtimeChannel){
-          realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { updated: true } });
+          realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { sender: myClientId, updated: true } });
         }
         fetchApiData();
       }catch(err){
