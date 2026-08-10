@@ -594,17 +594,18 @@
 
   function overwriteLocalWithCloudData(c){
     if(c.branding){
-      // Pertahankan konfigurasi penting yang sudah valid dari Supabase/LocalStorage
+      // PERBAIKAN FAKTA: Prioritaskan Supabase/LocalStorage (dbState.branding) 
+      // agar tidak tertimpa oleh data lama/kosong dari Google Sheet
       dbState.branding = {
-        app_id: c.branding.app_id || dbState.branding.app_id || "arkcare",
-        nama_klinik: c.branding.nama_klinik || dbState.branding.nama_klinik || "ARK CARE",
-        subtitle_klinik: c.branding.subtitle_klinik || dbState.branding.subtitle_klinik || "Smart Wound Care System",
-        admin_user: c.branding.admin_user || dbState.branding.admin_user || "Nersrisman",
-        admin_pass: c.branding.admin_pass || dbState.branding.admin_pass || "Rismanners1",
-        logo_url: c.branding.logo_url || dbState.branding.logo_url || "",
-        api_url: c.branding.api_url || dbState.branding.api_url || "",
-        supa_url: c.branding.supa_url || dbState.branding.supa_url || DEFAULT_SUPABASE_URL,
-        supa_key: c.branding.supa_key || dbState.branding.supa_key || DEFAULT_SUPABASE_KEY
+        app_id: dbState.branding.app_id || c.branding.app_id || "arkcare",
+        nama_klinik: dbState.branding.nama_klinik || c.branding.nama_klinik || "ARK CARE",
+        subtitle_klinik: dbState.branding.subtitle_klinik || c.branding.subtitle_klinik || "Smart Wound Care System",
+        admin_user: dbState.branding.admin_user || c.branding.admin_user || "Nersrisman",
+        admin_pass: dbState.branding.admin_pass || c.branding.admin_pass || "Rismanners1",
+        logo_url: dbState.branding.logo_url || c.branding.logo_url || "",
+        api_url: dbState.branding.api_url || c.branding.api_url || "",
+        supa_url: dbState.branding.supa_url || c.branding.supa_url || DEFAULT_SUPABASE_URL,
+        supa_key: dbState.branding.supa_key || c.branding.supa_key || DEFAULT_SUPABASE_KEY
       };
     }
     saveConfigToLocalStorage();
