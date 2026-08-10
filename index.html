@@ -286,14 +286,14 @@
             <h4 class="text-xs font-bold text-neon-teal border-b border-eco-800 pb-2 flex items-center gap-2 text-glow"><i data-lucide="radio" class="w-4 h-4"></i> Antena Pemancar & Konfigurasi Supabase</h4>
             <form onsubmit="handleUpdateBranding(event)" class="space-y-3">
               <div class="grid grid-cols-2 gap-3">
-                <div><label class="lbl text-yellow-400">ID Aplikasi (Supabase Anchor ID)</label><input type="text" id="brand-edit-app-id" required placeholder="Contoh: arkcare" class="inp font-mono text-[11px] text-yellow-400 font-bold lowercase"></div>
+                <div><label class="lbl text-yellow-400">ID Aplikasi (system_config app_id)</label><input type="text" id="brand-edit-app-id" required placeholder="Contoh: arkcare" class="inp font-mono text-[11px] text-yellow-400 font-bold lowercase"></div>
                 <div><label class="lbl">Nama Klinik Utama</label><input type="text" id="brand-edit-title" required class="inp"></div>
               </div>
               <div><label class="lbl">Subtitle Klinik</label><input type="text" id="brand-edit-subtitle" required class="inp"></div>
               <div><label class="lbl">URL Logo (Google Drive / CDN)</label><input type="text" id="brand-edit-logo" oninput="applyLogoPreviewTemporarily()" placeholder="https://drive.google.com/uc?id=..." class="inp"></div>
               <div><label class="lbl text-yellow-400">URL Web App Google Apps Script (GAS)</label><input type="text" id="brand-edit-api" required placeholder="https://script.google.com/macros/s/.../exec" class="inp font-mono text-[10px]"></div>
-              <div><label class="lbl text-neon-teal">URL Project Supabase (Supabase URL)</label><input type="text" id="brand-edit-supa-url" required placeholder="https://xxxx.supabase.co" class="inp font-mono text-[10px]"></div>
-              <div><label class="lbl text-neon-teal">Supabase Anon Key (API Key)</label><input type="text" id="brand-edit-supa-key" required placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="inp font-mono text-[10px]"></div>
+              <div><label class="lbl text-neon-teal">URL Project Supabase (supabase_url)</label><input type="text" id="brand-edit-supa-url" required placeholder="https://xxxx.supabase.co" class="inp font-mono text-[10px]"></div>
+              <div><label class="lbl text-neon-teal">Supabase Anon Key (supabase_anon_key)</label><input type="text" id="brand-edit-supa-key" required placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="inp font-mono text-[10px]"></div>
               <button type="submit" class="btn-save mt-2 tracking-wider bg-gradient-to-r from-neon-teal to-emerald-500 text-black border-none"><i data-lucide="send" class="w-4 h-4 inline mr-1"></i> SIMPAN & PANCARKAN KE SUPABASE</button>
             </form>
           </div>
@@ -339,8 +339,21 @@
     }
   });
 
+  const DEFAULT_SUPABASE_URL = "https://aogwibkscfngpbrlgywr.supabase.co"; 
+  const DEFAULT_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFvZ3dpYmtzY2ZuZ3BicmxneXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzNTcyMjEsImV4cCI6MjA1NTkzMzIyMX0.U_vBqX_TqThA-G10I8GzK2p5Y1I3T_wYfR4o5U5x0o0";
+
   const DEFAULT_STATE={
-    branding:{app_id:"arkcare",nama_klinik:"ARK CARE",subtitle_klinik:"Smart Wound Care System",admin_user:"Nersrisman",admin_pass:"Rismanners1",logo_url:"",api_url:"",supa_url:"",supa_key:""},
+    branding:{
+      app_id:"arkcare",
+      nama_klinik:"ARK CARE",
+      subtitle_klinik:"Smart Wound Care System",
+      admin_user:"Nersrisman",
+      admin_pass:"Rismanners1",
+      logo_url:"",
+      api_url:"",
+      supa_url:"",
+      supa_key:""
+    },
     users:[],pasien:[],kunjungan:[],sdm:[],layanan:[],luka:[],bhp_dressing:[],retail:[],
     kepatuhan_options:[{id:"KP1",kategori:"nutrisi",opsi:"Baik / Terpenuhi"},{id:"KP2",kategori:"nutrisi",opsi:"Kurang / Malnutrisi"},{id:"KP3",kategori:"nutrisi",opsi:"Sangat Kurang"},{id:"KP4",kategori:"keluarga",opsi:"Sangat Mendukung"},{id:"KP5",kategori:"keluarga",opsi:"Cukup Mendukung"},{id:"KP6",kategori:"keluarga",opsi:"Kurang Mendukung"},{id:"KP7",kategori:"kontrol",opsi:"Patuh / Tepat Waktu"},{id:"KP8",kategori:"kontrol",opsi:"Sering Terlambat"},{id:"KP9",kategori:"kontrol",opsi:"Tidak Patuh"}],
     master_time:{eksudat_level:["Kering","Sedikit (Low)","Sedang (Moderate)","Banyak (High)"],eksudat_jenis:["Serous","Serosanguineous","Sanguineous","Purulent"],antimikroba:["Non-Antimikroba","Silver Dressing","PHMB","DACC"]}
@@ -361,8 +374,8 @@
   let realtimeChannel = null;
 
   function initSupabaseClient(){
-    const url = dbState.branding.supa_url || "";
-    const key = dbState.branding.supa_key || "";
+    const url = dbState.branding.supa_url || DEFAULT_SUPABASE_URL;
+    const key = dbState.branding.supa_key || DEFAULT_SUPABASE_KEY;
     if(url && key && window.supabase){
       try{
         supabaseClient = window.supabase.createClient(url, key);
@@ -375,20 +388,23 @@
     if(!supabaseClient) return;
     if(realtimeChannel) supabaseClient.removeChannel(realtimeChannel);
     
-    realtimeChannel = supabaseClient.channel('clinic_realtime')
+    realtimeChannel = supabaseClient.channel('system_config_realtime')
+      // Menerima Perubahan Konfigurasi Sistem Secara Realtime (postgres_changes)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'system_config' }, payload => {
+        showToast("Konfigurasi Sistem Diperbarui Terpusat!");
+        pullAnchorConfigFromSupabase();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'clinic_config' }, payload => {
+        pullAnchorConfigFromSupabase();
+      })
       // Menerima Sinyal Broadcast Antar Device
       .on('broadcast', { event: 'data_sync' }, payload => {
         showToast("Sinyal Real-Time Diterima Dari Perangkat Lain!");
         fetchApiData();
       })
-      // Menerima Perubahan Baris Tabel Supabase (Postgres Changes)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'clinic_config' }, payload => {
-        showToast("Konfigurasi Supabase Diperbarui!");
-        pullAnchorConfigFromSupabase();
-      })
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          console.log('Terhubung ke Pemancar Real-Time Supabase!');
+          console.log('Terhubung ke Pemancar Real-Time Supabase system_config!');
         }
       });
   }
@@ -399,18 +415,31 @@
     initSupabaseClient();
     if(supabaseClient){
       try{
-        const { data, error } = await supabaseClient.from('clinic_config')
+        // Prioritas 1: Tabel system_config
+        let { data, error } = await supabaseClient.from('system_config')
           .select('*')
-          .eq('id', appId)
-          .single();
+          .eq('app_id', appId)
+          .maybeSingle();
 
-        if(data && !error){
+        // Fallback: Tabel clinic_config jika system_config belum ada
+        if(!data || error){
+          const res = await supabaseClient.from('clinic_config')
+            .select('*')
+            .eq('id', appId)
+            .maybeSingle();
+          if(res.data) data = res.data;
+        }
+
+        if(data){
           if(data.nama_klinik) dbState.branding.nama_klinik = data.nama_klinik;
           if(data.subtitle_klinik) dbState.branding.subtitle_klinik = data.subtitle_klinik;
           if(data.logo_url) dbState.branding.logo_url = data.logo_url;
           if(data.gas_url) dbState.branding.api_url = data.gas_url;
-          dbState.branding.app_id = data.id || appId;
+          if(data.supabase_url) dbState.branding.supa_url = data.supabase_url;
+          if(data.supabase_anon_key) dbState.branding.supa_key = data.supabase_anon_key;
+          dbState.branding.app_id = data.app_id || data.id || appId;
           
+          localStorage.setItem('smartclinic_db', JSON.stringify(dbState));
           applyBranding();
         }
       }catch(e){console.warn("Gagal menarik konfigurasi Supabase:", e);}
@@ -524,7 +553,6 @@
       .then(r=>{
         if(r.success){
           showToast("Sinkronisasi Cloud Sukses!");
-          // Pancarkan Sinyal Broadcast Real-Time ke Supabase agar semua device terupdate otomatis
           if(realtimeChannel){
             realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { updated: true } });
           }
@@ -588,7 +616,6 @@
     if(!tb)return; tb.innerHTML="";
     const cleanSearch = sv.replace(/\D/g,'');
     
-    // Urutkan Pasien Berdasarkan Tanggal Kunjungan Terakhir (Kunjungan Terbaru di Atas)
     const sortedPasien = [...dbState.pasien].sort((a, b) => {
       const lastA = dbState.kunjungan.filter(x => x.no_rm === a.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan))[0];
       const lastB = dbState.kunjungan.filter(x => x.no_rm === b.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan))[0];
@@ -728,7 +755,6 @@
   function renderKasirCartTable(){const tb=$('tbody-kasir-cart');if(!tb)return;if(!kasirCart.length){tb.innerHTML=`<tr><td class="p-3 text-center italic text-eco-500 text-[11px] font-bold border border-dashed border-eco-800/50 rounded-xl mt-2 block">Belum ada item dibayar.</td></tr>`;return;}tb.innerHTML=kasirCart.map((it,i)=>`<tr class="border-b border-eco-800/80 hover:bg-[#000000]/50 transition text-xs font-semibold"><td class="p-2.5 text-white font-bold tracking-wide">${it.name}<br><span class="text-[9px] text-neon-teal font-mono uppercase tracking-widest font-black">Tarif: Rp ${it.price.toLocaleString('id-ID')}</span></td><td class="p-2.5 text-center text-xs font-black text-yellow-400">x${it.qty}</td><td class="p-2.5 text-right text-neon-green text-xs font-mono font-black tracking-widest">Rp ${(it.price*it.qty).toLocaleString('id-ID')}</td><td class="p-2.5 text-center"><button onclick="removeKasirCartItem(${i})" class="text-red-500 bg-red-950/40 border border-red-900/50 text-xs font-black hover:bg-600 hover:text-white px-2.5 py-1.5 rounded-lg transition-all duration-200 shadow-md cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
   function prosesPembayaranKasir(){if(!kasirCart.length)return showToast("Keranjang kasir kosong!",false);let tI=0,tH=0;kasirCart.forEach(it=>{tI+=(it.price*it.qty);tH+=(it.hpp*it.qty);if(it.isNew||!pendingCheckoutVisitId){if(it.type==='retail'){const r=dbState.retail.find(x=>x.kode_retail===it.code);if(r)r.stok=Math.max(0,pCN(r.stok)-it.qty);}else if(it.type==='dressing'||it.type==='bhp'){const b=dbState.bhp_dressing.find(x=>x.kode_item===it.code);if(b)b.stok_gudang=Math.max(0,pCN(b.stok_gudang)-it.qty);}}});const sr=pCN(v('kasir-jasa-sarana')),dk=pCN(v('kasir-diskon')),gt=Math.max(0,tI+sr-dk);if(pendingCheckoutVisitId){const vO=dbState.kunjungan.find(x=>x.id_kunjungan===pendingCheckoutVisitId);if(vO){vO.items_json=JSON.stringify(kasirCart);vO.jasa_sarana=sr;vO.diskon=dk;vO.grand_total=gt;vO.modal_hpp=tH;vO.status_bayar='Lunas';}}else{dbState.kunjungan.push({id_kunjungan:generateTxId("RTL"),no_rm:"UMUM",tanggal:new Date().toISOString().split('T')[0],kunjungan_ke:0,petugas:"Kasir",tipe_luka:"Pembelian Retail",kondisi_luka:"-",penyebab:"-",ryb_json:JSON.stringify({}),items_json:JSON.stringify(kasirCart),jasa_sarana:sr,diskon:dk,grand_total:gt,modal_hpp:tH,status_bayar:'Lunas'});}saveState();kasirCart=[];pendingCheckoutVisitId=null;toggleKasirJasaInput();renderKasirCartTable();calculateKasirTotals();$('kasir-pasien-nama').innerText="Pembeli Umum";renderKasirPending();populateKasirRetailDropdown();showToast("Pembayaran Lunas & Omzet Bertambah!");}
   
-  // Render Riwayat Kasir Kronologis
   function renderKasirHistory(){
     const ct=$('kasir-history-list');if(!ct)return;
     const ln=dbState.kunjungan.filter(x=>x.status_bayar==='Lunas').sort((a,b)=>b.id_kunjungan.localeCompare(a.id_kunjungan));
@@ -823,7 +849,20 @@
 
     if(supabaseClient){
       try{
-        const { error } = await supabaseClient.from('clinic_config').upsert({
+        // Upsert ke system_config
+        const { error: err1 } = await supabaseClient.from('system_config').upsert({
+          app_id: appId,
+          gas_url: dbState.branding.api_url,
+          supabase_url: dbState.branding.supa_url,
+          supabase_anon_key: dbState.branding.supa_key,
+          nama_klinik: dbState.branding.nama_klinik,
+          subtitle_klinik: dbState.branding.subtitle_klinik,
+          logo_url: dbState.branding.logo_url,
+          updated_at: new Date().toISOString()
+        });
+
+        // Upsert ke clinic_config (kompatibilitas legasi)
+        const { error: err2 } = await supabaseClient.from('clinic_config').upsert({
           id: appId,
           nama_registrasi: appId,
           nama_klinik: dbState.branding.nama_klinik,
@@ -833,10 +872,10 @@
           updated_at: new Date().toISOString()
         });
 
-        if(!error){
-          showToast("ID Aplikasi (" + appId + ") Dipancarkan ke Supabase!");
+        if(!err1 && !err2){
+          showToast("ID Aplikasi (" + appId + ") Dipancarkan ke Supabase terpusat!");
         }else{
-          showToast("Error Supabase: " + error.message, false);
+          showToast("Error Supabase: " + (err1?.message || err2?.message), false);
         }
       }catch(err){
         showToast("Gagal pancar ke Supabase: " + err.toString(), false);
