@@ -284,12 +284,12 @@
             <h4 class="text-xs font-bold text-neon-teal border-b border-eco-800 pb-2 flex items-center gap-2 text-glow"><i data-lucide="radio" class="w-4 h-4"></i> Antena Pemancar & Konfigurasi Supabase</h4>
             <form onsubmit="handleUpdateBranding(event)" class="space-y-3">
               <div class="grid grid-cols-2 gap-3">
-                <div><label class="lbl text-yellow-400">ID Aplikasi (system_config app_id)</label><input type="text" id="brand-edit-app-id" required placeholder="Contoh: arkcare" class="inp font-mono text-[11px] text-yellow-400 font-bold lowercase"></div>
+                <div><label class="lbl text-yellow-400">ID Aplikasi (app_id / id)</label><input type="text" id="brand-edit-app-id" required placeholder="arkcare" class="inp font-mono text-[11px] text-yellow-400 font-bold lowercase"></div>
                 <div><label class="lbl">Nama Klinik Utama</label><input type="text" id="brand-edit-title" required class="inp"></div>
               </div>
               <div><label class="lbl">Subtitle Klinik</label><input type="text" id="brand-edit-subtitle" required class="inp"></div>
               <div><label class="lbl">URL Logo (Google Drive / CDN)</label><input type="text" id="brand-edit-logo" oninput="applyLogoPreviewTemporarily()" placeholder="https://drive.google.com/uc?id=..." class="inp"></div>
-              <div><label class="lbl text-yellow-400">URL Web App Google Apps Script (GAS)</label><input type="text" id="brand-edit-api" required placeholder="https://script.google.com/macros/s/.../exec" class="inp font-mono text-[10px]"></div>
+              <div><label class="lbl text-yellow-400">URL Web App Google Apps Script (gas_url / api_url)</label><input type="text" id="brand-edit-api" required placeholder="https://script.google.com/macros/s/.../exec" class="inp font-mono text-[10px]"></div>
               <div><label class="lbl text-neon-teal">URL Project Supabase (supabase_url)</label><input type="text" id="brand-edit-supa-url" required placeholder="https://aogwibkscfngpbrlgywr.supabase.co" class="inp font-mono text-[10px]"></div>
               <div><label class="lbl text-neon-teal">Supabase Anon Key (supabase_anon_key)</label><input type="text" id="brand-edit-supa-key" required placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="inp font-mono text-[10px]"></div>
               <button type="submit" class="btn-save mt-2 tracking-wider bg-gradient-to-r from-neon-teal to-emerald-500 text-black border-none"><i data-lucide="send" class="w-4 h-4 inline mr-1"></i> SIMPAN & PANCARKAN KE SUPABASE</button>
@@ -370,6 +370,36 @@
   let supabaseClient = null;
   let realtimeChannel = null;
 
+  function loadConfigFromLocalStorage() {
+    try {
+      const saved = localStorage.getItem('smartclinic_branding');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed) {
+          if (parsed.app_id) dbState.branding.app_id = parsed.app_id;
+          if (parsed.nama_klinik) dbState.branding.nama_klinik = parsed.nama_klinik;
+          if (parsed.subtitle_klinik) dbState.branding.subtitle_klinik = parsed.subtitle_klinik;
+          if (parsed.logo_url) dbState.branding.logo_url = parsed.logo_url;
+          if (parsed.api_url) dbState.branding.api_url = parsed.api_url;
+          if (parsed.supa_url) dbState.branding.supa_url = parsed.supa_url;
+          if (parsed.supa_key) dbState.branding.supa_key = parsed.supa_key;
+          if (parsed.admin_user) dbState.branding.admin_user = parsed.admin_user;
+          if (parsed.admin_pass) dbState.branding.admin_pass = parsed.admin_pass;
+        }
+      }
+    } catch (e) {
+      console.warn("Gagal membaca LocalStorage config:", e);
+    }
+  }
+
+  function saveConfigToLocalStorage() {
+    try {
+      localStorage.setItem('smartclinic_branding', JSON.stringify(dbState.branding));
+    } catch (e) {
+      console.warn("Gagal menyimpan LocalStorage config:", e);
+    }
+  }
+
   function initSupabaseClient(){
     const url = dbState.branding.supa_url || DEFAULT_SUPABASE_URL;
     const key = dbState.branding.supa_key || DEFAULT_SUPABASE_KEY;
@@ -387,12 +417,10 @@
       try{ supabaseClient.removeChannel(realtimeChannel); }catch(e){}
     }
     
-    // Menggunakan channel 'public:system_config' sebagai pemicu pemancaran sinyal
     realtimeChannel = supabaseClient.channel('public:system_config')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'system_config' }, (payload) => {
-        console.log('⚡ Sinyal diterima: Ada perubahan data dari petugas lain!', payload);
+        console.log('⚡ Sinyal diterima: Ada perubahan konfigurasi dari perangkat lain!', payload);
         showToast("⚡ Sinyal Real-Time: Data Diperbarui!");
-        // Otomatis jalankan fungsi penarikan data terbaru dari Google Sheets (GAS)
         pullAnchorConfigFromSupabase();
       })
       .on('broadcast', { event: 'data_sync' }, payload => {
@@ -413,27 +441,48 @@
   }
 
   async function pingSupabase() {
+    if (!supabaseClient) initSupabaseClient();
     if (!supabaseClient) return;
     try {
       const appId = dbState.branding.app_id || 'arkcare';
+      const payload = { 
+        app_id: appId, 
+        gas_url: dbState.branding.api_url || '',
+        supabase_url: dbState.branding.supa_url || '',
+        supabase_anon_key: dbState.branding.supa_key || '',
+        nama_klinik: dbState.branding.nama_klinik || '',
+        subtitle_klinik: dbState.branding.subtitle_klinik || '',
+        logo_url: dbState.branding.logo_url || '',
+        updated_at: new Date().toISOString()
+      };
+
+      // 1. Simpan ke tabel system_config
       await supabaseClient
         .from('system_config')
-        .upsert({ 
-          app_id: appId, 
-          gas_url: dbState.branding.api_url,
+        .upsert(payload, { onConflict: 'app_id' });
+
+      // 2. Simpan juga ke tabel clinic_config (untuk kompatibilitas legasi)
+      await supabaseClient
+        .from('clinic_config')
+        .upsert({
+          id: appId,
+          nama_registrasi: appId,
           nama_klinik: dbState.branding.nama_klinik,
           subtitle_klinik: dbState.branding.subtitle_klinik,
           logo_url: dbState.branding.logo_url,
-          last_updated_at: new Date().toISOString()
-        }, { onConflict: 'app_id' });
-      console.log('⚡ Ping Supabase terkirim! Sinyal dipancarkan ke semua perangkat.');
+          gas_url: dbState.branding.api_url,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id' });
+
+      console.log('⚡ Ping Supabase terkirim! Konfigurasi tersimpan permanen di system_config & clinic_config.');
     } catch (e) {
       console.warn("Ping Supabase warning:", e);
     }
   }
 
   async function pullAnchorConfigFromSupabase(){
-    const appId = dbState.branding.app_id || 'arkcare';
+    loadConfigFromLocalStorage();
+    applyBranding();
 
     if(!window.supabase){
       setTimeout(pullAnchorConfigFromSupabase, 300);
@@ -443,6 +492,9 @@
     initSupabaseClient();
     if(supabaseClient){
       try{
+        const appId = dbState.branding.app_id || 'arkcare';
+        
+        // Coba ambil dari system_config
         let { data, error } = await supabaseClient.from('system_config')
           .select('*')
           .eq('app_id', appId)
@@ -456,6 +508,7 @@
           if(resLimit && resLimit.data) data = resLimit.data;
         }
 
+        // Jika tidak ada di system_config, coba dari clinic_config (legasi)
         if(!data){
           let resClinic = await supabaseClient.from('clinic_config')
             .select('*')
@@ -471,12 +524,13 @@
           if(data.gas_url || data.api_url) dbState.branding.api_url = data.gas_url || data.api_url;
           if(data.supabase_url) dbState.branding.supa_url = data.supabase_url;
           if(data.supabase_anon_key) dbState.branding.supa_key = data.supabase_anon_key;
-          dbState.branding.app_id = data.app_id || data.id || appId;
+          if(data.app_id || data.id) dbState.branding.app_id = data.app_id || data.id;
           
+          saveConfigToLocalStorage();
           applyBranding();
         }
       }catch(e){
-        console.warn("Gagal terhubung ke Supabase:", e);
+        console.warn("Gagal terhubung ke Supabase Anchor:", e);
       }
     }
     fetchApiData();
@@ -539,7 +593,22 @@
   }
 
   function overwriteLocalWithCloudData(c){
-    if(c.branding && c.branding.nama_klinik !== "") dbState.branding = c.branding;
+    if(c.branding){
+      // Pertahankan konfigurasi penting yang sudah valid dari Supabase/LocalStorage
+      dbState.branding = {
+        app_id: c.branding.app_id || dbState.branding.app_id || "arkcare",
+        nama_klinik: c.branding.nama_klinik || dbState.branding.nama_klinik || "ARK CARE",
+        subtitle_klinik: c.branding.subtitle_klinik || dbState.branding.subtitle_klinik || "Smart Wound Care System",
+        admin_user: c.branding.admin_user || dbState.branding.admin_user || "Nersrisman",
+        admin_pass: c.branding.admin_pass || dbState.branding.admin_pass || "Rismanners1",
+        logo_url: c.branding.logo_url || dbState.branding.logo_url || "",
+        api_url: c.branding.api_url || dbState.branding.api_url || "",
+        supa_url: c.branding.supa_url || dbState.branding.supa_url || DEFAULT_SUPABASE_URL,
+        supa_key: c.branding.supa_key || dbState.branding.supa_key || DEFAULT_SUPABASE_KEY
+      };
+    }
+    saveConfigToLocalStorage();
+
     dbState.pasien = c.pasien || dbState.pasien || [];
     dbState.kunjungan = c.kunjungan || dbState.kunjungan || [];
     dbState.sdm = c.sdm || dbState.sdm || [];
@@ -567,6 +636,8 @@
     if(b) b.innerHTML=`<i data-lucide="loader" class="w-4 h-4 animate-spin font-bold"></i> Menyimpan...`;
     if(typeof lucide!=='undefined') lucide.createIcons();
 
+    saveConfigToLocalStorage();
+
     const tApi = dbState.branding.api_url || "";
     if(tApi && tApi.startsWith('http')){
       fetch(tApi, {
@@ -578,7 +649,6 @@
       .then(async r=>{
         if(r.success){
           showToast("Sinkronisasi Cloud Sukses!");
-          // Ping Supabase untuk memancarkan sinyal WebSocket ke browser lain
           await pingSupabase();
           if(realtimeChannel){
             realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { updated: true } });
@@ -595,7 +665,7 @@
         if(typeof lucide!=='undefined') lucide.createIcons();
       });
     }else{
-      showToast("URL Google Apps Script Belum Terkonfigurasi di Supabase!", false);
+      showToast("URL Google Apps Script Belum Terkonfigurasi!", false);
       if(b) b.innerHTML=`<i data-lucide="send" class="w-4 h-4 font-bold"></i> Simpan & Kirim Tagihan ke Kasir`;
       if(typeof lucide!=='undefined') lucide.createIcons();
     }
@@ -643,19 +713,20 @@
     if(!tb)return; tb.innerHTML="";
     const cleanSearch = sv.replace(/\D/g,'');
     
+    // Urutkan pasien berdasarkan Kunjungan Terbaru (Time/ID Kunjungan), bukan urut angka RM
     const sortedPasien = [...dbState.pasien].sort((a, b) => {
-      const lastA = dbState.kunjungan.filter(x => x.no_rm === a.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan))[0];
-      const lastB = dbState.kunjungan.filter(x => x.no_rm === b.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan))[0];
-      const timeA = lastA ? lastA.id_kunjungan : '0';
-      const timeB = lastB ? lastB.id_kunjungan : '0';
+      const visitsA = dbState.kunjungan.filter(x => x.no_rm === a.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan));
+      const visitsB = dbState.kunjungan.filter(x => x.no_rm === b.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan));
+      const timeA = visitsA.length > 0 ? visitsA[0].id_kunjungan : (a.tgl_masuk || '0');
+      const timeB = visitsB.length > 0 ? visitsB[0].id_kunjungan : (b.tgl_masuk || '0');
       return timeB.localeCompare(timeA);
     });
 
     const f = sortedPasien.filter(p => {
       const cleanWA = (p.whatsapp || '').replace(/\D/g,'');
-      const matchName = p.nama_lengkap.toLowerCase().includes(sv);
-      const matchRM = p.no_rm.toLowerCase().includes(sv);
-      const matchNIK = p.nik && p.nik.toLowerCase().includes(sv);
+      const matchName = (p.nama_lengkap || '').toLowerCase().includes(sv);
+      const matchRM = (p.no_rm || '').toLowerCase().includes(sv);
+      const matchNIK = p.nik && (p.nik || '').toLowerCase().includes(sv);
       const matchWA = cleanSearch !== '' && (cleanWA.includes(cleanSearch) || (cleanWA.startsWith('62') && cleanWA.substring(2).includes(cleanSearch)));
       return matchName || matchRM || matchNIK || matchWA;
     });
@@ -810,7 +881,40 @@
     w.print();
   }
 
-  function renderPelaporanTab(){let o=0,h=0,k=0;dbState.kunjungan.forEach(vO=>{if(vO.status_bayar==='Lunas'){o+=pCN(vO.grand_total);h+=pCN(vO.modal_hpp);try{JSON.parse(vO.items_json).forEach(i=>{if(i.type==='jasa')k+=(pCN(i.price)*(pCN(i.komisi_persen)/100))+pCN(i.fee_custom);});}catch(e){}}});if($('dash-omzet'))$('dash-omzet').innerText="Rp "+o.toLocaleString('id-ID');if($('dash-hpp'))$('dash-hpp').innerText="Rp "+h.toLocaleString('id-ID');if($('dash-laba'))$('dash-laba').innerText="Rp "+Math.max(0,o-h-k).toLocaleString('id-ID');const c=dbState.bhp_dressing.filter(b=>pCN(b.stok_gudang)<=pCN(b.stok_min));if($('dash-critical-count'))$('dash-critical-count').innerText=c.length+" Items";const cl=$('dash-critical-list');if(cl)cl.innerHTML=c.length?c.map(b=>`<div class="flex justify-between items-center text-red-200 border-b border-red-900/30 pb-1.5 mb-1.5"><span class="font-bold">${b.nama_item}</span><span class="font-black text-red-400 text-xs font-mono bg-red-950/50 px-2 py-0.5 rounded border border-red-800/50">${b.stok_gudang} <span class="text-[9px] text-red-500">(Min: ${b.stok_min})</span></span></div>`).join(''):`<p class="text-emerald-400 italic text-xs font-bold text-center mt-3">Stok seluruh bahan medik aman.</p>`;renderWoundDistributionStats();renderServiceProductivity();renderEmployeePayslips();}
+  function renderPelaporanTab(){
+    let o=0,h=0,k=0;
+    dbState.kunjungan.forEach(vO=>{
+      if(vO.status_bayar==='Lunas'){
+        o += pCN(vO.grand_total);
+        h += pCN(vO.modal_hpp);
+        try{
+          JSON.parse(vO.items_json).forEach(i=>{
+            if(i.type==='jasa'){
+              const price = pCN(i.price);
+              const pct = pCN(i.komisi_persen);
+              const fee = pCN(i.fee_custom);
+              const qty = pCN(i.qty) || 1;
+              k += ((price * (pct / 100)) + fee) * qty;
+            }
+          });
+        }catch(e){}
+      }
+    });
+
+    if($('dash-omzet'))$('dash-omzet').innerText="Rp "+o.toLocaleString('id-ID');
+    if($('dash-hpp'))$('dash-hpp').innerText="Rp "+h.toLocaleString('id-ID');
+    if($('dash-laba'))$('dash-laba').innerText="Rp "+Math.max(0,o-h-k).toLocaleString('id-ID');
+
+    const c=dbState.bhp_dressing.filter(b=>pCN(b.stok_gudang)<=pCN(b.stok_min));
+    if($('dash-critical-count'))$('dash-critical-count').innerText=c.length+" Items";
+    const cl=$('dash-critical-list');
+    if(cl)cl.innerHTML=c.length?c.map(b=>`<div class="flex justify-between items-center text-red-200 border-b border-red-900/30 pb-1.5 mb-1.5"><span class="font-bold">${b.nama_item}</span><span class="font-black text-red-400 text-xs font-mono bg-red-950/50 px-2 py-0.5 rounded border border-red-800/50">${b.stok_gudang} <span class="text-[9px] text-red-500">(Min: ${b.stok_min})</span></span></div>`).join(''):`<p class="text-emerald-400 italic text-xs font-bold text-center mt-3">Stok seluruh bahan medik aman.</p>`;
+
+    renderWoundDistributionStats();
+    renderServiceProductivity();
+    renderEmployeePayslips();
+  }
+
   function renderWoundDistributionStats(){const dt={};dbState.luka.forEach(l=>dt[l.nama_luka]={c:0,o:0});dbState.kunjungan.forEach(vO=>{if(vO.status_bayar==='Lunas'&&dt[vO.tipe_luka]){dt[vO.tipe_luka].c++;dt[vO.tipe_luka].o+=pCN(vO.grand_total);}});const tb=$('tbody-wound-stats');if(tb)tb.innerHTML=dbState.luka.map(l=>`<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px]">${l.nama_luka}</td><td class="td-cls text-center text-neon-teal text-xs font-bold">${dt[l.nama_luka]?.c||0}</td><td class="td-cls text-right text-neon-green text-xs font-mono font-bold">Rp ${(dt[l.nama_luka]?.o||0).toLocaleString('id-ID')}</td></tr>`).join('');const cv=$('woundDonutChart');if(cv){const cx=cv.getContext('2d');if(donutChartInstance)donutChartInstance.destroy();donutChartInstance=new Chart(cx,{type:'doughnut',data:{labels:dbState.luka.map(l=>l.nama_luka),datasets:[{data:dbState.luka.map(l=>dt[l.nama_luka]?.c||0),backgroundColor:['#39ff14','#00f3ff','#10b981','#f59e0b','#ec4899','#8b5cf6'],borderColor:'#011c14',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'70%'}});} }
   function renderServiceProductivity(){const tb=$('tbody-productivity-services');if(!tb)return;const s={};dbState.layanan.forEach(l=>s[l.nama_tindakan]={c:0,o:0});dbState.kunjungan.forEach(vO=>{if(vO.status_bayar==='Lunas'){try{JSON.parse(vO.items_json).forEach(i=>{if(i.type==='jasa'&&s[i.name]){s[i.name].c++;s[i.name].o+=(pCN(i.price)*i.qty);}});}catch(e){}}});tb.innerHTML=dbState.layanan.map(l=>`<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px] font-bold">${l.nama_tindakan}</td><td class="td-cls text-center text-xs font-black text-white">${s[l.nama_tindakan]?.c||0}</td><td class="td-cls text-right text-neon-teal text-xs font-mono font-bold tracking-widest">Rp ${(s[l.nama_tindakan]?.o||0).toLocaleString('id-ID')}</td></tr>`).join('');}
   function renderEmployeePayslips(){const tb=$('tbody-employee-payslips');if(!tb)return;tb.innerHTML=dbState.sdm.map(s=>{let kt=0;dbState.kunjungan.filter(vO=>vO.petugas===s.nama_petugas&&vO.status_bayar==='Lunas').forEach(vO=>{try{JSON.parse(vO.items_json).forEach(i=>{if(i.type==='jasa')kt+=(pCN(i.price)*(pCN(i.komisi_persen)/100))+pCN(i.fee_custom);});}catch(e){}});const gp=pCN(s.gaji_pokok);return`<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px] font-bold">${s.nama_petugas}</td><td class="td-cls text-right text-xs font-mono font-bold text-gray-300">Rp ${gp.toLocaleString('id-ID')}</td><td class="td-cls text-right text-neon-teal text-xs font-mono font-bold">Rp ${kt.toLocaleString('id-ID')}</td><td class="td-cls text-right font-black text-neon-green text-[13px] font-mono tracking-widest">Rp ${(gp+kt).toLocaleString('id-ID')}</td></tr>`;}).join('');}
@@ -868,6 +972,7 @@
     dbState.branding.supa_url = v('brand-edit-supa-url').trim() || DEFAULT_SUPABASE_URL;
     dbState.branding.supa_key = v('brand-edit-supa-key').trim() || DEFAULT_SUPABASE_KEY;
     
+    saveConfigToLocalStorage();
     applyBranding();
     initSupabaseClient();
 
