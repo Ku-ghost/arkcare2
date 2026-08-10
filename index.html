@@ -290,8 +290,8 @@
               <div><label class="lbl">Subtitle Klinik</label><input type="text" id="brand-edit-subtitle" required class="inp"></div>
               <div><label class="lbl">URL Logo (Google Drive / CDN)</label><input type="text" id="brand-edit-logo" oninput="applyLogoPreviewTemporarily()" placeholder="https://drive.google.com/uc?id=..." class="inp"></div>
               <div><label class="lbl text-yellow-400">URL Web App Google Apps Script (gas_url / api_url)</label><input type="text" id="brand-edit-api" required placeholder="https://script.google.com/macros/s/.../exec" class="inp font-mono text-[10px]"></div>
-              <div><label class="lbl text-neon-teal">URL Project Supabase (supabase_url)</label><input type="text" id="brand-edit-supa-url" required placeholder="https://aogwibkscfngpbrlgywr.supabase.co" class="inp font-mono text-[10px]"></div>
-              <div><label class="lbl text-neon-teal">Supabase Anon Key (supabase_anon_key)</label><input type="text" id="brand-edit-supa-key" required placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="inp font-mono text-[10px]"></div>
+              <div><label class="lbl text-neon-teal">URL Project Supabase (supabase_url)</label><input type="text" id="brand-edit-supa-url" required placeholder="https://ossqiqlryugrddnuszit.supabase.co" class="inp font-mono text-[10px]"></div>
+              <div><label class="lbl text-neon-teal">Supabase Anon Key (supabase_anon_key)</label><input type="text" id="brand-edit-supa-key" required placeholder="sb_publishable_..." class="inp font-mono text-[10px]"></div>
               <button type="submit" class="btn-save mt-2 tracking-wider bg-gradient-to-r from-neon-teal to-emerald-500 text-black border-none"><i data-lucide="send" class="w-4 h-4 inline mr-1"></i> SIMPAN & PANCARKAN KE SUPABASE</button>
             </form>
           </div>
@@ -456,12 +456,10 @@
         updated_at: new Date().toISOString()
       };
 
-      // 1. Simpan ke tabel system_config
       await supabaseClient
         .from('system_config')
         .upsert(payload, { onConflict: 'app_id' });
 
-      // 2. Simpan juga ke tabel clinic_config (untuk kompatibilitas legasi)
       await supabaseClient
         .from('clinic_config')
         .upsert({
@@ -474,7 +472,7 @@
           updated_at: new Date().toISOString()
         }, { onConflict: 'id' });
 
-      console.log('⚡ Ping Supabase terkirim! Konfigurasi tersimpan permanen di system_config & clinic_config.');
+      console.log('⚡ Ping Supabase terkirim! Konfigurasi tersimpan permanen.');
     } catch (e) {
       console.warn("Ping Supabase warning:", e);
     }
@@ -494,7 +492,6 @@
       try{
         const appId = dbState.branding.app_id || 'arkcare';
         
-        // Coba ambil dari system_config
         let { data, error } = await supabaseClient.from('system_config')
           .select('*')
           .eq('app_id', appId)
@@ -508,7 +505,6 @@
           if(resLimit && resLimit.data) data = resLimit.data;
         }
 
-        // Jika tidak ada di system_config, coba dari clinic_config (legasi)
         if(!data){
           let resClinic = await supabaseClient.from('clinic_config')
             .select('*')
@@ -541,7 +537,7 @@
     pullAnchorConfigFromSupabase();
   };
 
-  function showToast(m,ok=true){const t=$('toast-notif'),tc=$('toast-icon-container'),tm=$('toast-message');if(!t)return;if(tm)tm.innerText=m;if(tc)tc.innerHTML=ok?`<i data-lucide="check-circle" class="w-5 h-5 text-neon-green"></i>`:`<i data-lucide="alert-circle" class="w-5 h-5 text-red-500"></i>`;if(typeof lucide!=='undefined')lucide.createIcons();t.classList.remove('translate-y-24','opacity-0');setTimeout(()=>t.classList.add('translate-y-24','opacity-0'),3000);}
+  function showToast(m,ok=true){const t=$('toast-notif'),tc=$('toast-icon-container'),tm=$('toast-message');if(!t)return;if(tm)tm.innerText=m;if(tc)tc.innerHTML=ok?`<i data-lucide="check-circle" class="w-5 h-5 text-neon-green"></i>`:`<i data-lucide="alert-circle" class="w-5 h-5 text-red-500"></i>`;if(typeof lucide!=='undefined')lucide.createIcons();t.classList.remove('translate-y-24','opacity-0');setTimeout(()=>t.classList.add('translate-y-24','opacity-0'),3500);}
   function showCustomAlert(t,m){$('dialog-title').innerText=t;$('dialog-message').innerText=m;$('dialog-actions').innerHTML=`<button onclick="closeCustomDialog()" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Selesai</button>`;$('custom-dialog').classList.remove('hidden');}
   function showCustomConfirm(t,m,oC){$('dialog-title').innerText=t;$('dialog-message').innerText=m;$('dialog-actions').innerHTML=`<button onclick="closeCustomDialog()" class="btn-cancel w-auto px-5">Batal</button><button id="dialog-confirm-yes" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Lanjutkan</button>`;$('dialog-confirm-yes').onclick=()=>{oC();closeCustomDialog();};$('custom-dialog').classList.remove('hidden');}
   function closeCustomDialog(){$('custom-dialog').classList.add('hidden');}
@@ -549,7 +545,7 @@
   function generateTxId(p){return p+Date.now().toString()+Math.floor(Math.random()*1000).toString().padStart(3,'0');}
 
   function fetchApiData(){
-    const tApi = dbState.branding.api_url || "";
+    const tApi = (dbState.branding.api_url || "").trim();
     const sD=$('login-dot'),sT=$('login-text'),sB=$('sync-status-badge');
     
     if(sD && sT && sB){
@@ -560,9 +556,18 @@
     }
 
     if(tApi && tApi.startsWith('http')){
-      fetch(tApi + "?action=load&nocache=" + Date.now(), {cache:'no-store'})
-        .then(r=>r.json())
-        .then(d=>{
+      const fetchUrl = tApi + (tApi.includes('?') ? '&' : '?') + "action=load&nocache=" + Date.now();
+      fetch(fetchUrl, {cache:'no-store'})
+        .then(async r => {
+          const textResponse = await r.text();
+          try {
+            return JSON.parse(textResponse);
+          } catch(err) {
+            console.error("Respons GAS Bukan JSON:", textResponse.substring(0, 200));
+            throw new Error("Izin Web App belum 'Siapa saja' (Anyone) / URL GAS salah!");
+          }
+        })
+        .then(d => {
           if(d.success){
             overwriteLocalWithCloudData(d);
             if(sD&&sT&&sB){
@@ -575,7 +580,11 @@
             showToast("Error Load API: "+d.error, false);
             fallbackToLocalStorage();
           }
-        }).catch(e=>fallbackToLocalStorage());
+        }).catch(e => {
+          console.warn("Gagal fetch data dari GAS:", e);
+          showToast(e.message || "Gagal menghubungkan ke Google Apps Script", false);
+          fallbackToLocalStorage();
+        });
     }else{
       fallbackToLocalStorage();
     }
@@ -592,10 +601,117 @@
     }
   }
 
+  function normalizeDataState(c){
+    if(!c) return;
+    const getVal = (item, keys) => {
+      for(let k of keys) {
+        if(item[k] !== undefined && item[k] !== null && item[k] !== '') return item[k];
+      }
+      return '';
+    };
+
+    if(Array.isArray(c.pasien) && c.pasien.length > 0){
+      dbState.pasien = c.pasien.map(p => ({
+        no_rm: String(getVal(p, ['no_rm', 'No RM', 'NO RM', 'noRM'])).trim(),
+        nik: String(getVal(p, ['nik', 'NIK', 'NIK KTP']) || 'Opsional').trim(),
+        nama_lengkap: String(getVal(p, ['nama_lengkap', 'Nama Lengkap', 'Nama Pasien', 'nama'])).trim(),
+        tgl_lahir: String(getVal(p, ['tgl_lahir', 'Tanggal Lahir', 'tglLahir'])).trim(),
+        gender: String(getVal(p, ['gender', 'Jenis Kelamin', 'Gender']) || 'Pria').trim(),
+        whatsapp: String(getVal(p, ['whatsapp', 'No. WhatsApp', 'WhatsApp', 'No HP', 'wa'])).trim(),
+        alamat: String(getVal(p, ['alamat', 'Alamat Domisili', 'Alamat'])).trim(),
+        tgl_masuk: String(getVal(p, ['tgl_masuk', 'Tanggal Masuk', 'tglMasuk']) || new Date().toISOString().split('T')[0]).trim(),
+        faktor_sosial: String(getVal(p, ['faktor_sosial', 'Faktor Sosial']) || '-').trim(),
+        komorbid: String(getVal(p, ['komorbid', 'Komorbid']) || '-').trim(),
+        alergi: String(getVal(p, ['alergi', 'Alergi']) || '-').trim()
+      })).filter(p => p.no_rm || p.nama_lengkap);
+    }
+
+    if(Array.isArray(c.kunjungan) && c.kunjungan.length > 0){
+      dbState.kunjungan = c.kunjungan.map(vObj => ({
+        id_kunjungan: String(getVal(vObj, ['id_kunjungan', 'ID Kunjungan', 'id'])).trim(),
+        no_rm: String(getVal(vObj, ['no_rm', 'No RM', 'NO RM'])).trim(),
+        tanggal: String(getVal(vObj, ['tanggal', 'Tanggal']) || new Date().toISOString().split('T')[0]).trim(),
+        kunjungan_ke: parseInt(getVal(vObj, ['kunjungan_ke', 'Kunjungan Ke'])) || 1,
+        petugas: String(getVal(vObj, ['petugas', 'Petugas Medis', 'Petugas'])).trim(),
+        tipe_luka: String(getVal(vObj, ['tipe_luka', 'Tipe Luka', 'Jenis Luka'])).trim(),
+        kondisi_luka: String(getVal(vObj, ['kondisi_luka', 'Kondisi Luka']) || '-').trim(),
+        penyebab: String(getVal(vObj, ['penyebab', 'Penyebab']) || '-').trim(),
+        r_status: String(getVal(vObj, ['r_status', 'Status Penyembuhan', 'Status']) || '-').trim(),
+        r_panjang: getVal(vObj, ['r_panjang', 'Panjang']) || '-',
+        r_lebar: getVal(vObj, ['r_lebar', 'Lebar']) || '-',
+        r_dalam: getVal(vObj, ['r_dalam', 'Dalam']) || '-',
+        t_jaringan: String(getVal(vObj, ['t_jaringan', 'Jaringan']) || '-').trim(),
+        s_nutrisi: String(getVal(vObj, ['s_nutrisi', 'Status Nutrisi']) || '-').trim(),
+        s_keluarga: String(getVal(vObj, ['s_keluarga', 'Dukungan Keluarga']) || '-').trim(),
+        s_kontrol: String(getVal(vObj, ['s_kontrol', 'Kepatuhan Kontrol']) || '-').trim(),
+        items_json: String(getVal(vObj, ['items_json', 'Items JSON', 'items']) || '[]').trim(),
+        jasa_sarana: parseCleanNumber(getVal(vObj, ['jasa_sarana', 'Jasa Sarana'])),
+        diskon: parseCleanNumber(getVal(vObj, ['diskon', 'Diskon'])),
+        grand_total: parseCleanNumber(getVal(vObj, ['grand_total', 'Grand Total', 'Total Bayar'])),
+        modal_hpp: parseCleanNumber(getVal(vObj, ['modal_hpp', 'Modal HPP', 'HPP'])),
+        status_bayar: String(getVal(vObj, ['status_bayar', 'Status Bayar', 'Status']) || 'Pending').trim()
+      })).filter(vObj => vObj.id_kunjungan || vObj.no_rm);
+    }
+
+    if(Array.isArray(c.sdm) && c.sdm.length > 0){
+      dbState.sdm = c.sdm.map(s => ({
+        nama_petugas: String(getVal(s, ['nama_petugas', 'Nama Petugas', 'Nama', 'nama'])).trim(),
+        gaji_pokok: parseCleanNumber(getVal(s, ['gaji_pokok', 'Gaji Pokok', 'gaji']))
+      })).filter(s => s.nama_petugas);
+    }
+
+    if(Array.isArray(c.layanan) && c.layanan.length > 0){
+      dbState.layanan = c.layanan.map(l => ({
+        kode_jasa: String(getVal(l, ['kode_jasa', 'Kode Jasa', 'kode'])).trim(),
+        nama_tindakan: String(getVal(l, ['nama_tindakan', 'Nama Tindakan', 'Tindakan', 'nama'])).trim(),
+        tarif: parseCleanNumber(getVal(l, ['tarif', 'Tarif'])),
+        persen_jasa_medis: parseCleanNumber(getVal(l, ['persen_jasa_medis', 'Persen Jasa Medis', 'persen'])),
+        fee_custom: parseCleanNumber(getVal(l, ['fee_custom', 'Fee Custom', 'fee']))
+      })).filter(l => l.nama_tindakan);
+    }
+
+    if(Array.isArray(c.luka) && c.luka.length > 0){
+      dbState.luka = c.luka.map(l => ({
+        nama_luka: String(getVal(l, ['nama_luka', 'Nama Luka', 'Diagnosa', 'nama'])).trim()
+      })).filter(l => l.nama_luka);
+    }
+
+    if(Array.isArray(c.bhp_dressing) && c.bhp_dressing.length > 0){
+      dbState.bhp_dressing = c.bhp_dressing.map(b => ({
+        kode_item: String(getVal(b, ['kode_item', 'Kode Item', 'kode'])).trim(),
+        nama_item: String(getVal(b, ['nama_item', 'Nama Item', 'Nama', 'nama'])).trim(),
+        kategori: String(getVal(b, ['kategori', 'Kategori']) || 'BHP').trim(),
+        satuan_beli: String(getVal(b, ['satuan_beli', 'Satuan Beli'])).trim(),
+        satuan_jual: String(getVal(b, ['satuan_jual', 'Satuan Jual'])).trim(),
+        stok_gudang: parseCleanNumber(getVal(b, ['stok_gudang', 'Stok Gudang', 'stok'])),
+        stok_min: parseCleanNumber(getVal(b, ['stok_min', 'Stok Min'])),
+        harga_beli_grosir: parseCleanNumber(getVal(b, ['harga_beli_grosir', 'Harga Beli Grosir', 'harga_modal'])),
+        harga_jual_eceran: parseCleanNumber(getVal(b, ['harga_jual_eceran', 'Harga Jual Eceran', 'harga_jual']))
+      })).filter(b => b.nama_item);
+    }
+
+    if(Array.isArray(c.retail) && c.retail.length > 0){
+      dbState.retail = c.retail.map(r => ({
+        kode_retail: String(getVal(r, ['kode_retail', 'Kode Retail', 'kode'])).trim(),
+        nama_produk: String(getVal(r, ['nama_produk', 'Nama Produk', 'Nama', 'nama'])).trim(),
+        kategori: String(getVal(r, ['kategori', 'Kategori'])).trim(),
+        stok: parseCleanNumber(getVal(r, ['stok', 'Stok'])),
+        harga_modal: parseCleanNumber(getVal(r, ['harga_modal', 'Harga Modal', 'modal'])),
+        harga_jual: parseCleanNumber(getVal(r, ['harga_jual', 'Harga Jual', 'jual']))
+      })).filter(r => r.nama_produk);
+    }
+
+    if(Array.isArray(c.kepatuhan_options) && c.kepatuhan_options.length > 0){
+      dbState.kepatuhan_options = c.kepatuhan_options;
+    }
+
+    if(Array.isArray(c.users) && c.users.length > 0){
+      dbState.users = c.users;
+    }
+  }
+
   function overwriteLocalWithCloudData(c){
     if(c.branding){
-      // PERBAIKAN FAKTA: Prioritaskan Supabase/LocalStorage (dbState.branding) 
-      // agar tidak tertimpa oleh data lama/kosong dari Google Sheet
       dbState.branding = {
         app_id: dbState.branding.app_id || c.branding.app_id || "arkcare",
         nama_klinik: dbState.branding.nama_klinik || c.branding.nama_klinik || "ARK CARE",
@@ -610,16 +726,8 @@
     }
     saveConfigToLocalStorage();
 
-    dbState.pasien = c.pasien || dbState.pasien || [];
-    dbState.kunjungan = c.kunjungan || dbState.kunjungan || [];
-    dbState.sdm = c.sdm || dbState.sdm || [];
-    dbState.layanan = c.layanan || dbState.layanan || [];
-    dbState.luka = c.luka || dbState.luka || [];
-    dbState.bhp_dressing = c.bhp_dressing || dbState.bhp_dressing || [];
-    dbState.retail = c.retail || dbState.retail || [];
-    dbState.kepatuhan_options = c.kepatuhan_options || dbState.kepatuhan_options || DEFAULT_STATE.kepatuhan_options;
-    dbState.users = c.users || dbState.users || [];
-    
+    normalizeDataState(c);
+
     applyBranding();
     renderTablePasien();
     populateMedisDropdowns();
@@ -714,7 +822,6 @@
     if(!tb)return; tb.innerHTML="";
     const cleanSearch = sv.replace(/\D/g,'');
     
-    // Urutkan pasien berdasarkan Kunjungan Terbaru (Time/ID Kunjungan), bukan urut angka RM
     const sortedPasien = [...dbState.pasien].sort((a, b) => {
       const visitsA = dbState.kunjungan.filter(x => x.no_rm === a.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan));
       const visitsB = dbState.kunjungan.filter(x => x.no_rm === b.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan));
@@ -990,6 +1097,7 @@
       }
     }else{
       showToast("Konfigurasi Berhasil Diperbarui!");
+      fetchApiData();
     }
   }
 
