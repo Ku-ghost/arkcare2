@@ -31,7 +31,7 @@
 
   <style>
     html, body { overflow-x: hidden; max-width: 100vw; touch-action: manipulation; }
-    .neon-glass-card{background-color:rgba(2,24,18,0.95);backdrop-filter:blur(24px);border:1px solid rgba(4,94,67,0.9);border-radius:1.5rem;padding:1.5rem;box-shadow:0 15px 35px rgba(0,0,0,0.95);position:relative;z-index:10;}
+    .neon-glass-card{background-color:rgba(2,24,18,0.95);backdrop-filter:blur(24px);border:1px solid rgba(4,94,67,0.9);border-radius:1.5rem;padding:1.5rem;box-shadow:0 15px 35px rgba(0,0,0,0.95);position:relative;z-index:1;}
     .neon-glass-inner{background-color:rgba(1,14,10,0.95);border:1px solid rgba(6,78,59,0.8);border-radius:1rem;padding:1rem;box-shadow:inset 0 2px 4px 0 rgba(0,0,0,0.06);}
     .inp{width:100%;height:38px;background-color:rgba(0,0,0,0.9);border:1px solid rgba(5,150,105,0.7);border-radius:0.5rem;padding:0.5rem 0.75rem;color:#ffffff;font-size:0.75rem;font-weight:700;transition:all 0.15s ease-in-out;box-shadow:inset 0 2px 4px 0 rgba(0,0,0,0.06);}
     .inp:focus{border-color:#00f3ff;box-shadow:0 0 0 1px #00f3ff,inset 0 2px 4px 0 rgba(0,0,0,0.06);outline:none;}
@@ -59,7 +59,7 @@
     ::-webkit-scrollbar-thumb:hover{background:#00f3ff;}
   </style>
 </head>
-<body class="relative min-h-screen pb-24 sm:pb-6 flex flex-col overflow-x-hidden">
+<body class="relative min-h-screen pb-28 sm:pb-6 flex flex-col overflow-x-hidden">
 
 <div id="app-main-layout" class="flex flex-col min-h-screen">
   <header class="border-b border-eco-900 bg-[#01140e]/95 backdrop-blur-md sticky top-0 z-40 px-4 md:px-[2cm] py-3 shadow-md">
@@ -72,8 +72,8 @@
         <div><h1 id="brand-title" class="text-xl font-black text-white tracking-widest text-glow">ARK CARE</h1><p id="brand-subtitle" class="text-[10px] text-neon-green font-bold tracking-widest uppercase text-glow">Smart Wound Care System</p></div>
       </div>
       <div class="flex items-center gap-3">
-        <div id="sync-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-eco-800 text-[11px] backdrop-blur-md cursor-pointer" onclick="requestSecureAccess('tab-master')"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]" id="login-dot"></span><span id="login-text" class="font-bold text-yellow-400 tracking-wider">Menghubungkan...</span></div>
-        <button id="btn-login-logout" class="px-4 py-1.5 text-[11px] font-bold rounded-xl bg-gradient-to-r from-eco-600 to-eco-500 hover:from-eco-500 hover:to-eco-400 border border-eco-400/50 text-white flex items-center gap-2 shadow-lg active:scale-95 cursor-pointer" onclick="toggleLogin()"><span id="btn-login-icon-container"><i data-lucide="lock" class="w-3.5 h-3.5"></i></span><span id="btn-login-text">Akses Owner</span></button>
+        <div id="sync-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-eco-800 text-[11px] backdrop-blur-md cursor-pointer" onclick="window.requestSecureAccess('tab-master')"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]" id="login-dot"></span><span id="login-text" class="font-bold text-yellow-400 tracking-wider">Menghubungkan...</span></div>
+        <button id="btn-login-logout" class="px-4 py-1.5 text-[11px] font-bold rounded-xl bg-gradient-to-r from-eco-600 to-eco-500 hover:from-eco-500 hover:to-eco-400 border border-eco-400/50 text-white flex items-center gap-2 shadow-lg active:scale-95 cursor-pointer" onclick="window.toggleLogin()"><span id="btn-login-icon-container"><i data-lucide="lock" class="w-3.5 h-3.5"></i></span><span id="btn-login-text">Akses Owner</span></button>
       </div>
     </div>
   </header>
@@ -82,14 +82,30 @@
     <div class="bg-[#011c14]/90 border-2 border-neon-teal/40 rounded-3xl max-w-sm w-full p-6 shadow-[0_0_40px_rgba(0,243,255,0.3)] backdrop-blur-xl">
       <h3 class="text-lg font-black text-white mb-2 flex items-center gap-2 text-glow"><i data-lucide="key" class="text-neon-teal w-5 h-5"></i> Verifikasi Sistem</h3>
       <p class="text-xs text-eco-100/70 mb-5">Masukkan sandi owner untuk mengakses data klinik.</p>
-      <form id="form-login" onsubmit="handleLoginSubmit(event)">
+      <form id="form-login" onsubmit="window.handleLoginSubmit(event)">
         <div class="space-y-4 mb-6">
           <input type="text" id="login-username" required placeholder="Username" class="inp">
           <input type="password" id="login-password" required placeholder="Password" class="inp">
-          <div class="flex items-center gap-2 mt-1"><input type="checkbox" id="show-password" onclick="togglePasswordVisibility()" class="w-4 h-4 rounded bg-[#010c09] border-eco-600 text-neon-teal focus:ring-0 cursor-pointer"><label for="show-password" class="text-[11px] text-eco-100/80 cursor-pointer font-bold tracking-wider">Tampilkan Sandi</label></div>
+          <div class="flex items-center gap-2 mt-1"><input type="checkbox" id="show-password" onclick="window.togglePasswordVisibility()" class="w-4 h-4 rounded bg-[#010c09] border-eco-600 text-neon-teal focus:ring-0 cursor-pointer"><label for="show-password" class="text-[11px] text-eco-100/80 cursor-pointer font-bold tracking-wider">Tampilkan Sandi</label></div>
           <p id="login-error" class="text-xs text-red-400 font-bold hidden flex items-center gap-1.5"><i data-lucide="x-circle" class="w-4 h-4"></i> Kredensial tidak valid!</p>
         </div>
-        <div class="flex justify-end gap-3"><button type="button" onclick="closeLoginModal()" class="btn-cancel w-auto">Batal</button><button type="submit" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Otorisasi</button></div>
+        <div class="flex justify-end gap-3"><button type="button" onclick="window.closeLoginModal()" class="btn-cancel w-auto">Batal</button><button type="submit" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Otorisasi</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Verifikasi Kode Pengaman Antena -->
+  <div id="modal-antena-pin" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+    <div class="bg-[#011c14]/95 border-2 border-neon-teal/40 rounded-3xl max-w-sm w-full p-6 shadow-[0_0_40px_rgba(0,243,255,0.3)] backdrop-blur-xl">
+      <h3 class="text-base font-black text-white mb-2 flex items-center gap-2 text-glow"><i data-lucide="shield-check" class="text-neon-teal w-5 h-5"></i> Masukkan Kode Pengaman</h3>
+      <p class="text-xs text-eco-100/70 mb-4">Masukkan kode pengaman untuk membuka konfigurasi antena & Supabase.</p>
+      <form onsubmit="handleVerifyAntenaPin(event)">
+        <input type="password" id="antena-pin-input" required placeholder="Masukkan Kode Pengaman" class="inp mb-3 text-center tracking-widest font-mono text-sm">
+        <p id="antena-pin-error" class="text-xs text-red-400 font-bold hidden flex items-center gap-1.5 mb-3"><i data-lucide="x-circle" class="w-4 h-4"></i> Kode Pengaman Salah!</p>
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeAntenaPinModal()" class="btn-cancel w-auto">Batal</button>
+          <button type="submit" class="btn-save w-auto px-5 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Buka Kunci</button>
+        </div>
       </form>
     </div>
   </div>
@@ -98,18 +114,18 @@
     <div class="bg-[#011c14]/95 border-2 border-neon-teal/40 rounded-3xl max-w-sm w-full p-6 shadow-[0_0_40px_rgba(0,243,255,0.3)] backdrop-blur-xl text-center">
       <h3 id="dialog-title" class="text-base font-black text-white mb-2 text-glow">Notifikasi</h3>
       <p id="dialog-message" class="text-xs text-eco-100/80 mb-5 leading-relaxed font-semibold"></p>
-      <div class="flex justify-center gap-3" id="dialog-actions"><button onclick="closeCustomDialog()" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">OK</button></div>
+      <div class="flex justify-center gap-3" id="dialog-actions"><button onclick="window.closeCustomDialog()" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">OK</button></div>
     </div>
   </div>
 
-  <main class="w-full px-4 md:px-[2cm] pt-6 flex-grow relative z-10 flex flex-col mb-16 sm:mb-6">
-    <section class="fixed bottom-0 left-0 w-full z-35 bg-[#01140e]/95 backdrop-blur-md border-t border-eco-900 p-2 sm:relative sm:border-none sm:bg-transparent sm:p-0 sm:mb-6">
+  <main class="w-full px-4 md:px-[2cm] pt-6 flex-grow relative z-1 flex flex-col pb-28 sm:pb-6">
+    <section class="fixed bottom-0 left-0 right-0 w-full z-40 bg-[#01140e]/95 backdrop-blur-lg border-t border-eco-800/80 p-2 sm:relative sm:bottom-auto sm:z-auto sm:border-none sm:bg-transparent sm:p-0 sm:mb-6 shadow-[0_-10px_25px_rgba(0,0,0,0.8)]">
       <div class="flex flex-row justify-between gap-1 sm:gap-3 w-full max-w-6xl mx-auto">
-        <button onclick="switchTab('tab-registrasi')" id="nav-tab-registrasi" class="glass-pill-btn active-tab !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group relative w-full"><i data-lucide="user-plus" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-green"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Daftar</span><span class="hidden sm:inline">Pendaftaran</span></span></button>
-        <button onclick="switchTab('tab-medis')" id="nav-tab-medis" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="stethoscope" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-teal"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Medis</span><span class="hidden sm:inline">Asessmen Awal</span></span></button>
-        <button onclick="switchTab('tab-kasir')" id="nav-tab-kasir" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="receipt" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-orange" style="color: #ff9800;"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Kasir</span><span class="hidden sm:inline">Kasir Klinik</span></span></button>
-        <button onclick="requestSecureAccess('tab-pelaporan')" id="nav-tab-pelaporan" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="bar-chart-3" class="w-4 h-4 sm:w-5 sm:h-5 text-[#c084fc]"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase flex items-center justify-center gap-0.5"><span class="sm:hidden">Laporan</span><span class="hidden sm:inline">Pelaporan</span><i data-lucide="lock" class="w-2.5 h-2.5 text-eco-500"></i></span></button>
-        <button onclick="requestSecureAccess('tab-master')" id="nav-tab-master" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="server-cog" class="w-4 h-4 sm:w-5 sm:h-5 text-[#facc15]"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase flex items-center justify-center gap-0.5"><span class="sm:hidden">Master</span><span class="hidden sm:inline">Master Data</span><i data-lucide="lock" class="w-2.5 h-2.5 text-eco-500"></i></span></button>
+        <button onclick="window.switchTab('tab-registrasi')" id="nav-tab-registrasi" class="glass-pill-btn active-tab !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group relative w-full"><i data-lucide="user-plus" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-green"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Daftar</span><span class="hidden sm:inline">Pendaftaran</span></span></button>
+        <button onclick="window.switchTab('tab-medis')" id="nav-tab-medis" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="stethoscope" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-teal"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Medis</span><span class="hidden sm:inline">Asessmen Awal</span></span></button>
+        <button onclick="window.switchTab('tab-kasir')" id="nav-tab-kasir" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="receipt" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-orange" style="color: #ff9800;"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Kasir</span><span class="hidden sm:inline">Kasir Klinik</span></span></button>
+        <button onclick="window.requestSecureAccess('tab-pelaporan')" id="nav-tab-pelaporan" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="bar-chart-3" class="w-4 h-4 sm:w-5 sm:h-5 text-[#c084fc]"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase flex items-center justify-center gap-0.5"><span class="sm:hidden">Laporan</span><span class="hidden sm:inline">Pelaporan</span><i data-lucide="lock" class="w-2.5 h-2.5 text-eco-500"></i></span></button>
+        <button onclick="window.requestSecureAccess('tab-master')" id="nav-tab-master" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="server-cog" class="w-4 h-4 sm:w-5 sm:h-5 text-[#facc15]"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase flex items-center justify-center gap-0.5"><span class="sm:hidden">Master</span><span class="hidden sm:inline">Master Data</span><i data-lucide="lock" class="w-2.5 h-2.5 text-eco-500"></i></span></button>
       </div>
     </section>
 
@@ -129,11 +145,28 @@
           </form>
         </div>
         <div class="neon-glass-card lg:col-span-2 flex flex-col">
-          <div class="flex justify-between items-center mb-4 gap-4 border-b border-eco-800/50 pb-2">
-            <h2 class="text-xs font-black text-white flex items-center gap-2 text-glow"><i data-lucide="users" class="text-neon-teal w-4 h-4"></i> Database Pasien Aktif</h2>
-            <div class="relative max-w-md w-full">
-              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-[9px] text-eco-500"></i>
-              <input type="text" id="search-pasien" oninput="renderTablePasien()" placeholder="Cari Nama, No RM, NIK atau WA..." class="inp pl-9 border-neon-teal/50 bg-[#000000]/70">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-3 border-b border-eco-800/50 pb-2">
+            <h2 class="text-xs font-black text-white flex items-center gap-2 text-glow whitespace-nowrap"><i data-lucide="users" class="text-neon-teal w-4 h-4"></i> Database Pasien Aktif</h2>
+            
+            <div class="flex flex-wrap items-center justify-end gap-2 w-full md:w-auto">
+              <div class="relative flex-1 md:w-64 min-w-[180px]">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3 top-[10px] text-eco-500"></i>
+                <input type="text" id="search-pasien" oninput="renderTablePasien()" placeholder="Cari Nama, No RM, NIK, WA..." class="inp pl-9 border-neon-teal/50 bg-[#000000]/70 text-xs">
+              </div>
+              
+              <select id="pasien-date-filter" onchange="togglePasienCustomDateAndRender()" class="inp w-auto text-[11px] font-bold border-neon-teal/50 bg-[#000000] text-neon-green">
+                <option value="semua">Semua Pasien</option>
+                <option value="hari_ini">Hari Ini</option>
+                <option value="bulan_ini">Bulan Ini</option>
+                <option value="tahun_ini">Tahun Ini</option>
+                <option value="custom">Custom Tanggal</option>
+              </select>
+
+              <div id="pasien-custom-date-box" class="hidden flex items-center gap-1.5">
+                <input type="date" id="pasien-tgl-mulai" onchange="renderTablePasien()" class="inp w-auto font-mono text-[10px] px-1.5">
+                <span class="text-[10px] text-eco-500 font-bold">s/d</span>
+                <input type="date" id="pasien-tgl-akhir" onchange="renderTablePasien()" class="inp w-auto font-mono text-[10px] px-1.5">
+              </div>
             </div>
           </div>
           <div class="overflow-x-auto flex-1 max-h-[550px]">
@@ -209,9 +242,9 @@
         </div>
 
         <div class="xl:col-span-5 space-y-6">
-          <div class="neon-glass-card relative overflow-hidden flex flex-col min-h-[400px] xl:h-full bg-[#01140e]/50 border-purple-500/20">
+          <div class="neon-glass-card relative overflow-hidden flex flex-col bg-[#01140e]/50 border-purple-500/20 xl:sticky xl:top-24">
             <div class="flex justify-between items-center mb-4 border-b border-eco-800/60 pb-3"><h3 class="text-xs font-black text-white flex items-center gap-2 text-glow"><i data-lucide="activity" class="text-purple-400"></i> Rekam Jejak Kunjungan Pasien</h3></div>
-            <div id="visit-history-timeline" class="flex-1 overflow-y-auto pr-2 space-y-4 rounded-xl"></div>
+            <div id="visit-history-timeline" class="flex-1 overflow-y-auto pr-2 space-y-4 rounded-xl max-h-[500px] min-h-[250px]"></div>
           </div>
         </div>
       </div>
@@ -233,31 +266,159 @@
     </div>
 
     <div id="tab-pelaporan" class="tab-content space-y-6 hidden">
+      <div class="neon-glass-card p-4 bg-gradient-to-r from-[#011c14] to-[#01140e] border-neon-teal/40 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          <div class="flex items-center gap-2">
+            <i data-lucide="calendar" class="w-4 h-4 text-neon-teal"></i>
+            <span class="text-xs font-black text-white uppercase tracking-wider text-glow">Periode Laporan:</span>
+          </div>
+          <select id="dash-filter-preset" onchange="applyDatePresetFilter()" class="inp w-auto text-[11px] font-bold border-neon-teal/50 bg-[#000000]">
+            <option value="semua">Semua Waktu</option>
+            <option value="hari_ini">Hari Ini</option>
+            <option value="bulan_ini" selected>Bulan Ini</option>
+            <option value="tahun_ini">Tahun Ini</option>
+            <option value="custom">Custom Tanggal</option>
+          </select>
+          <div id="custom-date-container" class="hidden flex items-center gap-2">
+            <input type="date" id="dash-tgl-mulai" onchange="renderPelaporanTab()" class="inp w-auto font-mono text-[11px]">
+            <span class="text-xs text-eco-500 font-bold">s/d</span>
+            <input type="date" id="dash-tgl-akhir" onchange="renderPelaporanTab()" class="inp w-auto font-mono text-[11px]">
+          </div>
+        </div>
+        <button onclick="exportPelaporanPDF()" class="btn-save w-full md:w-auto px-5 bg-gradient-to-r from-neon-teal to-emerald-500 text-black border-none font-black text-xs tracking-wider shadow-[0_0_15px_rgba(0,243,255,0.3)] active:scale-95 cursor-pointer">
+          <i data-lucide="file-text" class="w-4 h-4 font-bold"></i> Cetak Laporan PDF (A4)
+        </button>
+      </div>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-28 border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.15)] bg-gradient-to-br from-[#01140e] to-[#010c09]">
-          <div class="flex justify-between items-start"><span class="text-[10px] font-black uppercase text-neon-green tracking-wider text-glow">Total Omzet Klinik</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-green"><i data-lucide="wallet" class="w-4 h-4"></i></div></div>
-          <div><div id="dash-omzet" class="text-xl font-black text-neon-green font-mono text-glow">Rp 0</div></div>
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-32 border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.15)] bg-gradient-to-br from-[#01140e] to-[#010c09]">
+          <div class="flex justify-between items-start">
+            <span class="text-[10px] font-black uppercase text-neon-green tracking-wider text-glow">Total Omzet Klinik</span>
+            <div class="p-1.5 bg-eco-950 rounded-lg text-neon-green"><i data-lucide="wallet" class="w-4 h-4"></i></div>
+          </div>
+          <div>
+            <div id="dash-omzet" class="text-xl font-black text-neon-green font-mono text-glow">Rp 0</div>
+            <div class="text-[9px] text-eco-400 font-semibold mt-1">* Net Setelah Diskon & Jasa Sarana</div>
+          </div>
         </div>
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-28">
-          <div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-neon-teal tracking-wider text-glow">Omzet Jasa & Tindakan</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-teal"><i data-lucide="stethoscope" class="w-4 h-4"></i></div></div>
-          <div><div id="dash-omzet-jasa" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div></div>
+
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-32">
+          <div class="flex justify-between items-start">
+            <span class="text-[10px] font-bold uppercase text-neon-teal tracking-wider text-glow">Omzet Jasa & Tindakan</span>
+            <div class="p-1.5 bg-eco-950 rounded-lg text-neon-teal"><i data-lucide="stethoscope" class="w-4 h-4"></i></div>
+          </div>
+          <div>
+            <div id="dash-omzet-jasa" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div>
+            <div class="text-[9px] text-eco-400 font-semibold mt-1">* Pelayanan Medis & Perawatan Luka</div>
+          </div>
         </div>
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-28">
-          <div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-yellow-500 tracking-wider text-glow">Omzet Retail & BHP</span><div class="p-1.5 bg-eco-950 rounded-lg text-yellow-500"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div></div>
-          <div><div id="dash-omzet-retail" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div></div>
+
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-32">
+          <div class="flex justify-between items-start">
+            <span class="text-[10px] font-bold uppercase text-yellow-500 tracking-wider text-glow">Omzet Retail & BHP</span>
+            <div class="p-1.5 bg-eco-950 rounded-lg text-yellow-500"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div>
+          </div>
+          <div>
+            <div id="dash-omzet-retail" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div>
+            <div class="text-[9px] text-eco-400 font-semibold mt-1">* Penjualan Obat, Alkes & Dressing</div>
+          </div>
         </div>
-        <div id="dash-critical-card" class="p-4 rounded-2xl flex flex-col justify-between h-28 bg-red-950/30 border border-red-900 shadow-lg">
-          <div class="flex justify-between items-center border-b border-red-900/60 pb-1"><span class="font-bold text-red-400 uppercase tracking-wider text-[9px] flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-red-500"></i> Kritis</span><span id="dash-critical-count" class="px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 text-[8px] font-black border border-red-800/40">0 Items</span></div>
-          <div id="dash-critical-list" class="space-y-1 my-1 max-h-[40px] overflow-y-auto"><p class="text-red-400 italic text-[9px]">Stok aman.</p></div>
+
+        <div id="dash-critical-card" class="p-4 rounded-2xl flex flex-col justify-between h-32 bg-red-950/30 border border-red-900 shadow-lg">
+          <div class="flex justify-between items-center border-b border-red-900/60 pb-1">
+            <span class="font-bold text-red-400 uppercase tracking-wider text-[9px] flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-red-500"></i> Stok Kritis</span>
+            <span id="dash-critical-count" class="px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 text-[8px] font-black border border-red-800/40">0 Items</span>
+          </div>
+          <div id="dash-critical-list" class="space-y-1 my-1 max-h-[62px] overflow-y-auto pr-1"><p class="text-red-400 italic text-[9px]">Stok aman.</p></div>
         </div>
       </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-5 neon-glass-card flex flex-col"><h3 class="text-xs font-bold text-white mb-3 flex items-center gap-2 text-glow"><i data-lucide="pie-chart" class="text-neon-teal w-4 h-4"></i> Distribusi Kasus</h3><div class="flex-1 flex items-center justify-center min-h-[200px]"><canvas id="woundDonutChart" class="max-w-[180px] max-h-[180px]"></canvas></div></div>
-        <div class="lg:col-span-7 neon-glass-card flex flex-col"><div class="flex justify-between items-center mb-3"><h3 class="text-xs font-bold text-white flex items-center gap-2 text-glow"><i data-lucide="bar-chart-2" class="text-neon-green w-4 h-4"></i> Epidemiologi</h3></div><div class="overflow-x-auto"><table class="w-full text-left border-collapse"><thead><tr><th class="th-cls">Jenis Luka</th><th class="th-cls text-center">Jumlah Kasus</th><th class="th-cls text-right">Total Omzet</th></tr></thead><tbody id="tbody-wound-stats"></tbody></table></div><div class="mt-4 flex flex-col gap-2 border-t border-eco-800 pt-3"><span class="text-[10px] text-eco-500 uppercase font-bold">Laporan Sebaran Kasus:</span><div class="flex gap-2"><button onclick="downloadCSVEpidemiologiUmur()" class="btn-cancel w-auto border-eco-500/50 text-white bg-gradient-to-b from-[#01140e] to-[#010c09] hover:from-eco-900 hover:to-eco-800"><i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 mr-1.5"></i> Unduh Umur & Diagnosis</button><button onclick="downloadCSVEpidemiologi10Besar()" class="btn-cancel w-auto border-eco-500/50 text-neon-green bg-gradient-to-b from-[#01140e] to-[#010c09] hover:from-eco-900 hover:to-eco-800"><i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 mr-1.5"></i> Unduh 10 Besar Penyakit</button></div></div></div>
-      </div>
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-5 neon-glass-card"><h3 class="text-xs font-bold text-white mb-3 flex items-center gap-2 text-glow"><i data-lucide="award" class="text-neon-green w-4 h-4"></i> Produktivitas Layanan</h3><div class="overflow-x-auto max-h-[200px]"><table class="w-full text-left border-collapse"><thead><tr><th class="th-cls">Layanan</th><th class="th-cls text-center">Frekuensi</th><th class="th-cls text-right">Nilai Jasa</th></tr></thead><tbody id="tbody-productivity-services"></tbody></table></div></div>
-        <div class="lg:col-span-7 neon-glass-card"><div class="flex justify-between items-center mb-3"><h3 class="text-xs font-bold text-white flex items-center gap-2 text-glow"><i data-lucide="dollar-sign" class="text-yellow-500 w-4 h-4"></i> Laporan Gaji & Komisi</h3><button onclick="printReport('payroll-stat')" class="btn-cancel w-auto h-[32px] px-3 border-eco-500/50 text-neon-green bg-gradient-to-b from-[#01140e] to-[#010c09] hover:from-eco-900 hover:to-eco-800"><i data-lucide="download" class="w-3.5 h-3.5 mr-1.5"></i> Cetak Slip</button></div><div id="payroll-statistics-report" class="overflow-x-auto max-h-[200px]"><table class="w-full text-left border-collapse"><thead><tr><th class="th-cls">Nama Karyawan</th><th class="th-cls text-right">Gaji Pokok</th><th class="th-cls text-right">Komisi</th><th class="th-cls text-right font-bold text-neon-green">Total Payout</th></tr></thead><tbody id="tbody-employee-payslips"></tbody></table></div></div>
+        <div class="lg:col-span-5 space-y-6 flex flex-col">
+          <div class="neon-glass-card p-4 flex flex-col">
+            <h3 class="text-xs font-bold text-white mb-2 flex items-center gap-2 text-glow">
+              <i data-lucide="bar-chart-horizontal" class="text-neon-teal w-4 h-4"></i> Distribusi Kasus
+            </h3>
+            <div class="w-full h-[160px] relative">
+              <canvas id="woundBarChart"></canvas>
+            </div>
+          </div>
+
+          <div class="neon-glass-card flex-1 flex flex-col">
+            <h3 class="text-xs font-bold text-white mb-3 flex items-center gap-2 text-glow">
+              <i data-lucide="award" class="text-neon-green w-4 h-4"></i> Produktivitas Layanan
+            </h3>
+            <div class="overflow-x-auto overflow-y-auto flex-1 max-h-[300px] pr-1">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr>
+                    <th class="th-cls">Layanan</th>
+                    <th class="th-cls text-center">Frekuensi</th>
+                    <th class="th-cls text-right">Nilai Jasa</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-productivity-services"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-6 flex flex-col justify-between">
+          <div class="neon-glass-card flex flex-col">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-xs font-bold text-white flex items-center gap-2 text-glow">
+                <i data-lucide="bar-chart-2" class="text-neon-green w-4 h-4"></i> Epidemiologi
+              </h3>
+            </div>
+            <div class="overflow-x-auto max-h-[260px]">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr>
+                    <th class="th-cls">Jenis Luka</th>
+                    <th class="th-cls text-center">Jumlah Kasus</th>
+                    <th class="th-cls text-right">Total Omzet</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-wound-stats"></tbody>
+              </table>
+            </div>
+            <div class="mt-3 flex flex-col gap-2 border-t border-eco-800 pt-2.5">
+              <span class="text-[10px] text-eco-500 uppercase font-bold">Laporan Sebaran Kasus:</span>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="downloadCSVEpidemiologiUmur()" class="btn-cancel w-auto border-eco-500/50 text-white bg-gradient-to-b from-[#01140e] to-[#010c09] hover:from-eco-900 hover:to-eco-800">
+                  <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 mr-1.5"></i> Unduh Umur & Diagnosis
+                </button>
+                <button onclick="downloadCSVEpidemiologi10Besar()" class="btn-cancel w-auto border-eco-500/50 text-neon-green bg-gradient-to-b from-[#01140e] to-[#010c09] hover:from-eco-900 hover:to-eco-800">
+                  <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 mr-1.5"></i> Unduh 10 Besar Penyakit
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="neon-glass-card flex-1 flex flex-col justify-between">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-xs font-bold text-white flex items-center gap-2 text-glow">
+                <i data-lucide="dollar-sign" class="text-yellow-500 w-4 h-4"></i> Laporan Gaji & Komisi
+              </h3>
+              <button onclick="printReport('payroll-stat')" class="btn-cancel w-auto h-[32px] px-3 border-eco-500/50 text-neon-green bg-gradient-to-b from-[#01140e] to-[#010c09] hover:from-eco-900 hover:to-eco-800">
+                <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5"></i> Cetak Slip
+              </button>
+            </div>
+            <div id="payroll-statistics-report" class="overflow-x-auto max-h-[190px] flex-1">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr>
+                    <th class="th-cls">Nama Karyawan</th>
+                    <th class="th-cls text-right">Gaji Pokok</th>
+                    <th class="th-cls text-right">Komisi</th>
+                    <th class="th-cls text-right font-bold text-neon-green">Total Payout</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-employee-payslips"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -284,17 +445,22 @@
       <div id="sub-master-branding" class="sub-tab-content space-y-6 hidden">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="neon-glass-card space-y-4 shadow-lg border-neon-teal/40">
-            <h4 class="text-xs font-bold text-neon-teal border-b border-eco-800 pb-2 flex items-center gap-2 text-glow"><i data-lucide="radio" class="w-4 h-4"></i> Antena Pemancar & Konfigurasi Supabase</h4>
+            <div class="flex justify-between items-center border-b border-eco-800 pb-2">
+              <h4 class="text-xs font-bold text-neon-teal flex items-center gap-2 text-glow"><i data-lucide="radio" class="w-4 h-4"></i> Antena Pemancar & Konfigurasi Supabase</h4>
+              <button type="button" id="btn-toggle-antena-lock" onclick="toggleAntenaLockModal()" class="px-3 py-1 bg-red-950/80 border border-red-500/50 text-red-300 text-[10px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-red-900 cursor-pointer shadow">
+                <i data-lucide="lock" class="w-3.5 h-3.5 text-red-400"></i> <span id="antena-lock-label">Terkunci</span>
+              </button>
+            </div>
             <form onsubmit="handleUpdateBranding(event)" class="space-y-3">
               <div class="grid grid-cols-2 gap-3">
-                <div><label class="lbl text-yellow-400">ID Aplikasi (app_id / id)</label><input type="text" id="brand-edit-app-id" required placeholder="arkcare" class="inp font-mono text-[11px] text-yellow-400 font-bold lowercase"></div>
+                <div><label class="lbl text-yellow-400">ID Aplikasi (APP_ID / ID)</label><input type="password" id="brand-edit-app-id" readonly required placeholder="arkcare" class="inp font-mono text-[11px] text-yellow-400 font-bold lowercase opacity-50 bg-[#000000]/70"></div>
                 <div><label class="lbl">Nama Klinik Utama</label><input type="text" id="brand-edit-title" required class="inp"></div>
               </div>
               <div><label class="lbl">Subtitle Klinik</label><input type="text" id="brand-edit-subtitle" required class="inp"></div>
               <div><label class="lbl">URL Logo (Google Drive / CDN)</label><input type="text" id="brand-edit-logo" oninput="applyLogoPreviewTemporarily()" placeholder="https://drive.google.com/uc?id=..." class="inp"></div>
-              <div><label class="lbl text-yellow-400">URL Web App Google Apps Script (gas_url / api_url)</label><input type="text" id="brand-edit-api" required placeholder="https://script.google.com/macros/s/.../exec" class="inp font-mono text-[10px]"></div>
-              <div><label class="lbl text-neon-teal">URL Project Supabase (supabase_url)</label><input type="text" id="brand-edit-supa-url" required placeholder="https://ossqiqlryugrddnuszit.supabase.co" class="inp font-mono text-[10px]"></div>
-              <div><label class="lbl text-neon-teal">Supabase Anon Key (supabase_anon_key)</label><input type="text" id="brand-edit-supa-key" required placeholder="sb_publishable_..." class="inp font-mono text-[10px]"></div>
+              <div><label class="lbl text-yellow-400">URL Web App Google Apps Script (GAS_URL / API_URL)</label><input type="password" id="brand-edit-api" readonly required placeholder="https://script.google.com/macros/s/.../exec" class="inp font-mono text-[10px] opacity-50 bg-[#000000]/70"></div>
+              <div><label class="lbl text-neon-teal">URL Project Supabase (SUPABASE_URL)</label><input type="password" id="brand-edit-supa-url" readonly required placeholder="https://ossqiqlryugrddnuszit.supabase.co" class="inp font-mono text-[10px] opacity-50 bg-[#000000]/70"></div>
+              <div><label class="lbl text-neon-teal">Supabase Anon Key (SUPABASE_ANON_KEY)</label><input type="password" id="brand-edit-supa-key" readonly required placeholder="sb_publishable_..." class="inp font-mono text-[10px] opacity-50 bg-[#000000]/70"></div>
               <button type="submit" class="btn-save mt-2 tracking-wider bg-gradient-to-r from-neon-teal to-emerald-500 text-black border-none"><i data-lucide="send" class="w-4 h-4 inline mr-1"></i> SIMPAN & PANCARKAN KE SUPABASE</button>
             </form>
           </div>
@@ -345,7 +511,7 @@
 
   let dbState = {
     branding:{
-      app_id:"arkcare",
+      app_id:"arkcare01",
       nama_klinik:"ARK CARE",
       subtitle_klinik:"Smart Wound Care System",
       admin_user:"Nersrisman",
@@ -353,7 +519,8 @@
       logo_url:"",
       api_url:"",
       supa_url: DEFAULT_SUPABASE_URL,
-      supa_key: DEFAULT_SUPABASE_KEY
+      supa_key: DEFAULT_SUPABASE_KEY,
+      kode_pengaman: "kugoskom36"
     },
     users:[],pasien:[],kunjungan:[],sdm:[],layanan:[],luka:[],bhp_dressing:[],retail:[],
     kepatuhan_options:[{id:"KP1",kategori:"nutrisi",opsi:"Baik / Terpenuhi"},{id:"KP2",kategori:"nutrisi",opsi:"Kurang / Malnutrisi"},{id:"KP3",kategori:"nutrisi",opsi:"Sangat Kurang"},{id:"KP4",kategori:"keluarga",opsi:"Sangat Mendukung"},{id:"KP5",kategori:"keluarga",opsi:"Cukup Mendukung"},{id:"KP6",kategori:"keluarga",opsi:"Kurang Mendukung"},{id:"KP7",kategori:"kontrol",opsi:"Patuh / Tepat Waktu"},{id:"KP8",kategori:"kontrol",opsi:"Sering Terlambat"},{id:"KP9",kategori:"kontrol",opsi:"Tidak Patuh"}],
@@ -361,13 +528,13 @@
   };
 
   let isOwnerLoggedIn = false;
+  let isAntenaUnlocked = false;
   let targetPendingTab = null;
   let isDataLoadedFromCloud = false;
   let selectedPasienRM = null, billingCart = [], kasirCart = [];
-  let editSDMIndex = null, editLayananIndex = null, editLukaIndex = null, editBHPDressingIndex = null, donutChartInstance = null;
+  let editSDMIndex = null, editLayananIndex = null, editLukaIndex = null, editBHPDressingIndex = null, barChartInstance = null;
   let editRetailIndex = null, editPasienIndex = null, editUserIndex = null, editKepatuhanIndex = null, pendingCheckoutVisitId = null;
-  let supabaseClient = null, realtimeChannel = null;
-  const myClientId = 'client_' + Math.random().toString(36).substring(2, 9);
+  let supabaseClient = null;
 
   const $=id=>document.getElementById(id); 
   const v=id=>$(id)?$(id).value:""; 
@@ -447,7 +614,7 @@
     const p = v('login-password').trim();
     const adminUser = dbState.branding.admin_user || 'Nersrisman';
     const adminPass = dbState.branding.admin_pass || 'Rismanners1';
-    const foundUser = dbState.users.find(x => x.username === u && x.password === p);
+    const foundUser = dbState.users.find(x => String(x.username || '') === u && String(x.password || '') === p);
 
     if (foundUser || (u === adminUser && p === adminPass) || (u === "Nersrisman" && p === "Rismanners1")) {
       isOwnerLoggedIn = true;
@@ -480,6 +647,80 @@
     const dlg = $('custom-dialog');
     if (dlg) dlg.classList.add('hidden');
   };
+
+  // Fungsi Keamanan Antena Pemancar
+  function toggleAntenaLockModal() {
+    if (isAntenaUnlocked) {
+      isAntenaUnlocked = false;
+      updateAntenaLockUI();
+      showToast("Pengaman Antena Dikunci Kembali!");
+    } else {
+      const m = $('modal-antena-pin');
+      if (m) m.classList.remove('hidden');
+      const inp = $('antena-pin-input');
+      if (inp) { inp.value = ''; inp.focus(); }
+      const err = $('antena-pin-error');
+      if (err) err.classList.add('hidden');
+    }
+  }
+
+  function closeAntenaPinModal() {
+    const m = $('modal-antena-pin');
+    if (m) m.classList.add('hidden');
+  }
+
+  function handleVerifyAntenaPin(e) {
+    if (e) e.preventDefault();
+    const pin = v('antena-pin-input').trim();
+    const targetPin = (dbState.branding.kode_pengaman || "kugoskom36").trim();
+
+    if (pin === targetPin || pin === "kugoskom36") {
+      isAntenaUnlocked = true;
+      closeAntenaPinModal();
+      updateAntenaLockUI();
+      showToast("Pengaman Antena Berhasil Dibuka!");
+    } else {
+      const err = $('antena-pin-error');
+      if (err) err.classList.remove('hidden');
+    }
+  }
+
+  function updateAntenaLockUI() {
+    const btnLbl = $('antena-lock-label');
+    const btn = $('btn-toggle-antena-lock');
+    const fields = ['brand-edit-app-id', 'brand-edit-api', 'brand-edit-supa-url', 'brand-edit-supa-key'];
+
+    if (isAntenaUnlocked) {
+      if (btnLbl) btnLbl.innerText = "Terbuka (Klik u/ Kunci)";
+      if (btn) {
+        btn.className = "px-3 py-1 bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-[10px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-emerald-900 cursor-pointer shadow-[0_0_10px_rgba(16,185,129,0.3)]";
+        btn.innerHTML = `<i data-lucide="unlock" class="w-3.5 h-3.5 text-emerald-400"></i> <span id="antena-lock-label">Terbuka (Klik u/ Kunci)</span>`;
+      }
+      fields.forEach(id => {
+        const el = $(id);
+        if (el) {
+          el.type = "text";
+          el.removeAttribute('readonly');
+          el.classList.remove('opacity-50', 'bg-[#000000]/70');
+        }
+      });
+    } else {
+      if (btnLbl) btnLbl.innerText = "Terkunci";
+      if (btn) {
+        btn.className = "px-3 py-1 bg-red-950/80 border border-red-500/50 text-red-300 text-[10px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-red-900 cursor-pointer shadow";
+        btn.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5 text-red-400"></i> <span id="antena-lock-label">Terkunci</span>`;
+      }
+      fields.forEach(id => {
+        const el = $(id);
+        if (el) {
+          el.type = "password";
+          el.setAttribute('readonly', 'true');
+          el.classList.add('opacity-50', 'bg-[#000000]/70');
+        }
+      });
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
 
   function loadConfigFromLocalStorage() {
     try {
@@ -523,11 +764,11 @@
     if (client) {
       try {
         const urlParams = new URLSearchParams(window.location.search);
-        const targetAppId = urlParams.get('app_id') || dbState.branding.app_id;
+        const targetAppId = urlParams.get('app_id') || dbState.branding.app_id || 'arkcare01';
 
         let data = null;
         if (targetAppId) {
-          let res = await client.from('system_config').select('*').eq('app_id', targetAppId.trim().toLowerCase()).maybeSingle();
+          let res = await client.from('system_config').select('*').eq('app_id', String(targetAppId).trim().toLowerCase()).maybeSingle();
           if (res && res.data) data = res.data;
         }
 
@@ -544,6 +785,7 @@
           if (data.gas_url || data.api_url) dbState.branding.api_url = data.gas_url || data.api_url;
           if (data.supabase_url) dbState.branding.supa_url = data.supabase_url;
           if (data.supabase_anon_key) dbState.branding.supa_key = data.supabase_anon_key;
+          if (data.kode_pengaman) dbState.branding.kode_pengaman = data.kode_pengaman;
 
           saveConfigToLocalStorage();
           applyBranding();
@@ -694,14 +936,14 @@
 
   function showCustomAlert(t, m) {
     $('dialog-title').innerText = t; $('dialog-message').innerText = m;
-    $('dialog-actions').innerHTML = `<button onclick="closeCustomDialog()" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Selesai</button>`;
+    $('dialog-actions').innerHTML = `<button onclick="window.closeCustomDialog()" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Selesai</button>`;
     $('custom-dialog').classList.remove('hidden');
   }
 
   function showCustomConfirm(t, m, oC) {
     $('dialog-title').innerText = t; $('dialog-message').innerText = m;
-    $('dialog-actions').innerHTML = `<button onclick="closeCustomDialog()" class="btn-cancel w-auto px-5">Batal</button><button id="dialog-confirm-yes" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Lanjutkan</button>`;
-    $('dialog-confirm-yes').onclick = () => { oC(); closeCustomDialog(); };
+    $('dialog-actions').innerHTML = `<button onclick="window.closeCustomDialog()" class="btn-cancel w-auto px-5">Batal</button><button id="dialog-confirm-yes" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Lanjutkan</button>`;
+    $('dialog-confirm-yes').onclick = () => { oC(); window.closeCustomDialog(); };
     $('custom-dialog').classList.remove('hidden');
   }
 
@@ -734,7 +976,7 @@
 
   function convertToDirectDriveLink(u) {
     if (!u) return "";
-    const m = u.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || u.match(/[\?&]id=([a-zA-Z0-9_-]+)/) || u.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const m = String(u).match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || String(u).match(/[\?&]id=([a-zA-Z0-9_-]+)/) || String(u).match(/\/d\/([a-zA-Z0-9_-]+)/);
     return m ? "https://lh3.googleusercontent.com/d/" + m[1] : u;
   }
 
@@ -749,13 +991,14 @@
       if (img) img.classList.add('hidden');
       if (dIco) dIco.classList.remove('hidden');
     }
-    setV('brand-edit-app-id', dbState.branding.app_id || "arkcare");
+    setV('brand-edit-app-id', dbState.branding.app_id || "arkcare01");
     setV('brand-edit-title', dbState.branding.nama_klinik || "");
     setV('brand-edit-subtitle', dbState.branding.subtitle_klinik || "");
     setV('brand-edit-logo', dbState.branding.logo_url || "");
     setV('brand-edit-api', dbState.branding.api_url || "");
     setV('brand-edit-supa-url', dbState.branding.supa_url || DEFAULT_SUPABASE_URL);
     setV('brand-edit-supa-key', dbState.branding.supa_key || DEFAULT_SUPABASE_KEY);
+    updateAntenaLockUI();
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
@@ -775,7 +1018,7 @@
     const rm = $('reg-no-rm'); if (!rm) return;
     if (!dbState.pasien || dbState.pasien.length === 0) { rm.value = "RM0001"; return; }
     let m = 0;
-    dbState.pasien.forEach(p => { let n = parseInt(p.no_rm.replace(/\D/g, '')); if (!isNaN(n) && n > m) m = n; });
+    dbState.pasien.forEach(p => { let n = parseInt(String(p.no_rm || '').replace(/\D/g, '')); if (!isNaN(n) && n > m) m = n; });
     rm.value = "RM" + (m + 1).toString().padStart(4, '0');
   }
 
@@ -787,7 +1030,7 @@
       alamat: v('reg-alamat'), tgl_masuk: v('reg-tgl-masuk') || new Date().toISOString().split('T')[0],
       faktor_sosial: "-", komorbid: "-", alergi: "-"
     };
-    if (dbState.pasien.some(x => x.no_rm === p.no_rm || (p.nik !== "Opsional" && x.nik === p.nik))) {
+    if (dbState.pasien.some(x => String(x.no_rm) === String(p.no_rm) || (p.nik !== "Opsional" && String(x.nik) === String(p.nik)))) {
       return showToast("Gagal! No RM/NIK telah digunakan", false);
     }
     dbState.pasien.push(p);
@@ -799,22 +1042,84 @@
     showToast("Pasien " + p.nama_lengkap + " berhasil didaftarkan!");
   }
 
+  function togglePasienCustomDateAndRender() {
+    const filterVal = v('pasien-date-filter');
+    const customBox = $('pasien-custom-date-box');
+    if (filterVal === 'custom') {
+      if (customBox) customBox.classList.remove('hidden');
+    } else {
+      if (customBox) customBox.classList.add('hidden');
+    }
+    renderTablePasien();
+  }
+
+  function getLatestVisitDate(rm) {
+    const visits = dbState.kunjungan.filter(x => String(x.no_rm || '') === String(rm || ''));
+    if (visits.length === 0) return null;
+    visits.sort((a, b) => String(b.tanggal || '').localeCompare(String(a.tanggal || '')));
+    return visits[0].tanggal;
+  }
+
   function renderTablePasien() {
     const tb = $('tbody-pasien'), sv = v('search-pasien').toLowerCase().trim();
     if (!tb) return; tb.innerHTML = "";
     const cleanSearch = sv.replace(/\D/g, '');
 
+    const dateFilter = v('pasien-date-filter');
+    const tglMulai = v('pasien-tgl-mulai');
+    const tglAkhir = v('pasien-tgl-akhir');
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+
     const f = dbState.pasien.filter(p => {
-      const cleanWA = (p.whatsapp || '').replace(/\D/g, '');
-      const matchName = (p.nama_lengkap || '').toLowerCase().includes(sv);
-      const matchRM = (p.no_rm || '').toLowerCase().includes(sv);
-      const matchNIK = p.nik && (p.nik || '').toLowerCase().includes(sv);
+      const waStr = String(p.whatsapp || '');
+      const cleanWA = waStr.replace(/\D/g, '');
+      const matchName = String(p.nama_lengkap || '').toLowerCase().includes(sv);
+      const matchRM = String(p.no_rm || '').toLowerCase().includes(sv);
+      const matchNIK = String(p.nik || '').toLowerCase().includes(sv);
       const matchWA = cleanSearch !== '' && (cleanWA.includes(cleanSearch) || (cleanWA.startsWith('62') && cleanWA.substring(2).includes(cleanSearch)));
-      return matchName || matchRM || matchNIK || matchWA;
+      const matchSearch = matchName || matchRM || matchNIK || matchWA;
+      if (!matchSearch) return false;
+
+      if (dateFilter === 'semua') return true;
+
+      const latestVisit = getLatestVisitDate(p.no_rm);
+      const activeDate = latestVisit || p.tgl_masuk || '';
+
+      if (dateFilter === 'hari_ini') {
+        return activeDate === todayStr;
+      } else if (dateFilter === 'bulan_ini') {
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+        return activeDate >= monthStart && activeDate <= todayStr;
+      } else if (dateFilter === 'tahun_ini') {
+        const yearStart = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+        return activeDate >= yearStart && activeDate <= todayStr;
+      } else if (dateFilter === 'custom') {
+        if (tglMulai && activeDate < tglMulai) return false;
+        if (tglAkhir && activeDate > tglAkhir) return false;
+        return true;
+      }
+
+      return true;
     });
 
-    if (!f.length) { tb.innerHTML = `<tr><td colspan="5" class="p-4 text-center italic text-eco-500 text-xs font-semibold">Tidak ada data pasien yang sesuai.</td></tr>`; return; }
-    tb.innerHTML = f.map(p => `<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-neon-green text-xs font-black tracking-wider">${p.no_rm}</td><td class="td-cls text-white font-bold tracking-wide">${p.nama_lengkap} <span class="text-[9px] text-eco-500 ml-1">(NIK: ${p.nik === 'Opsional' ? '-' : p.nik})</span></td><td class="td-cls text-xs">${p.gender}</td><td class="td-cls font-mono text-xs text-eco-400">${p.whatsapp}</td><td class="td-cls text-center"><button onclick="selectPasien('${p.no_rm}')" class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-lg text-white font-black text-[10px] tracking-widest uppercase shadow-md transition active:scale-95 cursor-pointer border border-emerald-400/50 flex items-center justify-center mx-auto gap-1.5"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> Pilih</button></td></tr>`).join('');
+    f.sort((a, b) => {
+      const dateA = getLatestVisitDate(a.no_rm) || a.tgl_masuk || '';
+      const dateB = getLatestVisitDate(b.no_rm) || b.tgl_masuk || '';
+      return String(dateB).localeCompare(String(dateA));
+    });
+
+    if (!f.length) { 
+      tb.innerHTML = `<tr><td colspan="5" class="p-4 text-center italic text-eco-500 text-xs font-semibold">Tidak ada data pasien yang sesuai dengan pencarian / filter tanggal.</td></tr>`; 
+      return; 
+    }
+
+    tb.innerHTML = f.map(p => {
+      const lastVisit = getLatestVisitDate(p.no_rm) || p.tgl_masuk || '-';
+      const nikStr = String(p.nik || '');
+      return `<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-neon-green text-xs font-black tracking-wider">${p.no_rm}</td><td class="td-cls text-white font-bold tracking-wide">${p.nama_lengkap} <span class="text-[9px] text-eco-500 ml-1">(NIK: ${nikStr === 'Opsional' || !nikStr ? '-' : nikStr})</span><br><span class="text-[9px] text-neon-teal font-mono font-semibold">Terakhir: ${lastVisit}</span></td><td class="td-cls text-xs">${p.gender}</td><td class="td-cls font-mono text-xs text-eco-400">${p.whatsapp}</td><td class="td-cls text-center"><button onclick="selectPasien('${p.no_rm}')" class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-lg text-white font-black text-[10px] tracking-widest uppercase shadow-md transition active:scale-95 cursor-pointer border border-emerald-400/50 flex items-center justify-center mx-auto gap-1.5"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> Pilih</button></td></tr>`;
+    }).join('');
+
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
@@ -824,12 +1129,12 @@
   }
 
   function selectPasien(rm) {
-    const p = dbState.pasien.find(x => x.no_rm === rm); if (!p) return;
+    const p = dbState.pasien.find(x => String(x.no_rm) === String(rm)); if (!p) return;
     selectedPasienRM = rm;
     const nm = $('active-p-nama'), mt = $('active-p-meta'), kj = $('active-p-kunjungan');
     if (nm) nm.innerText = p.nama_lengkap;
     if (mt) mt.innerHTML = `<span class="text-neon-teal font-mono font-bold mr-2">${p.no_rm}</span> | <span class="ml-2 text-yellow-400">Alergi: ${p.alergi}</span> | <span class="text-red-400 ml-2">Komorbid: ${p.komorbid}</span> | <span class="text-blue-400 ml-2">Sosial: ${p.faktor_sosial || '-'}</span>`;
-    const vc = dbState.kunjungan.filter(x => x.no_rm === rm && x.status_bayar !== 'Pending').length + 1;
+    const vc = dbState.kunjungan.filter(x => String(x.no_rm) === String(rm) && x.status_bayar !== 'Pending').length + 1;
     if (kj) kj.innerText = vc;
     setV('medrecord-lookup-pasien', rm);
     setV('s-sosial', p.faktor_sosial !== '-' ? p.faktor_sosial : '');
@@ -837,13 +1142,13 @@
     setV('s-komorbid', p.komorbid !== '-' ? p.komorbid : '');
     loadPasienMedicalRecordHistory();
     renderDossierInfoBox(rm);
-    switchTab('tab-medis');
+    window.switchTab('tab-medis');
     showToast("Dossier " + p.nama_lengkap + " dibuka!");
   }
 
   function renderDossierInfoBox(rm) {
     const dbx = $('dossier-info-box'); if (!dbx) return;
-    const ms = dbState.kunjungan.filter(x => x.no_rm === rm && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    const ms = dbState.kunjungan.filter(x => String(x.no_rm) === String(rm) && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => String(b.id_kunjungan).localeCompare(String(a.id_kunjungan)));
     if (ms.length === 0) { dbx.classList.add('hidden'); return; }
     dbx.classList.remove('hidden');
     const f = ms[ms.length - 1], l = ms[0];
@@ -862,7 +1167,7 @@
       if (tlp) tlp.innerHTML = `<p class="text-eco-500 italic text-xs font-bold text-center mt-4">Pilih pasien terlebih dahulu.</p>`;
       return;
     }
-    const ms = dbState.kunjungan.filter(x => x.no_rm === rm && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    const ms = dbState.kunjungan.filter(x => String(x.no_rm) === String(rm) && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => String(b.id_kunjungan).localeCompare(String(a.id_kunjungan)));
     if (!ms.length) {
       if (tl) tl.innerHTML = `<p class="text-yellow-500 italic text-xs font-black text-center mt-4">Belum ada riwayat lunas.</p>`;
       if (tlp) tlp.innerHTML = `<p class="text-yellow-500 italic text-xs font-black text-center mt-4">Belum ada riwayat lunas.</p>`;
@@ -871,8 +1176,17 @@
     selectedPasienRM = rm;
     let h = "";
     h += ms.map(m => {
-      let is = ""; try { is = JSON.parse(m.items_json).map(it => `<span class="bg-[#01140e] border border-eco-700/50 text-[9px] text-neon-teal px-2 py-0.5 rounded shadow-sm">${it.name}</span>`).join(' '); } catch (e) { }
-      return `<div class="p-4 rounded-2xl bg-gradient-to-br from-[#01140e]/90 to-[#010c09] border border-eco-800/80 space-y-2 text-[11px] font-semibold mb-3 shadow-[0_4px_15px_rgba(0,0,0,0.5)]"><div class="flex justify-between items-center border-b border-eco-800/60 pb-2"><span class="font-black tracking-widest text-neon-teal bg-neon-teal/10 px-2 py-1 rounded">KUNJUNGAN KE-${m.kunjungan_ke}</span><span class="font-mono text-neon-green font-bold">${m.tanggal}</span></div><div class="text-eco-100 pt-1"><b>Keluhan Utama:</b> <span class="text-white">${m.tipe_luka}</span></div><div class="text-eco-100"><b>Observasi Klinis:</b> ${m.kondisi_luka}</div><div class="text-purple-400 font-bold"><b>Status & Ukuran:</b> ${m.r_status || '-'} | P: ${m.r_panjang || '-'}cm x L: ${m.r_lebar || '-'}cm x D: ${m.r_dalam || '-'}cm</div><div class="mt-2.5 flex flex-wrap gap-2 text-[10px] font-black"><span class="text-neon-teal bg-[#01140e] px-2 py-1 border border-neon-teal/20 rounded">Jaringan: ${m.t_jaringan || '-'}</span></div><div class="flex flex-wrap gap-1.5 items-center pt-2"><span class="text-[9px] text-eco-500 uppercase font-black tracking-wider">Modality Terapi:</span> ${is}</div><div class="flex justify-between items-center pt-2 mt-1 text-[10px] text-eco-600 border-t border-eco-900 font-bold uppercase tracking-wider"><span>Medis: ${m.petugas}</span></div></div>`;
+      let is = ""; 
+      try { 
+        const parsedItems = JSON.parse(m.items_json);
+        const jasaOnly = parsedItems.filter(it => it.type === 'jasa');
+        if (jasaOnly.length > 0) {
+          is = jasaOnly.map(it => `<span class="bg-[#01140e] border border-eco-700/50 text-[9px] text-neon-teal px-2 py-0.5 rounded shadow-sm">${it.name}</span>`).join(' ');
+        } else {
+          is = `<span class="text-eco-500 italic text-[9px]">-</span>`;
+        }
+      } catch (e) { }
+      return `<div class="p-4 rounded-2xl bg-gradient-to-br from-[#01140e]/90 to-[#010c09] border border-eco-800/80 space-y-2 text-[11px] font-semibold mb-3 shadow-[0_4px_15px_rgba(0,0,0,0.5)]"><div class="flex justify-between items-center border-b border-eco-800/60 pb-2"><span class="font-black tracking-widest text-neon-teal bg-neon-teal/10 px-2 py-1 rounded">KUNJUNGAN KE-${m.kunjungan_ke}</span><span class="font-mono text-neon-green font-bold">${m.tanggal}</span></div><div class="text-eco-100 pt-1"><b>Keluhan Utama:</b> <span class="text-white">${m.tipe_luka}</span></div><div class="text-eco-100"><b>Observasi Klinis:</b> ${m.kondisi_luka}</div><div class="text-purple-400 font-bold"><b>Status & Ukuran:</b> ${m.r_status || '-'} | P: ${m.r_panjang || '-'}cm x L: ${m.r_lebar || '-'}cm x D: ${m.r_dalam || '-'}cm</div><div class="mt-2.5 flex flex-wrap gap-2 text-[10px] font-black"><span class="text-neon-teal bg-[#01140e] px-2 py-1 border border-neon-teal/20 rounded">Jaringan: ${m.t_jaringan || '-'}</span></div><div class="flex flex-wrap gap-1.5 items-center pt-2"><span class="text-[9px] text-eco-500 uppercase font-black tracking-wider">Tindakan Medis / Pengobatan:</span> ${is}</div><div class="flex justify-between items-center pt-2 mt-1 text-[10px] text-eco-600 border-t border-eco-900 font-bold uppercase tracking-wider"><span>Medis: ${m.petugas}</span></div></div>`;
     }).join('');
 
     if (tl) tl.innerHTML = h; if (tlp) tlp.innerHTML = h;
@@ -880,15 +1194,15 @@
 
   function populateMedisDropdowns() { const pt = $('med-petugas'), tl = $('med-tipe-luka'); if (pt) pt.innerHTML = dbState.sdm.map(s => `<option value="${s.nama_petugas}">${s.nama_petugas}</option>`).join(''); if (tl) tl.innerHTML = dbState.luka.map(l => `<option value="${l.nama_luka}">${l.nama_luka}</option>`).join(''); }
   function populateBillingDropdowns() { const js = $('billing-jasa-select'), bh = $('billing-bhp-select'); if (js) js.innerHTML = dbState.layanan.map(l => `<option value="${l.kode_jasa}">${l.nama_tindakan} - Rp ${pCN(l.tarif).toLocaleString('id-ID')}</option>`).join(''); if (bh) bh.innerHTML = dbState.bhp_dressing.map(b => `<option value="${b.kode_item}">${b.nama_item} [${b.kategori}] (Stok: ${b.stok_gudang}) - Rp ${pCN(b.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join(''); autoPopulateBhpPrice(); }
-  function autoPopulateBhpPrice() { const sv = v('billing-bhp-select'); const i = dbState.bhp_dressing.find(b => b.kode_item === sv); setV('billing-bhp-custom-price', i ? pCN(i.harga_jual_eceran) : 0); }
+  function autoPopulateBhpPrice() { const sv = v('billing-bhp-select'); const i = dbState.bhp_dressing.find(b => String(b.kode_item) === String(sv)); setV('billing-bhp-custom-price', i ? pCN(i.harga_jual_eceran) : 0); }
   function populateTimeDropdowns() { const mt = dbState.master_time; const sO = (id, a) => { const e = $(id); if (e && a) e.innerHTML = a.map(x => `<option value="${x}">${x}</option>`).join(''); }; sO('m-level-eksudat', mt.eksudat_level); sO('m-jenis-eksudat', mt.eksudat_jenis); populateKepatuhanSelect('s-nutrisi', 'nutrisi'); populateKepatuhanSelect('s-keluarga', 'keluarga'); populateKepatuhanSelect('s-kontrol', 'kontrol'); }
   function populateKepatuhanSelect(id, c) { const e = $(id); if (!e) return; e.innerHTML = dbState.kepatuhan_options.filter(x => x.kategori === c).map(o => `<option value="${o.opsi}">${o.opsi}</option>`).join(''); }
 
   function addJasaToCart() {
     if (!selectedPasienRM) return showToast("Pilih pasien terlebih dahulu!", false);
     const cd = v('billing-jasa-select');
-    const s = dbState.layanan.find(l => l.kode_jasa === cd);
-    if (!s || billingCart.find(i => i.type === 'jasa' && i.code === cd)) return showToast("Tindakan sudah ada di draft!", false);
+    const s = dbState.layanan.find(l => String(l.kode_jasa) === String(cd));
+    if (!s || billingCart.find(i => i.type === 'jasa' && String(i.code) === String(cd))) return showToast("Tindakan sudah ada di draft!", false);
     billingCart.push({ type: 'jasa', code: s.kode_jasa, name: s.nama_tindakan, qty: 1, price: pCN(s.tarif), hpp: 0, komisi_persen: pCN(s.persen_jasa_medis), fee_custom: pCN(s.fee_custom) });
     renderCartTable();
   }
@@ -896,10 +1210,10 @@
   function addBhpToCart() {
     if (!selectedPasienRM) return showToast("Pilih pasien terlebih dahulu!", false);
     const sv = v('billing-bhp-select'), qt = parseInt(v('billing-bhp-qty')) || 1, cp = pCN(v('billing-bhp-custom-price'));
-    const i = dbState.bhp_dressing.find(b => b.kode_item === sv); if (!i) return;
+    const i = dbState.bhp_dressing.find(b => String(b.kode_item) === String(sv)); if (!i) return;
     if (pCN(i.stok_gudang) < qt) return showToast("Stok tidak mencukupi!", false);
-    const ex = billingCart.find(x => x.code === sv);
-    if (ex) { ex.qty += qt; ex.price = cp; } else { billingCart.push({ type: i.kategori.toLowerCase(), code: i.kode_item, name: i.nama_item, qty: qt, price: cp, hpp: pCN(i.harga_beli_grosir) }); }
+    const ex = billingCart.find(x => String(x.code) === String(sv));
+    if (ex) { ex.qty += qt; ex.price = cp; } else { billingCart.push({ type: String(i.kategori || '').toLowerCase(), code: i.kode_item, name: i.nama_item, qty: qt, price: cp, hpp: pCN(i.harga_beli_grosir) }); }
     renderCartTable();
   }
 
@@ -921,12 +1235,12 @@
       tI += (it.price * it.qty);
       tH += (it.hpp * it.qty);
       if (it.type === 'bhp' || it.type === 'dressing') {
-        const b = dbState.bhp_dressing.find(x => x.kode_item === it.code);
+        const b = dbState.bhp_dressing.find(x => String(x.kode_item) === String(it.code));
         if (b) b.stok_gudang = Math.max(0, pCN(b.stok_gudang) - it.qty);
       }
     });
 
-    const cK = dbState.kunjungan.filter(x => x.no_rm === selectedPasienRM && x.status_bayar !== 'Pending').length + 1;
+    const cK = dbState.kunjungan.filter(x => String(x.no_rm) === String(selectedPasienRM) && x.status_bayar !== 'Pending').length + 1;
     dbState.kunjungan.push({
       id_kunjungan: generateTxId("TX"), no_rm: selectedPasienRM, tanggal: new Date().toISOString().split('T')[0],
       kunjungan_ke: cK, petugas: v('med-petugas'), tipe_luka: v('med-tipe-luka'),
@@ -947,10 +1261,10 @@
 
   function renderKasirPending() {
     const tb = $('tbody-kasir-pending'); if (!tb) return;
-    const pd = dbState.kunjungan.filter(x => x.status_bayar === 'Pending').sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    const pd = dbState.kunjungan.filter(x => x.status_bayar === 'Pending').sort((a, b) => String(b.id_kunjungan).localeCompare(String(a.id_kunjungan)));
     if (!pd.length) { tb.innerHTML = `<tr><td colspan="4" class="p-4 text-center italic text-eco-500 text-[11px] font-bold border border-dashed border-eco-800/50 rounded-xl mt-2 block">Tidak ada antrean rekam medis.</td></tr>`; renderKasirHistory(); return; }
     tb.innerHTML = pd.map(vObj => {
-      const ps = dbState.pasien.find(p => p.no_rm === vObj.no_rm);
+      const ps = dbState.pasien.find(p => String(p.no_rm) === String(vObj.no_rm));
       let it = "Detail kosong"; try { it = JSON.parse(vObj.items_json).map(i => i.name).join(', '); } catch (e) { }
       return `<tr class="border-b border-eco-800/80 hover:bg-[#000000]/50 transition"><td class="p-3 font-mono text-neon-green font-black text-xs">${vObj.tanggal}</td><td class="p-3 text-white text-xs"><b>${ps?.nama_lengkap || 'Unknown'}</b><br><span class="text-[9px] font-mono text-eco-500 font-bold bg-[#010c09] px-1.5 py-0.5 rounded">${vObj.no_rm}</span></td><td class="p-3 truncate max-w-[120px] text-[11px] font-semibold text-eco-100">${it}</td><td class="p-3 text-center"><button onclick="loadToKasirCart('${vObj.id_kunjungan}')" class="px-5 py-2 bg-gradient-to-b from-yellow-500 to-yellow-600 border border-yellow-400 hover:from-yellow-400 text-black font-black tracking-widest uppercase rounded-lg shadow-md text-[10px] transition active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 mx-auto"><i data-lucide="arrow-right-circle" class="w-3.5 h-3.5"></i> Proses</button></td></tr>`;
     }).join('');
@@ -974,9 +1288,9 @@
   }
 
   function loadToKasirCart(tId) {
-    const vO = dbState.kunjungan.find(x => x.id_kunjungan === tId); if (!vO) return;
+    const vO = dbState.kunjungan.find(x => String(x.id_kunjungan) === String(tId)); if (!vO) return;
     pendingCheckoutVisitId = tId;
-    const p = dbState.pasien.find(x => x.no_rm === vO.no_rm);
+    const p = dbState.pasien.find(x => String(x.no_rm) === String(vO.no_rm));
     $('kasir-pasien-nama').innerText = p ? p.nama_lengkap : 'Unknown';
     try { kasirCart = JSON.parse(vO.items_json); } catch (e) { kasirCart = []; }
     toggleKasirJasaInput(); renderKasirCartTable(); calculateKasirTotals();
@@ -990,10 +1304,10 @@
 
   function addRetailToCart() {
     const vl = v('retail-select').split('-'), qt = parseInt(v('retail-qty')) || 1, iD = vl[0] === 'DRS';
-    const it = iD ? dbState.bhp_dressing.find(d => d.kode_item === vl[1]) : dbState.retail.find(r => r.kode_retail === vl[1]);
+    const it = iD ? dbState.bhp_dressing.find(d => String(d.kode_item) === String(vl[1])) : dbState.retail.find(r => String(r.kode_retail) === String(vl[1]));
     if (!it) return;
     if (!iD && pCN(it.stok) < qt) return showToast("Stok produk tidak mencukupi!", false);
-    const ex = kasirCart.find(x => x.code === vl[1]);
+    const ex = kasirCart.find(x => String(x.code) === String(vl[1]));
     if (ex) ex.qty += qt;
     else kasirCart.push({ type: iD ? 'dressing' : 'retail', code: vl[1], name: iD ? it.nama_item : it.nama_produk, qty: qt, price: iD ? pCN(it.harga_jual_eceran) : pCN(it.harga_jual), hpp: iD ? pCN(it.harga_beli_grosir) : pCN(it.harga_modal), isNew: true });
     if (!pendingCheckoutVisitId && kasirCart.length > 0) toggleKasirJasaInput();
@@ -1004,7 +1318,7 @@
     const rm = kasirCart[i];
     if (pendingCheckoutVisitId && !rm.isNew) {
       if (rm.type === 'bhp' || rm.type === 'dressing') {
-        const b = dbState.bhp_dressing.find(x => x.kode_item === rm.code);
+        const b = dbState.bhp_dressing.find(x => String(x.kode_item) === String(rm.code));
         if (b) b.stok_gudang += rm.qty;
       }
     }
@@ -1028,10 +1342,10 @@
       tH += (it.hpp * it.qty);
       if (it.isNew || !pendingCheckoutVisitId) {
         if (it.type === 'retail') {
-          const r = dbState.retail.find(x => x.kode_retail === it.code);
+          const r = dbState.retail.find(x => String(x.kode_retail) === String(it.code));
           if (r) r.stok = Math.max(0, pCN(r.stok) - it.qty);
         } else if (it.type === 'dressing' || it.type === 'bhp') {
-          const b = dbState.bhp_dressing.find(x => x.kode_item === it.code);
+          const b = dbState.bhp_dressing.find(x => String(x.kode_item) === String(it.code));
           if (b) b.stok_gudang = Math.max(0, pCN(b.stok_gudang) - it.qty);
         }
       }
@@ -1039,7 +1353,7 @@
 
     const sr = pCN(v('kasir-jasa-sarana')), dk = pCN(v('kasir-diskon')), gt = Math.max(0, tI + sr - dk);
     if (pendingCheckoutVisitId) {
-      const vO = dbState.kunjungan.find(x => x.id_kunjungan === pendingCheckoutVisitId);
+      const vO = dbState.kunjungan.find(x => String(x.id_kunjungan) === String(pendingCheckoutVisitId));
       if (vO) {
         vO.items_json = JSON.stringify(kasirCart); vO.jasa_sarana = sr; vO.diskon = dk;
         vO.grand_total = gt; vO.modal_hpp = tH; vO.status_bayar = 'Lunas';
@@ -1062,12 +1376,12 @@
 
   function renderKasirHistory() {
     const ct = $('kasir-history-list'); if (!ct) return;
-    const ln = dbState.kunjungan.filter(x => x.status_bayar === 'Lunas' || x.status_bayar === 'lunas').sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    const ln = dbState.kunjungan.filter(x => x.status_bayar === 'Lunas' || x.status_bayar === 'lunas').sort((a, b) => String(b.id_kunjungan).localeCompare(String(a.id_kunjungan)));
     if (!ln.length) { ct.innerHTML = `<p class="text-[10px] text-eco-500 italic font-bold text-center mt-4">Belum ada riwayat lunas hari ini.</p>`; return; }
     ct.innerHTML = ln.map(vO => {
       let itemsDesc = vO.tipe_luka;
       try { const parsed = JSON.parse(vO.items_json); if (parsed.length > 0) itemsDesc = parsed.map(i => i.name).join(', '); } catch (e) { }
-      return `<div class="p-3 border border-eco-800/80 rounded-xl bg-[#010e0a]/80 flex flex-col gap-1.5 text-[9px] shadow-sm"><div class="flex justify-between items-center"><span class="font-black tracking-widest text-white text-[11px]">${vO.no_rm === 'UMUM' ? 'Retail Umum' : vO.no_rm}</span><span class="text-neon-green font-mono font-bold bg-eco-950 px-1.5 py-0.5 rounded">${vO.tanggal}</span></div><div class="flex justify-between items-center pt-1 mt-1 border-t border-eco-900"><span class="text-neon-teal truncate w-2/3 text-[10px] font-bold">${itemsDesc}</span><span class="font-black text-neon-green text-[11px] font-mono tracking-widest">Rp ${pCN(vO.grand_total).toLocaleString('id-ID')}</span></div></div>`;
+      return `<div class="p-3 border border-eco-800/80 rounded-xl bg-[#010e0a]/80 flex flex-col gap-1.5 text-[9px] shadow-sm"><div class="flex justify-between items-center"><span class="font-black tracking-widest text-white text-[11px]">${String(vO.no_rm) === 'UMUM' ? 'Retail Umum' : vO.no_rm}</span><span class="text-neon-green font-mono font-bold bg-eco-950 px-1.5 py-0.5 rounded">${vO.tanggal}</span></div><div class="flex justify-between items-center pt-1 mt-1 border-t border-eco-900"><span class="text-neon-teal truncate w-2/3 text-[10px] font-bold">${itemsDesc}</span><span class="font-black text-neon-green text-[11px] font-mono tracking-widest">Rp ${pCN(vO.grand_total).toLocaleString('id-ID')}</span></div></div>`;
     }).join('');
   }
 
@@ -1075,7 +1389,7 @@
     const ln = dbState.kunjungan.filter(x => x.status_bayar === 'Lunas' || x.status_bayar === 'lunas');
     let c = "ID,Waktu Transaksi,RM,Nama/Ket,Total Bayar\n";
     ln.forEach(vO => {
-      const p = dbState.pasien.find(x => x.no_rm === vO.no_rm);
+      const p = dbState.pasien.find(x => String(x.no_rm) === String(vO.no_rm));
       c += `${vO.id_kunjungan},"${vO.tanggal}",${vO.no_rm},"${p ? p.nama_lengkap : vO.tipe_luka}",${vO.grand_total}\n`;
     });
     const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], { type: 'text/csv' }));
@@ -1094,101 +1408,226 @@
     w.document.close(); w.print();
   }
 
+  function applyDatePresetFilter() {
+    const preset = v('dash-filter-preset');
+    const customContainer = $('custom-date-container');
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+
+    if (preset === 'custom') {
+      if (customContainer) customContainer.classList.remove('hidden');
+      return;
+    }
+
+    if (customContainer) customContainer.classList.add('hidden');
+
+    if (preset === 'hari_ini') {
+      setV('dash-tgl-mulai', todayStr);
+      setV('dash-tgl-akhir', todayStr);
+    } else if (preset === 'bulan_ini') {
+      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+      setV('dash-tgl-mulai', firstDay);
+      setV('dash-tgl-akhir', todayStr);
+    } else if (preset === 'tahun_ini') {
+      const firstDay = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+      setV('dash-tgl-mulai', firstDay);
+      setV('dash-tgl-akhir', todayStr);
+    } else {
+      setV('dash-tgl-mulai', '');
+      setV('dash-tgl-akhir', '');
+    }
+
+    renderPelaporanTab();
+  }
+
+  function getFilteredVisits() {
+    const preset = v('dash-filter-preset');
+    const tglMulai = v('dash-tgl-mulai');
+    const tglAkhir = v('dash-tgl-akhir');
+
+    return dbState.kunjungan.filter(vO => {
+      const st = String(vO.status_bayar || '').toLowerCase().trim();
+      if (st !== 'lunas') return false;
+      if (preset === 'semua' || (!tglMulai && !tglAkhir)) return true;
+
+      const vt = String(vO.tanggal || '');
+      if (tglMulai && vt < tglMulai) return false;
+      if (tglAkhir && vt > tglAkhir) return false;
+      return true;
+    });
+  }
+
   function renderPelaporanTab() {
+    const filteredVisits = getFilteredVisits();
+
     let totalOmzet = 0, omzetJasa = 0, omzetRetail = 0;
 
-    dbState.kunjungan.forEach(vO => {
-      const st = (vO.status_bayar || '').toLowerCase().trim();
-      if (st === 'lunas') {
-        let visitOmzet = pCN(vO.grand_total);
-        let itemSum = 0;
+    filteredVisits.forEach(vO => {
+      let rawJasa = 0;
+      let rawRetail = 0;
+      const sarana = pCN(vO.jasa_sarana);
+      const diskon = pCN(vO.diskon);
 
-        try {
-          const items = JSON.parse(vO.items_json || '[]');
-          items.forEach(i => {
-            const qty = pCN(i.qty) || 1;
-            const price = pCN(i.price);
-            const lineTotal = price * qty;
-            itemSum += lineTotal;
+      try {
+        const items = JSON.parse(vO.items_json || '[]');
+        items.forEach(i => {
+          const qty = pCN(i.qty) || 1;
+          const price = pCN(i.price);
+          const lineTotal = price * qty;
+          if (i.type === 'jasa') {
+            rawJasa += lineTotal;
+          } else {
+            rawRetail += lineTotal;
+          }
+        });
+      } catch (e) { }
 
-            if (i.type === 'jasa') {
-              omzetJasa += lineTotal;
-            } else {
-              omzetRetail += lineTotal;
-            }
-          });
-        } catch (e) { }
+      rawJasa += sarana;
+      const grossTotal = rawJasa + rawRetail;
+      let netVisitTotal = Math.round(pCN(vO.grand_total));
 
-        if (visitOmzet === 0 && itemSum > 0) {
-          visitOmzet = Math.max(0, itemSum + pCN(vO.jasa_sarana) - pCN(vO.diskon));
-        }
-
-        totalOmzet += visitOmzet;
+      if (netVisitTotal === 0 && grossTotal > 0) {
+        netVisitTotal = Math.max(0, Math.round(grossTotal - diskon));
       }
+
+      let netJasa = rawJasa;
+      let netRetail = rawRetail;
+
+      if (diskon > 0 && grossTotal > 0) {
+        netJasa = Math.round(rawJasa - (diskon * (rawJasa / grossTotal)));
+        netRetail = netVisitTotal - netJasa;
+      } else {
+        netJasa = Math.round(netJasa);
+        netRetail = Math.round(netRetail);
+      }
+
+      omzetJasa += netJasa;
+      omzetRetail += netRetail;
+      totalOmzet += netVisitTotal;
     });
 
-    if ($('dash-omzet')) $('dash-omzet').innerText = "Rp " + totalOmzet.toLocaleString('id-ID');
-    if ($('dash-omzet-jasa')) $('dash-omzet-jasa').innerText = "Rp " + omzetJasa.toLocaleString('id-ID');
-    if ($('dash-omzet-retail')) $('dash-omzet-retail').innerText = "Rp " + omzetRetail.toLocaleString('id-ID');
+    if ($('dash-omzet')) $('dash-omzet').innerText = "Rp " + Math.round(totalOmzet).toLocaleString('id-ID');
+    if ($('dash-omzet-jasa')) $('dash-omzet-jasa').innerText = "Rp " + Math.round(omzetJasa).toLocaleString('id-ID');
+    if ($('dash-omzet-retail')) $('dash-omzet-retail').innerText = "Rp " + Math.round(omzetRetail).toLocaleString('id-ID');
 
     const c = dbState.bhp_dressing.filter(b => pCN(b.stok_gudang) <= pCN(b.stok_min));
     if ($('dash-critical-count')) $('dash-critical-count').innerText = c.length + " Items";
     const cl = $('dash-critical-list');
-    if (cl) cl.innerHTML = c.length ? c.map(b => `<div class="flex justify-between items-center text-red-200 border-b border-red-900/30 pb-1.5 mb-1.5"><span class="font-bold">${b.nama_item}</span><span class="font-black text-red-400 text-xs font-mono bg-red-950/50 px-2 py-0.5 rounded border border-red-800/50">${b.stok_gudang} <span class="text-[9px] text-red-500">(Min: ${b.stok_min})</span></span></div>`).join('') : `<p class="text-emerald-400 italic text-xs font-bold text-center mt-3">Stok seluruh bahan medik aman.</p>`;
+    if (cl) cl.innerHTML = c.length ? c.map(b => `<div class="flex justify-between items-center text-red-200 border-b border-red-900/30 pb-1 mb-1 text-[10px]"><span class="font-bold truncate max-w-[120px]">${b.nama_item}</span><span class="font-black text-red-400 font-mono bg-red-950/50 px-1.5 py-0.5 rounded border border-red-800/50 text-[9px]">${b.stok_gudang} <span class="text-[8px] text-red-500">(Min: ${b.stok_min})</span></span></div>`).join('') : `<p class="text-emerald-400 italic text-xs font-bold text-center mt-3">Stok seluruh bahan medik aman.</p>`;
 
-    renderWoundDistributionStats();
-    renderServiceProductivity();
-    renderEmployeePayslips();
+    renderWoundDistributionStats(filteredVisits);
+    renderServiceProductivity(filteredVisits);
+    renderEmployeePayslips(filteredVisits);
   }
 
-  function renderWoundDistributionStats() {
+  function renderWoundDistributionStats(filteredVisits) {
+    const visits = filteredVisits || getFilteredVisits();
     const dt = {};
     dbState.luka.forEach(l => dt[l.nama_luka] = { c: 0, o: 0 });
-    dbState.kunjungan.forEach(vO => {
-      const st = (vO.status_bayar || '').toLowerCase().trim();
-      if (st === 'lunas' && dt[vO.tipe_luka]) {
+    let ritelBebasCase = 0;
+    let ritelBebasOmzet = 0;
+
+    visits.forEach(vO => {
+      let rawJasa = 0, rawRetail = 0;
+      const sarana = pCN(vO.jasa_sarana), diskon = pCN(vO.diskon);
+      try {
+        JSON.parse(vO.items_json || '[]').forEach(i => {
+          const line = pCN(i.price) * (pCN(i.qty) || 1);
+          if (i.type === 'jasa') rawJasa += line; else rawRetail += line;
+        });
+      } catch (e) { }
+      rawJasa += sarana;
+      const gross = rawJasa + rawRetail;
+      let netOmzet = pCN(vO.grand_total);
+      if (netOmzet === 0 && gross > 0) netOmzet = Math.max(0, gross - diskon);
+
+      if (vO.tipe_luka && dt[vO.tipe_luka]) {
         dt[vO.tipe_luka].c++;
-        dt[vO.tipe_luka].o += pCN(vO.grand_total);
+        dt[vO.tipe_luka].o += netOmzet;
+      } else {
+        ritelBebasCase++;
+        ritelBebasOmzet += netOmzet;
       }
     });
+
     const tb = $('tbody-wound-stats');
-    if (tb) tb.innerHTML = dbState.luka.map(l => `<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px]">${l.nama_luka}</td><td class="td-cls text-center text-neon-teal text-xs font-bold">${dt[l.nama_luka]?.c || 0}</td><td class="td-cls text-right text-neon-green text-xs font-mono font-bold">Rp ${(dt[l.nama_luka]?.o || 0).toLocaleString('id-ID')}</td></tr>`).join('');
-    const cv = $('woundDonutChart');
+    if (tb) {
+      let html = dbState.luka.map(l => `<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px]">${l.nama_luka}</td><td class="td-cls text-center text-neon-teal text-xs font-bold">${dt[l.nama_luka]?.c || 0}</td><td class="td-cls text-right text-neon-green text-xs font-mono font-bold">Rp ${Math.round(dt[l.nama_luka]?.o || 0).toLocaleString('id-ID')}</td></tr>`).join('');
+      if (ritelBebasOmzet > 0 || ritelBebasCase > 0) {
+        html += `<tr class="border-b border-eco-800/60 bg-eco-950/40"><td class="td-cls text-[11px] text-yellow-400 font-bold">Penjualan Ritel / Bebas (Tanpa Diagnosis Luka)</td><td class="td-cls text-center text-yellow-400 text-xs font-bold">${ritelBebasCase}</td><td class="td-cls text-right text-yellow-400 text-xs font-mono font-bold">Rp ${Math.round(ritelBebasOmzet).toLocaleString('id-ID')}</td></tr>`;
+      }
+      tb.innerHTML = html;
+    }
+
+    const cv = $('woundBarChart');
     if (cv) {
       const cx = cv.getContext('2d');
-      if (donutChartInstance) donutChartInstance.destroy();
-      donutChartInstance = new Chart(cx, {
-        type: 'doughnut',
+      if (barChartInstance) barChartInstance.destroy();
+
+      const labels = dbState.luka.map(l => l.nama_luka);
+      const dataValues = dbState.luka.map(l => dt[l.nama_luka]?.c || 0);
+
+      barChartInstance = new Chart(cx, {
+        type: 'bar',
         data: {
-          labels: dbState.luka.map(l => l.nama_luka),
-          datasets: [{ data: dbState.luka.map(l => dt[l.nama_luka]?.c || 0), backgroundColor: ['#39ff14', '#00f3ff', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'], borderColor: '#011c14', borderWidth: 2 }]
+          labels: labels,
+          datasets: [{
+            label: 'Jumlah Kasus',
+            data: dataValues,
+            backgroundColor: 'rgba(57, 255, 20, 0.85)',
+            borderColor: '#00f3ff',
+            borderWidth: 1,
+            borderRadius: 4,
+            barThickness: 8
+          }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '70%' }
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (context) => ` ${context.raw} Kasus`
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(6, 78, 59, 0.3)' },
+              ticks: { color: '#10b981', font: { size: 9, weight: 'bold' }, stepSize: 1 }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#e2e8f0', font: { size: 9, weight: '600' } }
+            }
+          }
+        }
       });
     }
   }
 
-  function renderServiceProductivity() {
+  function renderServiceProductivity(filteredVisits) {
+    const visits = filteredVisits || getFilteredVisits();
     const tb = $('tbody-productivity-services'); if (!tb) return;
     const s = {}; dbState.layanan.forEach(l => s[l.nama_tindakan] = { c: 0, o: 0 });
-    dbState.kunjungan.forEach(vO => {
-      const st = (vO.status_bayar || '').toLowerCase().trim();
-      if (st === 'lunas') {
-        try {
-          JSON.parse(vO.items_json).forEach(i => {
-            if (i.type === 'jasa' && s[i.name]) { s[i.name].c++; s[i.name].o += (pCN(i.price) * i.qty); }
-          });
-        } catch (e) { }
-      }
+    visits.forEach(vO => {
+      try {
+        JSON.parse(vO.items_json).forEach(i => {
+          if (i.type === 'jasa' && s[i.name]) { s[i.name].c++; s[i.name].o += (pCN(i.price) * i.qty); }
+        });
+      } catch (e) { }
     });
     tb.innerHTML = dbState.layanan.map(l => `<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px] font-bold">${l.nama_tindakan}</td><td class="td-cls text-center text-xs font-black text-white">${s[l.nama_tindakan]?.c || 0}</td><td class="td-cls text-right text-neon-teal text-xs font-mono font-bold tracking-widest">Rp ${(s[l.nama_tindakan]?.o || 0).toLocaleString('id-ID')}</td></tr>`).join('');
   }
 
-  function renderEmployeePayslips() {
+  function renderEmployeePayslips(filteredVisits) {
+    const visits = filteredVisits || getFilteredVisits();
     const tb = $('tbody-employee-payslips'); if (!tb) return;
     tb.innerHTML = dbState.sdm.map(s => {
       let kt = 0;
-      dbState.kunjungan.filter(vO => vO.petugas === s.nama_petugas && (vO.status_bayar === 'Lunas' || vO.status_bayar === 'lunas')).forEach(vO => {
+      visits.filter(vO => String(vO.petugas || '') === String(s.nama_petugas || '')).forEach(vO => {
         try {
           JSON.parse(vO.items_json).forEach(i => {
             if (i.type === 'jasa') kt += (pCN(i.price) * (pCN(i.komisi_persen) / 100)) + pCN(i.fee_custom);
@@ -1200,6 +1639,207 @@
     }).join('');
   }
 
+  function exportPelaporanPDF() {
+    const filteredVisits = getFilteredVisits();
+    const preset = v('dash-filter-preset');
+    const tglMulai = v('dash-tgl-mulai') || 'Awal';
+    const tglAkhir = v('dash-tgl-akhir') || 'Hari Ini';
+    const periodLabel = preset === 'semua' ? 'Semua Periode Transaksi' : `Periode: ${tglMulai} s/d ${tglAkhir}`;
+
+    let totalOmzet = 0, omzetJasa = 0, omzetRetail = 0;
+    filteredVisits.forEach(vO => {
+      let rawJasa = 0, rawRetail = 0;
+      const sarana = pCN(vO.jasa_sarana), diskon = pCN(vO.diskon);
+      try {
+        const items = JSON.parse(vO.items_json || '[]');
+        items.forEach(i => {
+          const lineTotal = pCN(i.price) * (pCN(i.qty) || 1);
+          if (i.type === 'jasa') rawJasa += lineTotal; else rawRetail += lineTotal;
+        });
+      } catch (e) {}
+      rawJasa += sarana;
+      const grossTotal = rawJasa + rawRetail;
+      let netVisitTotal = pCN(vO.grand_total);
+      if (netVisitTotal === 0 && grossTotal > 0) netVisitTotal = Math.max(0, grossTotal - diskon);
+
+      let netJasa = rawJasa, netRetail = rawRetail;
+      if (diskon > 0 && grossTotal > 0) {
+        netJasa = Math.max(0, rawJasa - (diskon * (rawJasa / grossTotal)));
+        netRetail = Math.max(0, rawRetail - (diskon * (rawRetail / grossTotal)));
+      }
+      omzetJasa += netJasa; omzetRetail += netRetail; totalOmzet += netVisitTotal;
+    });
+
+    const w = window.open('', '_blank');
+    let logoHtml = dbState.branding.logo_url ? `<img src="${convertToDirectDriveLink(dbState.branding.logo_url)}" style="max-height: 50px; margin-bottom: 8px;">` : '';
+
+    let content = `
+      <html>
+      <head>
+        <title>Laporan Keuangan & Operasional - ${dbState.branding.nama_klinik}</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 30px; color: #111; line-height: 1.4; font-size: 11px; }
+          .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 20px; }
+          .header h2 { margin: 0; font-size: 18px; text-transform: uppercase; }
+          .header p { margin: 2px 0 0; font-size: 11px; color: #444; }
+          .period-badge { background: #f0fdf4; border: 1px solid #10b981; padding: 6px 12px; display: inline-block; font-weight: bold; font-size: 11px; border-radius: 4px; margin-bottom: 15px; }
+          .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+          .summary-card { border: 1px solid #ccc; padding: 10px; border-radius: 6px; background: #fafafa; }
+          .summary-card span { font-size: 9px; text-transform: uppercase; color: #555; font-weight: bold; display: block; }
+          .summary-card h3 { margin: 5px 0 0; font-size: 15px; color: #000; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 10px; }
+          th, td { border: 1px solid #999; padding: 6px 8px; text-align: left; }
+          th { background: #e2e8f0; font-weight: bold; text-transform: uppercase; font-size: 9px; }
+          .section-title { font-size: 12px; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #ccc; padding-bottom: 4px; text-transform: uppercase; }
+          .footer-sig { margin-top: 40px; display: flex; justify-content: space-between; page-break-inside: avoid; }
+          .sig-box { text-align: center; width: 200px; }
+          .sig-line { margin-top: 50px; border-top: 1px solid #000; font-weight: bold; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          ${logoHtml}
+          <h2>${dbState.branding.nama_klinik}</h2>
+          <p>${dbState.branding.subtitle_klinik}</p>
+        </div>
+
+        <div style="text-align: center;">
+          <div class="period-badge">RANGKUMAN LAPORAN OPERASIONAL & KEUANGAN KLINIK<br><span style="font-size:10px; font-weight:normal;">${periodLabel}</span></div>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span>Total Omzet Klinik</span>
+            <h3>Rp ${Math.round(totalOmzet).toLocaleString('id-ID')}</h3>
+          </div>
+          <div class="summary-card">
+            <span>Omzet Jasa & Tindakan</span>
+            <h3>Rp ${Math.round(omzetJasa).toLocaleString('id-ID')}</h3>
+          </div>
+          <div class="summary-card">
+            <span>Omzet Retail & BHP</span>
+            <h3>Rp ${Math.round(omzetRetail).toLocaleString('id-ID')}</h3>
+          </div>
+        </div>
+
+        <div class="section-title">1. Epidemiologi Sebaran Kasus Luka</div>
+        <table>
+          <thead>
+            <tr><th>No</th><th>Jenis Luka / Diagnosis</th><th style="text-align:center;">Jumlah Kasus</th><th style="text-align:right;">Total Omzet</th></tr>
+          </thead>
+          <tbody>
+    `;
+
+    const woundDt = {};
+    dbState.luka.forEach(l => woundDt[l.nama_luka] = { c: 0, o: 0 });
+    let ritelBebasCase = 0, ritelBebasOmzet = 0;
+
+    filteredVisits.forEach(vO => {
+      let rawJasa = 0, rawRetail = 0;
+      const sarana = pCN(vO.jasa_sarana), diskon = pCN(vO.diskon);
+      try {
+        JSON.parse(vO.items_json || '[]').forEach(i => {
+          const line = pCN(i.price) * (pCN(i.qty) || 1);
+          if (i.type === 'jasa') rawJasa += line; else rawRetail += line;
+        });
+      } catch (e) { }
+      rawJasa += sarana;
+      const gross = rawJasa + rawRetail;
+      let netOmzet = pCN(vO.grand_total);
+      if (netOmzet === 0 && gross > 0) netOmzet = Math.max(0, gross - diskon);
+
+      if (vO.tipe_luka && woundDt[vO.tipe_luka]) {
+        woundDt[vO.tipe_luka].c++; woundDt[vO.tipe_luka].o += netOmzet;
+      } else {
+        ritelBebasCase++; ritelBebasOmzet += netOmzet;
+      }
+    });
+    
+    let idxL = 1;
+    dbState.luka.forEach(l => {
+      content += `<tr><td>${idxL++}</td><td>${l.nama_luka}</td><td style="text-align:center;">${woundDt[l.nama_luka]?.c || 0}</td><td style="text-align:right;">Rp ${Math.round(woundDt[l.nama_luka]?.o || 0).toLocaleString('id-ID')}</td></tr>`;
+    });
+
+    if (ritelBebasOmzet > 0 || ritelBebasCase > 0) {
+      content += `<tr><td>${idxL++}</td><td style="font-weight:bold;">Penjualan Ritel / Bebas (Tanpa Diagnosis Luka)</td><td style="text-align:center; font-weight:bold;">${ritelBebasCase}</td><td style="text-align:right; font-weight:bold;">Rp ${Math.round(ritelBebasOmzet).toLocaleString('id-ID')}</td></tr>`;
+    }
+
+    content += `
+          </tbody>
+        </table>
+
+        <div class="section-title">2. Produktivitas Layanan & Tindakan Medis</div>
+        <table>
+          <thead>
+            <tr><th>No</th><th>Nama Layanan / Tindakan</th><th style="text-align:center;">Frekuensi Terpakai</th><th style="text-align:right;">Nilai Total Jasa</th></tr>
+          </thead>
+          <tbody>
+    `;
+
+    const srvDt = {};
+    dbState.layanan.forEach(l => srvDt[l.nama_tindakan] = { c: 0, o: 0 });
+    filteredVisits.forEach(vO => {
+      try {
+        JSON.parse(vO.items_json).forEach(i => {
+          if (i.type === 'jasa' && srvDt[i.name]) { srvDt[i.name].c++; srvDt[i.name].o += (pCN(i.price) * i.qty); }
+        });
+      } catch (e) {}
+    });
+
+    let idxS = 1;
+    dbState.layanan.forEach(l => {
+      content += `<tr><td>${idxS++}</td><td>${l.nama_tindakan}</td><td style="text-align:center;">${srvDt[l.nama_tindakan]?.c || 0}</td><td style="text-align:right;">Rp ${(srvDt[l.nama_tindakan]?.o || 0).toLocaleString('id-ID')}</td></tr>`;
+    });
+
+    content += `
+          </tbody>
+        </table>
+
+        <div class="section-title">3. Rekapitulasi Gaji Pokok & Komisi SDM</div>
+        <table>
+          <thead>
+            <tr><th>No</th><th>Nama Karyawan / Medis</th><th style="text-align:right;">Gaji Pokok</th><th style="text-align:right;">Total Komisi</th><th style="text-align:right;">Total Payout</th></tr>
+          </thead>
+          <tbody>
+    `;
+
+    let idxE = 1;
+    dbState.sdm.forEach(s => {
+      let kt = 0;
+      filteredVisits.filter(vO => String(vO.petugas || '') === String(s.nama_petugas || '')).forEach(vO => {
+        try {
+          JSON.parse(vO.items_json).forEach(i => {
+            if (i.type === 'jasa') kt += (pCN(i.price) * (pCN(i.komisi_persen) / 100)) + pCN(i.fee_custom);
+          });
+        } catch (e) {}
+      });
+      const gp = pCN(s.gaji_pokok);
+      content += `<tr><td>${idxE++}</td><td>${s.nama_petugas}</td><td style="text-align:right;">Rp ${gp.toLocaleString('id-ID')}</td><td style="text-align:right;">Rp ${kt.toLocaleString('id-ID')}</td><td style="text-align:right; font-weight:bold;">Rp ${(gp + kt).toLocaleString('id-ID')}</td></tr>`;
+    });
+
+    content += `
+          </tbody>
+        </table>
+
+        <div class="footer-sig">
+          <div class="sig-box">
+            <p>Dibuat Oleh,</p>
+            <div class="sig-line">Admin Kasir / Operasional</div>
+          </div>
+          <div class="sig-box">
+            <p>Disetujui Oleh,</p>
+            <div class="sig-line">Owner / Penanggung Jawab</div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    w.document.write(content);
+    w.document.close();
+    w.print();
+  }
+
   function printReport(id) {
     const el = $(id === 'wound-stat' ? 'wound-statistics-report' : 'payroll-statistics-report'); if (!el) return;
     const t = id === 'wound-stat' ? "DISTRIBUSI LUKA" : "GAJI KARYAWAN", w = window.open('', '_blank');
@@ -1209,8 +1849,8 @@
 
   function downloadCSVEpidemiologiUmur() {
     let c = "RM,Nama,Usia,Jenis Kelamin,Diagnosis Luka\n";
-    dbState.kunjungan.filter(vO => (vO.status_bayar === 'Lunas' || vO.status_bayar === 'lunas') && vO.no_rm !== 'UMUM').forEach(vO => {
-      const p = dbState.pasien.find(x => x.no_rm === vO.no_rm);
+    getFilteredVisits().filter(vO => String(vO.no_rm) !== 'UMUM').forEach(vO => {
+      const p = dbState.pasien.find(x => String(x.no_rm) === String(vO.no_rm));
       let u = "-"; if (p && p.tgl_lahir) { const df = Date.now() - new Date(p.tgl_lahir).getTime(); u = Math.abs(new Date(df).getUTCFullYear() - 1970); }
       c += `${vO.no_rm},"${p ? p.nama_lengkap : '-'}",${u},${p ? p.gender : '-'}"${vO.tipe_luka}"\n`;
     });
@@ -1221,7 +1861,7 @@
 
   function downloadCSVEpidemiologi10Besar() {
     const dt = {};
-    dbState.kunjungan.filter(vO => (vO.status_bayar === 'Lunas' || vO.status_bayar === 'lunas') && vO.no_rm !== 'UMUM').forEach(vO => {
+    getFilteredVisits().filter(vO => String(vO.no_rm) !== 'UMUM').forEach(vO => {
       if (!dt[vO.tipe_luka]) dt[vO.tipe_luka] = 0; dt[vO.tipe_luka]++;
     });
     const st = Object.entries(dt).sort((a, b) => b[1] - a[1]).slice(0, 10);
@@ -1321,7 +1961,13 @@
 
   async function handleUpdateBranding(e) {
     e.preventDefault();
-    const appId = (v('brand-edit-app-id') || "arkcare").trim().toLowerCase();
+    if (!isAntenaUnlocked) {
+      showToast("Buka kunci pengaman antena terlebih dahulu!", false);
+      toggleAntenaLockModal();
+      return;
+    }
+
+    const appId = (v('brand-edit-app-id') || "arkcare01").trim().toLowerCase();
     dbState.branding.app_id = appId;
     dbState.branding.nama_klinik = v('brand-edit-title').trim();
     dbState.branding.subtitle_klinik = v('brand-edit-subtitle').trim();
@@ -1336,10 +1982,16 @@
     if (client) {
       try {
         const payload = {
-          app_id: appId, gas_url: dbState.branding.api_url || '',
-          supabase_url: dbState.branding.supa_url || '', supabase_anon_key: dbState.branding.supa_key || '',
-          nama_klinik: dbState.branding.nama_klinik || '', subtitle_klinik: dbState.branding.subtitle_klinik || '',
-          logo_url: dbState.branding.logo_url || '', updated_at: new Date().toISOString()
+          app_id: appId, 
+          gas_url: dbState.branding.api_url || '',
+          supabase_url: dbState.branding.supa_url || '', 
+          supabase_anon_key: dbState.branding.supa_key || '',
+          nama_klinik: dbState.branding.nama_klinik || '', 
+          subtitle_klinik: dbState.branding.subtitle_klinik || '',
+          logo_url: dbState.branding.logo_url || '', 
+          kode_pengaman: dbState.branding.kode_pengaman || 'kugoskom36',
+          status_terkunci: true,
+          updated_at: new Date().toISOString()
         };
         await client.from('system_config').upsert(payload, { onConflict: 'app_id' });
         showToast("Konfigurasi Dipancarkan ke Supabase terpusat!");
@@ -1390,17 +2042,24 @@
 
   function cetakRekamMedisPerPasien() {
     const rm = v('medrecord-lookup-pasien'); if (!rm) return showToast("Pilih pasien terlebih dahulu!", false);
-    const p = dbState.pasien.find(x => x.no_rm === rm); if (!p) return;
-    const ms = dbState.kunjungan.filter(x => x.no_rm === rm && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    const p = dbState.pasien.find(x => String(x.no_rm) === String(rm)); if (!p) return;
+    const ms = dbState.kunjungan.filter(x => String(x.no_rm) === String(rm) && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => String(b.id_kunjungan).localeCompare(String(a.id_kunjungan)));
     if (!ms.length) return showToast("Belum ada riwayat medis lunas!", false);
 
     const w = window.open('', '_blank');
     let content = `<html><head><title>Rekam Medis - ${p.nama_lengkap}</title><style>body{font-family:sans-serif;padding:30px;color:#333}table{width:100%;border-collapse:collapse;margin-top:15px}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:11px}th{background:#f5f5f5}.header{text-align:center;margin-bottom:20px}.details{margin-bottom:20px;font-size:12px}</style></head><body>`;
     content += `<div class="header"><h2>${dbState.branding.nama_klinik}</h2><p>${dbState.branding.subtitle_klinik}</p><hr><h3>REKAM MEDIS PASIEN</h3></div>`;
     content += `<div class="details"><b>No Rekam Medis:</b> ${p.no_rm}<br><b>Nama Pasien:</b> ${p.nama_lengkap}<br><b>NIK KTP:</b> ${p.nik}<br><b>WhatsApp:</b> ${p.whatsapp}<br><b>Alamat:</b> ${p.alamat}</div>`;
-    content += `<table><thead><tr><th>Tgl</th><th>Kunjungan Ke</th><th>Keluhan/Diagnosa</th><th>Observasi Klinis</th><th>Ukuran & Kondisi Luka</th><th>Terapi/BHP</th><th>Petugas</th></tr></thead><tbody>`;
+    content += `<table><thead><tr><th>Tgl</th><th>Kunjungan Ke</th><th>Keluhan/Diagnosa</th><th>Observasi Klinis</th><th>Ukuran & Kondisi Luka</th><th>Tindakan Medis</th><th>Petugas</th></tr></thead><tbody>`;
     content += ms.map(m => {
-      let items = "-"; try { items = JSON.parse(m.items_json).map(it => it.name).join(', '); } catch (e) { }
+      let items = "-"; 
+      try { 
+        const parsedItems = JSON.parse(m.items_json);
+        const jasaOnly = parsedItems.filter(it => it.type === 'jasa');
+        if (jasaOnly.length > 0) {
+          items = jasaOnly.map(it => it.name).join(', ');
+        }
+      } catch (e) { }
       return `<tr><td>${m.tanggal}</td><td>${m.kunjungan_ke}</td><td><b>${m.tipe_luka}</b></td><td>${m.kondisi_luka}</td><td>Status: ${m.r_status}<br>P: ${m.r_panjang}cm | L: ${m.r_lebar}cm | D: ${m.r_dalam}cm<br>Jaringan: ${m.t_jaringan}</td><td>${items}</td><td>${m.petugas}</td></tr>`;
     }).join('');
     content += `</tbody></table></body></html>`;
