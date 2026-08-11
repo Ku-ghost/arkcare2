@@ -72,7 +72,7 @@
         <div><h1 id="brand-title" class="text-xl font-black text-white tracking-widest text-glow">ARK CARE</h1><p id="brand-subtitle" class="text-[10px] text-neon-green font-bold tracking-widest uppercase text-glow">Smart Wound Care System</p></div>
       </div>
       <div class="flex items-center gap-3">
-        <div id="sync-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-eco-800 text-[11px] backdrop-blur-md cursor-pointer" onclick="window.requestSecureAccess('tab-master')"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]" id="login-dot"></span><span id="login-text" class="font-bold text-yellow-400 tracking-wider">Menghubungkan...</span></div>
+        <div id="sync-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-eco-800 text-[11px] backdrop-blur-md cursor-pointer hover:border-neon-teal transition" onclick="fetchApiData()" title="Klik untuk tes sambung ulang"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]" id="login-dot"></span><span id="login-text" class="font-bold text-yellow-400 tracking-wider">Menghubungkan...</span></div>
         <button id="btn-login-logout" class="px-4 py-1.5 text-[11px] font-bold rounded-xl bg-gradient-to-r from-eco-600 to-eco-500 hover:from-eco-500 hover:to-eco-400 border border-eco-400/50 text-white flex items-center gap-2 shadow-lg active:scale-95 cursor-pointer" onclick="window.toggleLogin()"><span id="btn-login-icon-container"><i data-lucide="lock" class="w-3.5 h-3.5"></i></span><span id="btn-login-text">Akses Owner</span></button>
       </div>
     </div>
@@ -94,7 +94,6 @@
     </div>
   </div>
 
-  <!-- Modal Verifikasi Kode Pengaman Antena -->
   <div id="modal-antena-pin" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
     <div class="bg-[#011c14]/95 border-2 border-neon-teal/40 rounded-3xl max-w-sm w-full p-6 shadow-[0_0_40px_rgba(0,243,255,0.3)] backdrop-blur-xl">
       <h3 class="text-base font-black text-white mb-2 flex items-center gap-2 text-glow"><i data-lucide="shield-check" class="text-neon-teal w-5 h-5"></i> Masukkan Kode Pengaman</h3>
@@ -219,6 +218,7 @@
               </div>
             </form>
           </div>
+          
           <div class="neon-glass-card border-neon-teal/30 bg-gradient-to-br from-[#01140e]/80 to-transparent">
             <h3 class="text-xs font-black text-white mb-4 flex items-center gap-2 border-b border-eco-800/60 pb-2 text-glow"><i data-lucide="microscope" class="text-neon-teal w-4 h-4"></i> Pengkajian Luka (T.I.M.E.R.S)</h3>
             <div class="space-y-5">
@@ -230,6 +230,7 @@
               <div class="neon-glass-inner space-y-4"><h4 class="text-[10px] font-black text-emerald-400 uppercase mb-2 border-b border-eco-800/50 pb-1.5 text-glow">S - Systemic, Social & Support Factors</h4><div class="grid grid-cols-1 md:grid-cols-3 gap-3"><div><label class="lbl">Faktor Sosial / Gaya Hidup</label><input type="text" id="s-sosial" placeholder="Cth: Perokok / Aktif" class="inp bg-[#010c09] focus:border-emerald-400"></div><div><label class="lbl">Riwayat Alergi</label><input type="text" id="s-alergi" placeholder="Cth: Obat / Plester" class="inp bg-[#010c09] focus:border-emerald-400"></div><div><label class="lbl">Penyakit Komorbid</label><input type="text" id="s-komorbid" placeholder="Cth: DM Tipe 2, Hipertensi" class="inp bg-[#010c09] focus:border-emerald-400"></div></div><div class="border-t border-eco-900 pt-3"><label class="lbl text-neon-teal font-black mb-2 flex items-center gap-1"><i data-lucide="heart-handshake" class="w-3.5 h-3.5"></i> Kepatuhan Pendukung</label><div class="grid grid-cols-1 md:grid-cols-3 gap-3"><div><label class="lbl text-[9px]">Status Nutrisi</label><select id="s-nutrisi" class="inp bg-[#010c09] focus:border-emerald-400"></select></div><div><label class="lbl text-[9px]">Dukungan Keluarga</label><select id="s-keluarga" class="inp bg-[#010c09] focus:border-emerald-400"></select></div><div><label class="lbl text-[9px]">Kepatuhan Kontrol</label><select id="s-kontrol" class="inp bg-[#010c09] focus:border-emerald-400"></select></div></div></div></div>
             </div>
           </div>
+
           <div class="neon-glass-card flex flex-col bg-[#01140e]/50 border-neon-teal/20">
             <h3 class="text-xs font-black text-white mb-4 flex items-center gap-2 border-b border-eco-800 pb-2 text-glow"><i data-lucide="syringe" class="text-neon-teal w-4 h-4"></i> Input Tindakan & Terapi</h3>
             <div class="space-y-4 mb-4">
@@ -509,6 +510,7 @@
   const DEFAULT_SUPABASE_URL = "https://ossqiqlryugrddnuszit.supabase.co"; 
   const DEFAULT_SUPABASE_KEY = "sb_publishable_VX0GJsaD71FJGYbUUjstKw_5s4AKhRG";
 
+  // In-Memory State Utama
   let dbState = {
     branding:{
       app_id:"arkcare01",
@@ -535,6 +537,7 @@
   let editSDMIndex = null, editLayananIndex = null, editLukaIndex = null, editBHPDressingIndex = null, barChartInstance = null;
   let editRetailIndex = null, editPasienIndex = null, editUserIndex = null, editKepatuhanIndex = null, pendingCheckoutVisitId = null;
   let supabaseClient = null;
+  let realtimeChannel = null;
 
   const $=id=>document.getElementById(id); 
   const v=id=>$(id)?$(id).value:""; 
@@ -648,7 +651,6 @@
     if (dlg) dlg.classList.add('hidden');
   };
 
-  // Fungsi Keamanan Antena Pemancar
   function toggleAntenaLockModal() {
     if (isAntenaUnlocked) {
       isAntenaUnlocked = false;
@@ -722,19 +724,30 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
-  function loadConfigFromLocalStorage() {
+  function loadConfigFromSession() {
     try {
-      const saved = localStorage.getItem('smartclinic_branding');
+      const saved = sessionStorage.getItem('smartclinic_branding_session');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed) Object.assign(dbState.branding, parsed);
+        if (parsed && typeof parsed === 'object') {
+          if (parsed.api_url && parsed.api_url.trim().startsWith('http')) {
+            dbState.branding.api_url = parsed.api_url.trim();
+          }
+          if (parsed.supa_url) dbState.branding.supa_url = parsed.supa_url;
+          if (parsed.supa_key) dbState.branding.supa_key = parsed.supa_key;
+          if (parsed.app_id) dbState.branding.app_id = parsed.app_id;
+          if (parsed.nama_klinik) dbState.branding.nama_klinik = parsed.nama_klinik;
+          if (parsed.subtitle_klinik) dbState.branding.subtitle_klinik = parsed.subtitle_klinik;
+          if (parsed.logo_url) dbState.branding.logo_url = parsed.logo_url;
+          if (parsed.kode_pengaman) dbState.branding.kode_pengaman = parsed.kode_pengaman;
+        }
       }
     } catch (e) {}
   }
 
-  function saveConfigToLocalStorage() {
+  function saveConfigToSession() {
     try {
-      localStorage.setItem('smartclinic_branding', JSON.stringify(dbState.branding));
+      sessionStorage.setItem('smartclinic_branding_session', JSON.stringify(dbState.branding));
     } catch (e) {}
   }
 
@@ -756,12 +769,46 @@
     return supabaseClient;
   }
 
+  function setupSupabaseRealtimeListener(client) {
+    if (!client || realtimeChannel) return;
+    try {
+      const targetAppId = (dbState.branding.app_id || 'arkcare01').toLowerCase();
+      realtimeChannel = client.channel(`smartclinic_channel_${targetAppId}`);
+      
+      realtimeChannel
+        .on('broadcast', { event: 'SIGNAL_DATA_UPDATED' }, payload => {
+          showToast("Data Diperbarui oleh Perangkat Lain...", true);
+          fetchApiData({ silent: true });
+        })
+        .subscribe(status => {
+          if (status === 'SUBSCRIBED') {
+            console.log("Realtime Listener Active for App:", targetAppId);
+          }
+        });
+    } catch (err) {
+      console.warn("Realtime setup notice:", err);
+    }
+  }
+
+  function broadcastRealtimeSignal() {
+    if (realtimeChannel) {
+      try {
+        realtimeChannel.send({
+          type: 'broadcast',
+          event: 'SIGNAL_DATA_UPDATED',
+          payload: { timestamp: Date.now() }
+        });
+      } catch (e) {}
+    }
+  }
+
   async function pullAnchorConfigFromSupabase() {
-    loadConfigFromLocalStorage();
+    loadConfigFromSession();
     applyBranding();
 
     const client = await ensureSupabaseClient();
     if (client) {
+      setupSupabaseRealtimeListener(client);
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const targetAppId = urlParams.get('app_id') || dbState.branding.app_id || 'arkcare01';
@@ -778,16 +825,23 @@
         }
 
         if (data) {
+          // Kunci Branding 100% dari Supabase!
           if (data.app_id) dbState.branding.app_id = data.app_id;
           if (data.nama_klinik) dbState.branding.nama_klinik = data.nama_klinik;
           if (data.subtitle_klinik) dbState.branding.subtitle_klinik = data.subtitle_klinik;
           if (data.logo_url) dbState.branding.logo_url = data.logo_url;
-          if (data.gas_url || data.api_url) dbState.branding.api_url = data.gas_url || data.api_url;
+          
+          let remoteGas = (data.gas_url || data.api_url || '').trim();
+          if (remoteGas && remoteGas.startsWith('http')) {
+            if (remoteGas.includes('/edit')) remoteGas = remoteGas.replace(/\/edit.*$/, '/exec');
+            dbState.branding.api_url = remoteGas;
+          }
+
           if (data.supabase_url) dbState.branding.supa_url = data.supabase_url;
           if (data.supabase_anon_key) dbState.branding.supa_key = data.supabase_anon_key;
           if (data.kode_pengaman) dbState.branding.kode_pengaman = data.kode_pengaman;
 
-          saveConfigToLocalStorage();
+          saveConfigToSession();
           applyBranding();
         }
       } catch (e) {}
@@ -795,17 +849,19 @@
     fetchApiData();
   }
 
-  function fetchApiData() {
+  function fetchApiData(options = {}) {
+    const isSilent = options.silent || false;
     let tApi = (dbState.branding.api_url || "").trim();
+    
     if (tApi.includes('/edit')) {
       tApi = tApi.replace(/\/edit.*$/, '/exec');
       dbState.branding.api_url = tApi;
-      saveConfigToLocalStorage();
+      saveConfigToSession();
     }
 
     const sD = $('login-dot'), sT = $('login-text'), sB = $('sync-status-badge');
-    if (sD && sT && sB) {
-      sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-yellow-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(250,204,21,0.15)]";
+    if (!isSilent && sD && sT && sB) {
+      sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-yellow-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(250,204,21,0.15)] cursor-pointer";
       sD.className = "w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]";
       sT.className = "font-black text-yellow-500 tracking-wider";
       sT.innerText = "MEMUAT DATA...";
@@ -813,13 +869,16 @@
 
     if (tApi && tApi.startsWith('http')) {
       const fetchUrl = tApi + (tApi.includes('?') ? '&' : '?') + "action=load&nocache=" + Date.now();
-      fetch(fetchUrl, { cache: 'no-store' })
+      fetch(fetchUrl, { cache: 'no-store', redirect: 'follow' })
         .then(async r => {
+          if (!r.ok) {
+            throw new Error(`HTTP ${r.status} - Gagal merespon`);
+          }
           const textResp = await r.text();
           try {
             return JSON.parse(textResp);
           } catch (err) {
-            throw new Error("Respons Apps Script Bukan JSON Valid!");
+            throw new Error("Akses GAS Belum 'Anyone' / URL Salah!");
           }
         })
         .then(d => {
@@ -827,41 +886,38 @@
             isDataLoadedFromCloud = true;
             overwriteLocalWithCloudData(d);
             if (sD && sT && sB) {
-              sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-emerald-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]";
+              sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-emerald-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)] cursor-pointer";
               sD.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]";
               sT.className = "font-black text-emerald-400 tracking-wider";
               sT.innerText = "ONLINE (TERHUBUNG)";
             }
           } else {
-            showToast("Gagal Load API: " + d.error, false);
-            fallbackToLocalStorage();
+            if (!isSilent) showToast("Gagal Load API: " + d.error, false);
           }
         })
         .catch(e => {
-          showToast("Gagal Koneksi GAS: Periksa URL Web App berakhiran /exec & 'Anyone'!", false);
-          fallbackToLocalStorage();
+          if (!isSilent) showToast("Koneksi GAS Terputus: " + e.message, false);
+          if (sD && sT && sB) {
+            sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-red-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(239,68,68,0.15)] cursor-pointer";
+            sD.className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]";
+            sT.className = "font-black text-red-400 tracking-wider";
+            sT.innerText = "KONEKSI GAS OFFLINE";
+          }
         });
     } else {
+      if (!isSilent) showToast("URL Google Apps Script belum diisi / tidak valid!", false);
       if (sD && sT && sB) {
-        sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-red-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(239,68,68,0.15)]";
+        sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-red-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(239,68,68,0.15)] cursor-pointer";
         sD.className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]";
         sT.className = "font-black text-red-400 tracking-wider";
         sT.innerText = "URL GAS BELUM DIISI";
       }
-      fallbackToLocalStorage();
     }
-  }
-
-  function fallbackToLocalStorage() {
-    overwriteLocalWithCloudData(dbState);
   }
 
   function overwriteLocalWithCloudData(c) {
-    if (c.branding) {
-      Object.assign(dbState.branding, c.branding);
-    }
-    saveConfigToLocalStorage();
-
+    // PROTEKSI BRANDING: Data branding DARI SHEET SAMA SEKALI TIDAK BOLEH MENIMPA Supabase!
+    // Kita hanya mengambil array operasional dari Google Sheet
     ['pasien','kunjungan','sdm','layanan','luka','bhp_dressing','retail','kepatuhan_options','users'].forEach(k => {
       if (Array.isArray(c[k]) && c[k].length > 0) dbState[k] = c[k];
     });
@@ -881,14 +937,14 @@
 
   function saveState() {
     if (!isDataLoadedFromCloud) {
-      return showToast("Gagal Simpan: Data dari Cloud belum selesai dimuat!", false);
+      return showToast("Peringatan: Data Cloud belum siap. Mencoba mengirim...", false);
     }
 
     const b = $('btn-finalisasi');
     if (b) b.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin font-bold"></i> Menyimpan...`;
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
-    saveConfigToLocalStorage();
+    saveConfigToSession();
 
     const tApi = dbState.branding.api_url || "";
     if (tApi && tApi.startsWith('http')) {
@@ -901,6 +957,7 @@
       .then(async r => {
         if (r.success) {
           showToast("Sinkronisasi Cloud Sukses!");
+          broadcastRealtimeSignal();
         } else {
           showToast("Gagal Sync: " + r.error, false);
         }
@@ -1976,7 +2033,7 @@
     dbState.branding.supa_url = v('brand-edit-supa-url').trim() || DEFAULT_SUPABASE_URL;
     dbState.branding.supa_key = v('brand-edit-supa-key').trim() || DEFAULT_SUPABASE_KEY;
 
-    saveConfigToLocalStorage();
+    saveConfigToSession();
     applyBranding();
     const client = await ensureSupabaseClient();
     if (client) {
@@ -1995,6 +2052,7 @@
         };
         await client.from('system_config').upsert(payload, { onConflict: 'app_id' });
         showToast("Konfigurasi Dipancarkan ke Supabase terpusat!");
+        broadcastRealtimeSignal();
       } catch (err) { }
     }
     fetchApiData();
