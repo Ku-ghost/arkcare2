@@ -23,11 +23,6 @@
             eco:{50:'#f0fdf4',100:'#dcfce7',500:'#10b981',600:'#059669',750:'#045e43',800:'#064e3b',850:'#022c20',900:'#012016',950:'#011c14'},
             neon:{green:'#39ff14',teal:'#00f3ff',orange:'#ff9800'},
             ryb:{red:'#ef4444',yellow:'#facc15',black:'#1f2937',epitel:'#f472b6'}
-          },
-          animation:{'glow-pulse':'glow-pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite','nav-glow':'nav-glow 2.2s infinite ease-in-out'},
-          keyframes:{
-            'glow-pulse':{'0%, 100%':{filter:'drop-shadow(0 0 10px rgba(57,255,20,0.6))',transform:'scale(1)'},'50%':{filter:'drop-shadow(0 0 25px rgba(0,243,255,0.8))',transform:'scale(1.02)'}},
-            'nav-glow':{'0%, 100%':{filter:'drop-shadow(0 0 4px rgba(0,243,255,0.5))',borderColor:'rgba(0, 243, 255, 0.4)'},'50%':{filter:'drop-shadow(0 0 16px rgba(0,243,255,0.95))',borderColor:'rgba(0, 243, 255, 1)',transform:'scale(1.04)'}}
           }
         }
       }
@@ -55,8 +50,6 @@
     .act-x:hover{background-color:rgba(239,68,68,0.3);}
     .active-tab{border-color:#00f3ff!important;background-color:rgba(0,243,255,0.15)!important;box-shadow:0 0 20px rgba(0,243,255,0.4)!important;}
     body{background-color:#010604;background-image:radial-gradient(circle at 15% 25%,rgba(16,185,129,0.05) 0%,transparent 45%),radial-gradient(circle at 85% 75%,rgba(0,243,255,0.05) 0%,transparent 45%),linear-gradient(rgba(16,185,129,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,0.02) 1px,transparent 1px);background-size:100% 100%,100% 100%,32px 32px,32px 32px;font-size:13px;line-height:1.5;color:#e2e8f0;}
-    .bg-glow-aurora-1{position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(57,255,20,0.04) 0%,transparent 70%);top:5%;left:-5%;filter:blur(80px);pointer-events:none;z-index:0;}
-    .bg-glow-aurora-2{position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(0,243,255,0.04) 0%,transparent 70%);bottom:10%;right:-5%;filter:blur(100px);pointer-events:none;z-index:0;}
     .glass-pill-btn{background:rgba(4,30,22,0.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(0,243,255,0.25);border-bottom:2px solid rgba(0,243,255,0.4);box-shadow:0 10px 25px 0 rgba(0,0,0,0.5),inset 0 1px 1px rgba(255,255,255,0.05);transition:all 0.3s cubic-bezier(0.4,0,0.2,1);border-radius:9999px;flex:1;white-space:nowrap;cursor:pointer;}
     .glass-pill-btn:hover{border-color:rgba(0,243,255,0.8);box-shadow:0 0 15px rgba(0,243,255,0.3);background:rgba(0,243,255,0.1);}
     .text-glow{text-shadow:0 0 8px rgba(0,243,255,0.6);}
@@ -69,7 +62,6 @@
 <body class="relative min-h-screen pb-24 sm:pb-6 flex flex-col overflow-x-hidden">
 
 <div id="app-main-layout" class="flex flex-col min-h-screen">
-  <div class="bg-glow-aurora-1"></div><div class="bg-glow-aurora-2"></div>
   <header class="border-b border-eco-900 bg-[#01140e]/95 backdrop-blur-md sticky top-0 z-40 px-4 md:px-[2cm] py-3 shadow-md">
     <div class="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
       <div class="flex items-center gap-4">
@@ -80,7 +72,7 @@
         <div><h1 id="brand-title" class="text-xl font-black text-white tracking-widest text-glow">ARK CARE</h1><p id="brand-subtitle" class="text-[10px] text-neon-green font-bold tracking-widest uppercase text-glow">Smart Wound Care System</p></div>
       </div>
       <div class="flex items-center gap-3">
-        <div id="sync-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-eco-800 text-[11px] backdrop-blur-md"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]" id="login-dot"></span><span id="login-text" class="font-bold text-yellow-400 tracking-wider">Menghubungkan...</span></div>
+        <div id="sync-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-eco-800 text-[11px] backdrop-blur-md cursor-pointer" onclick="requestSecureAccess('tab-master')"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]" id="login-dot"></span><span id="login-text" class="font-bold text-yellow-400 tracking-wider">Menghubungkan...</span></div>
         <button id="btn-login-logout" class="px-4 py-1.5 text-[11px] font-bold rounded-xl bg-gradient-to-r from-eco-600 to-eco-500 hover:from-eco-500 hover:to-eco-400 border border-eco-400/50 text-white flex items-center gap-2 shadow-lg active:scale-95 cursor-pointer" onclick="toggleLogin()"><span id="btn-login-icon-container"><i data-lucide="lock" class="w-3.5 h-3.5"></i></span><span id="btn-login-text">Akses Owner</span></button>
       </div>
     </div>
@@ -113,7 +105,7 @@
   <main class="w-full px-4 md:px-[2cm] pt-6 flex-grow relative z-10 flex flex-col mb-16 sm:mb-6">
     <section class="fixed bottom-0 left-0 w-full z-35 bg-[#01140e]/95 backdrop-blur-md border-t border-eco-900 p-2 sm:relative sm:border-none sm:bg-transparent sm:p-0 sm:mb-6">
       <div class="flex flex-row justify-between gap-1 sm:gap-3 w-full max-w-6xl mx-auto">
-        <button onclick="switchTab('tab-registrasi')" id="nav-tab-registrasi" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group relative w-full"><i data-lucide="user-plus" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-green"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Daftar</span><span class="hidden sm:inline">Pendaftaran</span></span></button>
+        <button onclick="switchTab('tab-registrasi')" id="nav-tab-registrasi" class="glass-pill-btn active-tab !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group relative w-full"><i data-lucide="user-plus" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-green"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Daftar</span><span class="hidden sm:inline">Pendaftaran</span></span></button>
         <button onclick="switchTab('tab-medis')" id="nav-tab-medis" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="stethoscope" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-teal"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Medis</span><span class="hidden sm:inline">Asessmen Awal</span></span></button>
         <button onclick="switchTab('tab-kasir')" id="nav-tab-kasir" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="receipt" class="w-4 h-4 sm:w-5 sm:h-5 text-neon-orange" style="color: #ff9800;"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase"><span class="sm:hidden">Kasir</span><span class="hidden sm:inline">Kasir Klinik</span></span></button>
         <button onclick="requestSecureAccess('tab-pelaporan')" id="nav-tab-pelaporan" class="glass-pill-btn !rounded-2xl sm:!rounded-full px-1 py-2.5 sm:px-5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 active:scale-95 group w-full"><i data-lucide="bar-chart-3" class="w-4 h-4 sm:w-5 sm:h-5 text-[#c084fc]"></i><span class="block text-[9px] sm:text-[11px] font-black text-white tracking-wider uppercase flex items-center justify-center gap-0.5"><span class="sm:hidden">Laporan</span><span class="hidden sm:inline">Pelaporan</span><i data-lucide="lock" class="w-2.5 h-2.5 text-eco-500"></i></span></button>
@@ -242,10 +234,22 @@
 
     <div id="tab-pelaporan" class="tab-content space-y-6 hidden">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-28"><div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-eco-500 tracking-wider">Total Omzet</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-teal"><i data-lucide="wallet" class="w-4 h-4"></i></div></div><div><div id="dash-omzet" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div></div></div>
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-28"><div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-eco-500 tracking-wider">HPP BHP Terpakai</span><div class="p-1.5 bg-eco-950 rounded-lg text-yellow-500"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div></div><div><div id="dash-hpp" class="text-xl font-bold text-white font-mono">Rp 0</div></div></div>
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-28 border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.15)] bg-gradient-to-br from-[#01140e] to-[#010c09]"><div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-neon-green tracking-wider text-glow">Laba Bersih</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-green"><i data-lucide="trending-up" class="w-4 h-4"></i></div></div><div><div id="dash-laba" class="text-xl font-bold text-neon-green font-mono text-glow">Rp 0</div></div></div>
-        <div id="dash-critical-card" class="p-4 rounded-2xl flex flex-col justify-between h-28 bg-red-950/30 border border-red-900 shadow-lg"><div class="flex justify-between items-center border-b border-red-900/60 pb-1"><span class="font-bold text-red-400 uppercase tracking-wider text-[9px] flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-red-500"></i> Kritis</span><span id="dash-critical-count" class="px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 text-[8px] font-black border border-red-800/40">0 Items</span></div><div id="dash-critical-list" class="space-y-1 my-1 max-h-[40px] overflow-y-auto"><p class="text-red-400 italic text-[9px]">Stok aman.</p></div></div>
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-28 border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.15)] bg-gradient-to-br from-[#01140e] to-[#010c09]">
+          <div class="flex justify-between items-start"><span class="text-[10px] font-black uppercase text-neon-green tracking-wider text-glow">Total Omzet Klinik</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-green"><i data-lucide="wallet" class="w-4 h-4"></i></div></div>
+          <div><div id="dash-omzet" class="text-xl font-black text-neon-green font-mono text-glow">Rp 0</div></div>
+        </div>
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-28">
+          <div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-neon-teal tracking-wider text-glow">Omzet Jasa & Tindakan</span><div class="p-1.5 bg-eco-950 rounded-lg text-neon-teal"><i data-lucide="stethoscope" class="w-4 h-4"></i></div></div>
+          <div><div id="dash-omzet-jasa" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div></div>
+        </div>
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-28">
+          <div class="flex justify-between items-start"><span class="text-[10px] font-bold uppercase text-yellow-500 tracking-wider text-glow">Omzet Retail & BHP</span><div class="p-1.5 bg-eco-950 rounded-lg text-yellow-500"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div></div>
+          <div><div id="dash-omzet-retail" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div></div>
+        </div>
+        <div id="dash-critical-card" class="p-4 rounded-2xl flex flex-col justify-between h-28 bg-red-950/30 border border-red-900 shadow-lg">
+          <div class="flex justify-between items-center border-b border-red-900/60 pb-1"><span class="font-bold text-red-400 uppercase tracking-wider text-[9px] flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-red-500"></i> Kritis</span><span id="dash-critical-count" class="px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 text-[8px] font-black border border-red-800/40">0 Items</span></div>
+          <div id="dash-critical-list" class="space-y-1 my-1 max-h-[40px] overflow-y-auto"><p class="text-red-400 italic text-[9px]">Stok aman.</p></div>
+        </div>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div class="lg:col-span-5 neon-glass-card flex flex-col"><h3 class="text-xs font-bold text-white mb-3 flex items-center gap-2 text-glow"><i data-lucide="pie-chart" class="text-neon-teal w-4 h-4"></i> Distribusi Kasus</h3><div class="flex-1 flex items-center justify-center min-h-[200px]"><canvas id="woundDonutChart" class="max-w-[180px] max-h-[180px]"></canvas></div></div>
@@ -339,7 +343,7 @@
   const DEFAULT_SUPABASE_URL = "https://ossqiqlryugrddnuszit.supabase.co"; 
   const DEFAULT_SUPABASE_KEY = "sb_publishable_VX0GJsaD71FJGYbUUjstKw_5s4AKhRG";
 
-  const DEFAULT_STATE={
+  let dbState = {
     branding:{
       app_id:"arkcare",
       nama_klinik:"ARK CARE",
@@ -356,358 +360,269 @@
     master_time:{eksudat_level:["Kering","Sedikit (Low)","Sedang (Moderate)","Banyak (High)"],eksudat_jenis:["Serous","Serosanguineous","Sanguineous","Purulent"],antimikroba:["Non-Antimikroba","Silver Dressing","PHMB","DACC"]}
   };
 
-  const $=id=>document.getElementById(id); const v=id=>$(id)?$(id).value:""; const setV=(id,val)=>{if($(id))$(id).value=val;}; const pCN=val=>parseCleanNumber(val);
-  
-  let dbState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  let isOwnerLoggedIn = false;
+  let targetPendingTab = null;
   let isDataLoadedFromCloud = false;
-
-  ['pasien','kunjungan','sdm','layanan','luka','bhp_dressing','retail','kepatuhan_options','users'].forEach(k=>{if(!Array.isArray(dbState[k]))dbState[k]=[];});
-
-  let isOwnerLoggedIn=false,selectedPasienRM=null,billingCart=[],kasirCart=[];
-  let editSDMIndex=null,editLayananIndex=null,editLukaIndex=null,editBHPDressingIndex=null,donutChartInstance=null;
-  let editRetailIndex=null,editPasienIndex=null,editUserIndex=null,editKepatuhanIndex=null,pendingCheckoutVisitId=null;
-  let debounceSyncTimer = null;
+  let selectedPasienRM = null, billingCart = [], kasirCart = [];
+  let editSDMIndex = null, editLayananIndex = null, editLukaIndex = null, editBHPDressingIndex = null, donutChartInstance = null;
+  let editRetailIndex = null, editPasienIndex = null, editUserIndex = null, editKepatuhanIndex = null, pendingCheckoutVisitId = null;
+  let supabaseClient = null, realtimeChannel = null;
   const myClientId = 'client_' + Math.random().toString(36).substring(2, 9);
-  
-  let supabaseClient = null;
-  let realtimeChannel = null;
+
+  const $=id=>document.getElementById(id); 
+  const v=id=>$(id)?$(id).value:""; 
+  const setV=(id,val)=>{if($(id))$(id).value=val;}; 
+  const pCN=val=>parseCleanNumber(val);
+
+  window.requestSecureAccess = function(tabId) {
+    if (isOwnerLoggedIn) {
+      switchTab(tabId);
+    } else {
+      targetPendingTab = tabId;
+      openLoginModal();
+    }
+  };
+
+  window.switchTab = function(tabId) {
+    document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden'));
+    document.querySelectorAll('[id^="nav-tab-"]').forEach(b => {
+      b.classList.remove('active-tab');
+      b.classList.add('border-eco-500/20');
+    });
+
+    const target = $(tabId);
+    if (target) target.classList.remove('hidden');
+
+    const btn = $('nav-' + tabId);
+    if (btn) {
+      btn.classList.add('active-tab');
+      btn.classList.remove('border-eco-500/20');
+    }
+
+    if (tabId === 'tab-pelaporan') renderPelaporanTab();
+    if (tabId === 'tab-master') {
+      renderMasterSDMTable(); renderMasterLayananTable(); renderMasterLukaTable();
+      renderMasterBHPDressingTable(); renderMasterRetailTable(); renderMasterKepatuhan();
+      renderMasterPasienTable(); renderMasterUserTable(); switchMasterSubTab('sub-sdm');
+    }
+    if (tabId === 'tab-registrasi') {
+      renderTablePasien(); populateMedicalRecordLookup(); generateNextNoRM();
+    }
+    if (tabId === 'tab-kasir') renderKasirPending();
+  };
+
+  window.openLoginModal = function() {
+    const modal = $('modal-login');
+    if (modal) modal.classList.remove('hidden');
+    const err = $('login-error');
+    if (err) err.classList.add('hidden');
+  };
+
+  window.closeLoginModal = function() {
+    const modal = $('modal-login');
+    if (modal) modal.classList.add('hidden');
+    const err = $('login-error');
+    if (err) err.classList.add('hidden');
+  };
+
+  window.toggleLogin = function() {
+    if (isOwnerLoggedIn) {
+      isOwnerLoggedIn = false;
+      updateLoginStatusUI();
+      switchTab('tab-registrasi');
+      showToast("Sesi Owner Berakhir.");
+    } else {
+      openLoginModal();
+    }
+  };
+
+  window.togglePasswordVisibility = function() {
+    const pInput = $('login-password');
+    if (pInput) pInput.type = pInput.type === 'password' ? 'text' : 'password';
+  };
+
+  window.handleLoginSubmit = function(event) {
+    if (event) event.preventDefault();
+    const u = v('login-username').trim();
+    const p = v('login-password').trim();
+    const adminUser = dbState.branding.admin_user || 'Nersrisman';
+    const adminPass = dbState.branding.admin_pass || 'Rismanners1';
+    const foundUser = dbState.users.find(x => x.username === u && x.password === p);
+
+    if (foundUser || (u === adminUser && p === adminPass) || (u === "Nersrisman" && p === "Rismanners1")) {
+      isOwnerLoggedIn = true;
+      closeLoginModal();
+      updateLoginStatusUI();
+      showToast("Otentikasi Berhasil!");
+      if (targetPendingTab) {
+        switchTab(targetPendingTab);
+        targetPendingTab = null;
+      }
+    } else {
+      const err = $('login-error');
+      if (err) err.classList.remove('hidden');
+    }
+  };
+
+  window.updateLoginStatusUI = function() {
+    const bT = $('btn-login-text'), iC = $('btn-login-icon-container');
+    if (isOwnerLoggedIn) {
+      if (bT) bT.innerText = "Akhiri Sesi";
+      if (iC) iC.innerHTML = `<i data-lucide="unlock" class="w-3.5 h-3.5 font-bold"></i>`;
+    } else {
+      if (bT) bT.innerText = "Akses Owner";
+      if (iC) iC.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5 font-bold"></i>`;
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  };
+
+  window.closeCustomDialog = function() {
+    const dlg = $('custom-dialog');
+    if (dlg) dlg.classList.add('hidden');
+  };
 
   function loadConfigFromLocalStorage() {
     try {
       const saved = localStorage.getItem('smartclinic_branding');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed) {
-          if (parsed.app_id) dbState.branding.app_id = parsed.app_id;
-          if (parsed.nama_klinik) dbState.branding.nama_klinik = parsed.nama_klinik;
-          if (parsed.subtitle_klinik) dbState.branding.subtitle_klinik = parsed.subtitle_klinik;
-          if (parsed.logo_url) dbState.branding.logo_url = parsed.logo_url;
-          if (parsed.api_url) dbState.branding.api_url = parsed.api_url;
-          if (parsed.supa_url) dbState.branding.supa_url = parsed.supa_url;
-          if (parsed.supa_key) dbState.branding.supa_key = parsed.supa_key;
-          if (parsed.admin_user) dbState.branding.admin_user = parsed.admin_user;
-          if (parsed.admin_pass) dbState.branding.admin_pass = parsed.admin_pass;
-        }
+        if (parsed) Object.assign(dbState.branding, parsed);
       }
-    } catch (e) {
-      console.warn("Gagal membaca LocalStorage config:", e);
-    }
+    } catch (e) {}
   }
 
   function saveConfigToLocalStorage() {
     try {
       localStorage.setItem('smartclinic_branding', JSON.stringify(dbState.branding));
-    } catch (e) {
-      console.warn("Gagal menyimpan LocalStorage config:", e);
+    } catch (e) {}
+  }
+
+  async function ensureSupabaseClient() {
+    if (supabaseClient) return supabaseClient;
+    const url = (dbState.branding.supa_url || DEFAULT_SUPABASE_URL).trim();
+    const key = (dbState.branding.supa_key || DEFAULT_SUPABASE_KEY).trim();
+
+    for (let i = 0; i < 20; i++) {
+      if (window.supabase) break;
+      await new Promise(r => setTimeout(r, 150));
     }
-  }
 
-  function initSupabaseClient(){
-    const url = dbState.branding.supa_url || DEFAULT_SUPABASE_URL;
-    const key = dbState.branding.supa_key || DEFAULT_SUPABASE_KEY;
-    if(url && key && window.supabase){
-      try{
-        if(!supabaseClient){
-          supabaseClient = window.supabase.createClient(url, key);
-          setupSupabaseRealtimeChannel();
-        }
-      }catch(e){console.warn("Gagal init Supabase Client:", e);}
+    if (window.supabase && url && key) {
+      try {
+        supabaseClient = window.supabase.createClient(url, key);
+      } catch (e) {}
     }
+    return supabaseClient;
   }
 
-  async function setupSupabaseRealtimeChannel(){
-    if(!supabaseClient || realtimeChannel) return;
-    
-    realtimeChannel = supabaseClient.channel('public:system_config')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'system_config' }, (payload) => {
-        console.log('⚡ Sinyal Realtime Supabase diterima!', payload);
-        triggerDebouncedFetch();
-      })
-      .on('broadcast', { event: 'data_sync' }, payload => {
-        if(payload && payload.sender === myClientId) return;
-        console.log('⚡ Broadcast Realtime diterima dari perangkat lain!', payload);
-        triggerDebouncedFetch();
-      });
-
-    try {
-      await realtimeChannel.subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('⚡ Terhubung ke Supabase WebSocket Channel');
-        }
-      });
-    } catch(err) {
-      console.warn("Gagal subscribe channel realtime:", err);
-    }
-  }
-
-  function triggerDebouncedFetch(){
-    if(debounceSyncTimer) clearTimeout(debounceSyncTimer);
-    debounceSyncTimer = setTimeout(() => {
-      fetchApiData();
-    }, 2000);
-  }
-
-  async function pingSupabase() {
-    if (!supabaseClient) initSupabaseClient();
-    if (!supabaseClient) return;
-    try {
-      const appId = dbState.branding.app_id || 'arkcare';
-      const payload = { 
-        app_id: appId, 
-        gas_url: dbState.branding.api_url || '',
-        supabase_url: dbState.branding.supa_url || '',
-        supabase_anon_key: dbState.branding.supa_key || '',
-        nama_klinik: dbState.branding.nama_klinik || '',
-        subtitle_klinik: dbState.branding.subtitle_klinik || '',
-        logo_url: dbState.branding.logo_url || '',
-        updated_at: new Date().toISOString()
-      };
-
-      await supabaseClient.from('system_config').upsert(payload, { onConflict: 'app_id' });
-      await supabaseClient.from('clinic_config').upsert({
-        id: appId,
-        nama_registrasi: appId,
-        nama_klinik: dbState.branding.nama_klinik,
-        subtitle_klinik: dbState.branding.subtitle_klinik,
-        logo_url: dbState.branding.logo_url,
-        gas_url: dbState.branding.api_url,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'id' });
-
-      console.log('⚡ Konfigurasi tersimpan ke Supabase Cloud.');
-    } catch (e) {
-      console.warn("Ping Supabase warning:", e);
-    }
-  }
-
-  async function pullAnchorConfigFromSupabase(){
+  async function pullAnchorConfigFromSupabase() {
     loadConfigFromLocalStorage();
     applyBranding();
 
-    initSupabaseClient();
-    if(supabaseClient){
-      try{
-        const appId = dbState.branding.app_id || 'arkcare';
-        let { data, error } = await supabaseClient.from('system_config').select('*').eq('app_id', appId).maybeSingle();
+    const client = await ensureSupabaseClient();
+    if (client) {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetAppId = urlParams.get('app_id') || dbState.branding.app_id;
 
-        if(!data || error){
-          let resClinic = await supabaseClient.from('clinic_config').select('*').eq('id', appId).maybeSingle();
-          if(resClinic && resClinic.data) data = resClinic.data;
+        let data = null;
+        if (targetAppId) {
+          let res = await client.from('system_config').select('*').eq('app_id', targetAppId.trim().toLowerCase()).maybeSingle();
+          if (res && res.data) data = res.data;
         }
 
-        if(data){
-          if(data.nama_klinik) dbState.branding.nama_klinik = data.nama_klinik;
-          if(data.subtitle_klinik) dbState.branding.subtitle_klinik = data.subtitle_klinik;
-          if(data.logo_url) dbState.branding.logo_url = data.logo_url;
-          if(data.gas_url || data.api_url) dbState.branding.api_url = data.gas_url || data.api_url;
-          if(data.supabase_url) dbState.branding.supa_url = data.supabase_url;
-          if(data.supabase_anon_key) dbState.branding.supa_key = data.supabase_anon_key;
-          
+        if (!data) {
+          let resLatest = await client.from('system_config').select('*').order('updated_at', { ascending: false }).limit(1);
+          if (resLatest && resLatest.data && resLatest.data.length > 0) data = resLatest.data[0];
+        }
+
+        if (data) {
+          if (data.app_id) dbState.branding.app_id = data.app_id;
+          if (data.nama_klinik) dbState.branding.nama_klinik = data.nama_klinik;
+          if (data.subtitle_klinik) dbState.branding.subtitle_klinik = data.subtitle_klinik;
+          if (data.logo_url) dbState.branding.logo_url = data.logo_url;
+          if (data.gas_url || data.api_url) dbState.branding.api_url = data.gas_url || data.api_url;
+          if (data.supabase_url) dbState.branding.supa_url = data.supabase_url;
+          if (data.supabase_anon_key) dbState.branding.supa_key = data.supabase_anon_key;
+
           saveConfigToLocalStorage();
           applyBranding();
         }
-      }catch(e){
-        console.warn("Supabase Anchor offline, memakai LocalStorage config:", e);
-      }
+      } catch (e) {}
     }
     fetchApiData();
   }
 
-  window.onload=function(){
-    if(typeof lucide!=='undefined')lucide.createIcons();
-    pullAnchorConfigFromSupabase();
-  };
-
-  function showToast(m,ok=true){const t=$('toast-notif'),tc=$('toast-icon-container'),tm=$('toast-message');if(!t)return;if(tm)tm.innerText=m;if(tc)tc.innerHTML=ok?`<i data-lucide="check-circle" class="w-5 h-5 text-neon-green"></i>`:`<i data-lucide="alert-circle" class="w-5 h-5 text-red-500"></i>`;if(typeof lucide!=='undefined')lucide.createIcons();t.classList.remove('translate-y-24','opacity-0');setTimeout(()=>t.classList.add('translate-y-24','opacity-0'),3500);}
-  function showCustomAlert(t,m){$('dialog-title').innerText=t;$('dialog-message').innerText=m;$('dialog-actions').innerHTML=`<button onclick="closeCustomDialog()" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Selesai</button>`;$('custom-dialog').classList.remove('hidden');}
-  function showCustomConfirm(t,m,oC){$('dialog-title').innerText=t;$('dialog-message').innerText=m;$('dialog-actions').innerHTML=`<button onclick="closeCustomDialog()" class="btn-cancel w-auto px-5">Batal</button><button id="dialog-confirm-yes" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Lanjutkan</button>`;$('dialog-confirm-yes').onclick=()=>{oC();closeCustomDialog();};$('custom-dialog').classList.remove('hidden');}
-  function closeCustomDialog(){$('custom-dialog').classList.add('hidden');}
-  function parseCleanNumber(val){try{if(!val)return 0;if(typeof val==='number')return isNaN(val)?0:val;let s=val.toString().replace(/[^\d,\.-]/g,'').trim();if(s==='')return 0;if(s.includes(',')&&s.includes('.'))s=s.lastIndexOf(',')>s.lastIndexOf('.')?s.replace(/\./g,'').replace(/,/g,'.'):s.replace(/,/g,'');else if(s.includes(','))s=(s.split(',')[1]&&s.split(',')[1].length===3)?s.replace(/,/g,''):s.replace(/,/g,'.');else if(s.includes('.')){if(s.split('.')[1]&&s.split('.')[1].length===3)s=s.replace(/\./g,'');}return parseFloat(s)||0;}catch(e){return 0;}}
-  function generateTxId(p){return p+Date.now().toString()+Math.floor(Math.random()*1000).toString().padStart(3,'0');}
-
-  function fetchApiData(){
-    const tApi = (dbState.branding.api_url || "").trim();
-    const sD=$('login-dot'),sT=$('login-text'),sB=$('sync-status-badge');
-    
-    if(sD && sT && sB){
-      sB.className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-yellow-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(250,204,21,0.15)]";
-      sD.className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]";
-      sT.className="font-black text-yellow-500 tracking-wider";
-      sT.innerText="MEMUAT DATA...";
+  function fetchApiData() {
+    let tApi = (dbState.branding.api_url || "").trim();
+    if (tApi.includes('/edit')) {
+      tApi = tApi.replace(/\/edit.*$/, '/exec');
+      dbState.branding.api_url = tApi;
+      saveConfigToLocalStorage();
     }
 
-    if(tApi && tApi.startsWith('http')){
+    const sD = $('login-dot'), sT = $('login-text'), sB = $('sync-status-badge');
+    if (sD && sT && sB) {
+      sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-yellow-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(250,204,21,0.15)]";
+      sD.className = "w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]";
+      sT.className = "font-black text-yellow-500 tracking-wider";
+      sT.innerText = "MEMUAT DATA...";
+    }
+
+    if (tApi && tApi.startsWith('http')) {
       const fetchUrl = tApi + (tApi.includes('?') ? '&' : '?') + "action=load&nocache=" + Date.now();
-      fetch(fetchUrl, {cache:'no-store'})
+      fetch(fetchUrl, { cache: 'no-store' })
         .then(async r => {
-          const textResponse = await r.text();
+          const textResp = await r.text();
           try {
-            return JSON.parse(textResponse);
-          } catch(err) {
-            console.error("Respons GAS Bukan JSON:", textResponse.substring(0, 200));
-            throw new Error("Izin Web App belum 'Siapa saja' (Anyone) / URL GAS salah!");
+            return JSON.parse(textResp);
+          } catch (err) {
+            throw new Error("Respons Apps Script Bukan JSON Valid!");
           }
         })
         .then(d => {
-          if(d.success){
+          if (d.success) {
             isDataLoadedFromCloud = true;
             overwriteLocalWithCloudData(d);
-            if(sD&&sT&&sB){
-              sB.className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-emerald-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]";
-              sD.className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]";
-              sT.className="font-black text-emerald-400 tracking-wider";
-              sT.innerText="ONLINE (TERHUBUNG)";
+            if (sD && sT && sB) {
+              sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-emerald-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.15)]";
+              sD.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]";
+              sT.className = "font-black text-emerald-400 tracking-wider";
+              sT.innerText = "ONLINE (TERHUBUNG)";
             }
-          }else{
-            showToast("Error Load API: "+d.error, false);
+          } else {
+            showToast("Gagal Load API: " + d.error, false);
             fallbackToLocalStorage();
           }
-        }).catch(e => {
-          console.warn("Gagal fetch data dari GAS:", e);
-          let errMsg = e.message || "Gagal menghubungkan ke Google Apps Script";
-          if (errMsg.includes("Failed to fetch") || errMsg.includes("fetch")) {
-            errMsg = "Gagal Akses GAS: Pastikan URL berakhiran /exec & Akses 'Who has access' = 'Anyone'!";
-          }
-          showToast(errMsg, false);
+        })
+        .catch(e => {
+          showToast("Gagal Koneksi GAS: Periksa URL Web App berakhiran /exec & 'Anyone'!", false);
           fallbackToLocalStorage();
         });
-    }else{
+    } else {
+      if (sD && sT && sB) {
+        sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-red-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(239,68,68,0.15)]";
+        sD.className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]";
+        sT.className = "font-black text-red-400 tracking-wider";
+        sT.innerText = "URL GAS BELUM DIISI";
+      }
       fallbackToLocalStorage();
     }
   }
 
-  function fallbackToLocalStorage(){
-    const sD=$('login-dot'),sT=$('login-text'),sB=$('sync-status-badge');
+  function fallbackToLocalStorage() {
     overwriteLocalWithCloudData(dbState);
-    if(sD&&sT&&sB){
-      sB.className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-yellow-700 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(234,179,8,0.15)]";
-      sD.className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(250,204,21,0.8)]";
-      sT.className="font-black text-yellow-500 tracking-wider";
-      sT.innerText="MODE OFFLINE / CACHE LOKAL";
-    }
   }
 
-  function normalizeDataState(c){
-    if(!c) return;
-    const getVal = (item, keys) => {
-      for(let k of keys) {
-        if(item[k] !== undefined && item[k] !== null && item[k] !== '') return item[k];
-      }
-      return '';
-    };
-
-    if(Array.isArray(c.pasien) && c.pasien.length > 0){
-      dbState.pasien = c.pasien.map(p => ({
-        no_rm: String(getVal(p, ['no_rm', 'No RM', 'NO RM', 'noRM'])).trim(),
-        nik: String(getVal(p, ['nik', 'NIK', 'NIK KTP']) || 'Opsional').trim(),
-        nama_lengkap: String(getVal(p, ['nama_lengkap', 'Nama Lengkap', 'Nama Pasien', 'nama'])).trim(),
-        tgl_lahir: String(getVal(p, ['tgl_lahir', 'Tanggal Lahir', 'tglLahir'])).trim(),
-        gender: String(getVal(p, ['gender', 'Jenis Kelamin', 'Gender']) || 'Pria').trim(),
-        whatsapp: String(getVal(p, ['whatsapp', 'No. WhatsApp', 'WhatsApp', 'No HP', 'wa'])).trim(),
-        alamat: String(getVal(p, ['alamat', 'Alamat Domisili', 'Alamat'])).trim(),
-        tgl_masuk: String(getVal(p, ['tgl_masuk', 'Tanggal Masuk', 'tglMasuk']) || new Date().toISOString().split('T')[0]).trim(),
-        faktor_sosial: String(getVal(p, ['faktor_sosial', 'Faktor Sosial']) || '-').trim(),
-        komorbid: String(getVal(p, ['komorbid', 'Komorbid']) || '-').trim(),
-        alergi: String(getVal(p, ['alergi', 'Alergi']) || '-').trim()
-      })).filter(p => p.no_rm || p.nama_lengkap);
-    }
-
-    if(Array.isArray(c.kunjungan) && c.kunjungan.length > 0){
-      dbState.kunjungan = c.kunjungan.map(vObj => ({
-        id_kunjungan: String(getVal(vObj, ['id_kunjungan', 'ID Kunjungan', 'id'])).trim(),
-        no_rm: String(getVal(vObj, ['no_rm', 'No RM', 'NO RM'])).trim(),
-        tanggal: String(getVal(vObj, ['tanggal', 'Tanggal']) || new Date().toISOString().split('T')[0]).trim(),
-        kunjungan_ke: parseInt(getVal(vObj, ['kunjungan_ke', 'Kunjungan Ke'])) || 1,
-        petugas: String(getVal(vObj, ['petugas', 'Petugas Medis', 'Petugas'])).trim(),
-        tipe_luka: String(getVal(vObj, ['tipe_luka', 'Tipe Luka', 'Jenis Luka'])).trim(),
-        kondisi_luka: String(getVal(vObj, ['kondisi_luka', 'Kondisi Luka']) || '-').trim(),
-        penyebab: String(getVal(vObj, ['penyebab', 'Penyebab']) || '-').trim(),
-        r_status: String(getVal(vObj, ['r_status', 'Status Penyembuhan', 'Status']) || '-').trim(),
-        r_panjang: getVal(vObj, ['r_panjang', 'Panjang']) || '-',
-        r_lebar: getVal(vObj, ['r_lebar', 'Lebar']) || '-',
-        r_dalam: getVal(vObj, ['r_dalam', 'Dalam']) || '-',
-        t_jaringan: String(getVal(vObj, ['t_jaringan', 'Jaringan']) || '-').trim(),
-        s_nutrisi: String(getVal(vObj, ['s_nutrisi', 'Status Nutrisi']) || '-').trim(),
-        s_keluarga: String(getVal(vObj, ['s_keluarga', 'Dukungan Keluarga']) || '-').trim(),
-        s_kontrol: String(getVal(vObj, ['s_kontrol', 'Kepatuhan Kontrol']) || '-').trim(),
-        items_json: String(getVal(vObj, ['items_json', 'Items JSON', 'items']) || '[]').trim(),
-        jasa_sarana: parseCleanNumber(getVal(vObj, ['jasa_sarana', 'Jasa Sarana'])),
-        diskon: parseCleanNumber(getVal(vObj, ['diskon', 'Diskon'])),
-        grand_total: parseCleanNumber(getVal(vObj, ['grand_total', 'Grand Total', 'Total Bayar'])),
-        modal_hpp: parseCleanNumber(getVal(vObj, ['modal_hpp', 'Modal HPP', 'HPP'])),
-        status_bayar: String(getVal(vObj, ['status_bayar', 'Status Bayar', 'Status']) || 'Pending').trim()
-      })).filter(vObj => vObj.id_kunjungan || vObj.no_rm);
-    }
-
-    if(Array.isArray(c.sdm) && c.sdm.length > 0){
-      dbState.sdm = c.sdm.map(s => ({
-        nama_petugas: String(getVal(s, ['nama_petugas', 'Nama Petugas', 'Nama', 'nama'])).trim(),
-        gaji_pokok: parseCleanNumber(getVal(s, ['gaji_pokok', 'Gaji Pokok', 'gaji']))
-      })).filter(s => s.nama_petugas);
-    }
-
-    if(Array.isArray(c.layanan) && c.layanan.length > 0){
-      dbState.layanan = c.layanan.map(l => ({
-        kode_jasa: String(getVal(l, ['kode_jasa', 'Kode Jasa', 'kode'])).trim(),
-        nama_tindakan: String(getVal(l, ['nama_tindakan', 'Nama Tindakan', 'Tindakan', 'nama'])).trim(),
-        tarif: parseCleanNumber(getVal(l, ['tarif', 'Tarif'])),
-        persen_jasa_medis: parseCleanNumber(getVal(l, ['persen_jasa_medis', 'Persen Jasa Medis', 'persen'])),
-        fee_custom: parseCleanNumber(getVal(l, ['fee_custom', 'Fee Custom', 'fee']))
-      })).filter(l => l.nama_tindakan);
-    }
-
-    if(Array.isArray(c.luka) && c.luka.length > 0){
-      dbState.luka = c.luka.map(l => ({
-        nama_luka: String(getVal(l, ['nama_luka', 'Nama Luka', 'Diagnosa', 'nama'])).trim()
-      })).filter(l => l.nama_luka);
-    }
-
-    if(Array.isArray(c.bhp_dressing) && c.bhp_dressing.length > 0){
-      dbState.bhp_dressing = c.bhp_dressing.map(b => ({
-        kode_item: String(getVal(b, ['kode_item', 'Kode Item', 'kode'])).trim(),
-        nama_item: String(getVal(b, ['nama_item', 'Nama Item', 'Nama', 'nama'])).trim(),
-        kategori: String(getVal(b, ['kategori', 'Kategori']) || 'BHP').trim(),
-        satuan_beli: String(getVal(b, ['satuan_beli', 'Satuan Beli'])).trim(),
-        satuan_jual: String(getVal(b, ['satuan_jual', 'Satuan Jual'])).trim(),
-        stok_gudang: parseCleanNumber(getVal(b, ['stok_gudang', 'Stok Gudang', 'stok'])),
-        stok_min: parseCleanNumber(getVal(b, ['stok_min', 'Stok Min'])),
-        harga_beli_grosir: parseCleanNumber(getVal(b, ['harga_beli_grosir', 'Harga Beli Grosir', 'harga_modal'])),
-        harga_jual_eceran: parseCleanNumber(getVal(b, ['harga_jual_eceran', 'Harga Jual Eceran', 'harga_jual']))
-      })).filter(b => b.nama_item);
-    }
-
-    if(Array.isArray(c.retail) && c.retail.length > 0){
-      dbState.retail = c.retail.map(r => ({
-        kode_retail: String(getVal(r, ['kode_retail', 'Kode Retail', 'kode'])).trim(),
-        nama_produk: String(getVal(r, ['nama_produk', 'Nama Produk', 'Nama', 'nama'])).trim(),
-        kategori: String(getVal(r, ['kategori', 'Kategori'])).trim(),
-        stok: parseCleanNumber(getVal(r, ['stok', 'Stok'])),
-        harga_modal: parseCleanNumber(getVal(r, ['harga_modal', 'Harga Modal', 'modal'])),
-        harga_jual: parseCleanNumber(getVal(r, ['harga_jual', 'Harga Jual', 'jual']))
-      })).filter(r => r.nama_produk);
-    }
-
-    if(Array.isArray(c.kepatuhan_options) && c.kepatuhan_options.length > 0) dbState.kepatuhan_options = c.kepatuhan_options;
-    if(Array.isArray(c.users) && c.users.length > 0) dbState.users = c.users;
-  }
-
-  function overwriteLocalWithCloudData(c){
-    if(c.branding){
-      dbState.branding = {
-        app_id: dbState.branding.app_id || c.branding.app_id || "arkcare",
-        nama_klinik: dbState.branding.nama_klinik || c.branding.nama_klinik || "ARK CARE",
-        subtitle_klinik: dbState.branding.subtitle_klinik || c.branding.subtitle_klinik || "Smart Wound Care System",
-        admin_user: dbState.branding.admin_user || c.branding.admin_user || "Nersrisman",
-        admin_pass: dbState.branding.admin_pass || c.branding.admin_pass || "Rismanners1",
-        logo_url: dbState.branding.logo_url || c.branding.logo_url || "",
-        api_url: dbState.branding.api_url || c.branding.api_url || "",
-        supa_url: dbState.branding.supa_url || c.branding.supa_url || DEFAULT_SUPABASE_URL,
-        supa_key: dbState.branding.supa_key || c.branding.supa_key || DEFAULT_SUPABASE_KEY
-      };
+  function overwriteLocalWithCloudData(c) {
+    if (c.branding) {
+      Object.assign(dbState.branding, c.branding);
     }
     saveConfigToLocalStorage();
 
-    normalizeDataState(c);
+    ['pasien','kunjungan','sdm','layanan','luka','bhp_dressing','retail','kepatuhan_options','users'].forEach(k => {
+      if (Array.isArray(c[k]) && c[k].length > 0) dbState[k] = c[k];
+    });
 
     applyBranding();
     renderTablePasien();
@@ -719,105 +634,178 @@
     populateKasirRetailDropdown();
     populateMedicalRecordLookup();
     generateNextNoRM();
+    renderPelaporanTab();
   }
 
-  function saveState(){
-    if(!isDataLoadedFromCloud){
-      return showToast("Gagal Simpan: Data dari Cloud belum selesai ditarik!", false);
+  function saveState() {
+    if (!isDataLoadedFromCloud) {
+      return showToast("Gagal Simpan: Data dari Cloud belum selesai dimuat!", false);
     }
 
-    const b=$('btn-finalisasi');
-    if(b) b.innerHTML=`<i data-lucide="loader" class="w-4 h-4 animate-spin font-bold"></i> Menyimpan...`;
-    if(typeof lucide!=='undefined') lucide.createIcons();
+    const b = $('btn-finalisasi');
+    if (b) b.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin font-bold"></i> Menyimpan...`;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 
     saveConfigToLocalStorage();
 
     const tApi = dbState.branding.api_url || "";
-    if(tApi && tApi.startsWith('http')){
+    if (tApi && tApi.startsWith('http')) {
       fetch(tApi, {
         method: "POST",
-        headers: {"Content-Type":"text/plain;charset=utf-8"},
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({ action: "sync", state: dbState })
       })
-      .then(r=>r.json())
-      .then(async r=>{
-        if(r.success){
+      .then(r => r.json())
+      .then(async r => {
+        if (r.success) {
           showToast("Sinkronisasi Cloud Sukses!");
-          await pingSupabase();
-          if(realtimeChannel){
-            realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { sender: myClientId, updated: true } });
-          }
         } else {
-          showToast("Gagal Sync: "+r.error, false);
+          showToast("Gagal Sync: " + r.error, false);
         }
-        if(b) b.innerHTML=`<i data-lucide="send" class="w-4 h-4 font-bold"></i> Simpan & Kirim Tagihan ke Kasir`;
-        if(typeof lucide!=='undefined') lucide.createIcons();
+        if (b) b.innerHTML = `<i data-lucide="send" class="w-4 h-4 font-bold"></i> Simpan & Kirim Tagihan ke Kasir`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
       })
-      .catch(e=>{
+      .catch(e => {
         showToast("Gagal Jaringan saat menyimpan.", false);
-        if(b) b.innerHTML=`<i data-lucide="send" class="w-4 h-4 font-bold"></i> Simpan & Kirim Tagihan ke Kasir`;
-        if(typeof lucide!=='undefined') lucide.createIcons();
+        if (b) b.innerHTML = `<i data-lucide="send" class="w-4 h-4 font-bold"></i> Simpan & Kirim Tagihan ke Kasir`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
       });
-    }else{
+    } else {
       showToast("URL Google Apps Script Belum Terkonfigurasi!", false);
-      if(b) b.innerHTML=`<i data-lucide="send" class="w-4 h-4 font-bold"></i> Simpan & Kirim Tagihan ke Kasir`;
-      if(typeof lucide!=='undefined') lucide.createIcons();
+      if (b) b.innerHTML = `<i data-lucide="send" class="w-4 h-4 font-bold"></i> Simpan & Kirim Tagihan ke Kasir`;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
   }
 
-  function toggleLogin(){if(isOwnerLoggedIn){isOwnerLoggedIn=false;triggerOwnerUIMode(false);switchTab('tab-registrasi');showToast("Sesi Berakhir.");}else{$('modal-login').classList.remove('hidden');}}
-  function closeLoginModal(){$('modal-login').classList.add('hidden');window.pendingTab=null;}
-  function togglePasswordVisibility(){const p=$('login-password'),c=$('show-password');if(p&&c)p.type=c.checked?'text':'password';}
-  function handleLoginSubmit(e){e.preventDefault();const u=v('login-username').trim(),p=v('login-password').trim();const us=dbState.users.find(x=>x.username===u&&x.password===p);if(us||(u===dbState.branding?.admin_user&&p===dbState.branding?.admin_pass)||(u==="Nersrisman"&&p==="Rismanners1")){isOwnerLoggedIn=true;triggerOwnerUIMode(true);closeLoginModal();showToast("Otentikasi Berhasil!");if(window.pendingTab){switchTab(window.pendingTab);window.pendingTab=null;}}else{if($('login-error'))$('login-error').classList.remove('hidden');}}
-  function triggerOwnerUIMode(on){const bT=$('btn-login-text'),iC=$('btn-login-icon-container');if(on){if(bT)bT.innerText="Akhiri Sesi";if(iC)iC.innerHTML=`<i data-lucide="unlock" class="w-3.5 h-3.5 font-bold"></i>`;}else{if(bT)bT.innerText="Akses Owner";if(iC)iC.innerHTML=`<i data-lucide="lock" class="w-3.5 h-3.5 font-bold"></i>`;}if(typeof lucide!=='undefined')lucide.createIcons();}
+  window.onload = function() {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    pullAnchorConfigFromSupabase();
+  };
 
-  function switchTab(id){document.querySelectorAll('.tab-content').forEach(e=>e.classList.add('hidden'));if($(id))$(id).classList.remove('hidden');document.querySelectorAll('[id^="nav-tab-"]').forEach(b=>{b.classList.remove('active-tab');b.classList.add('border-eco-500/20');const i=b.querySelector('i');if(i)i.classList.remove('text-neon-teal','text-glow');});const a=$('nav-'+id);if(a){a.classList.add('active-tab');a.classList.remove('border-eco-500/20');const i=a.querySelector('i');if(i)i.classList.add('text-neon-teal','text-glow');}if(id==='tab-pelaporan')renderPelaporanTab();if(id==='tab-master'){renderMasterSDMTable();renderMasterLayananTable();renderMasterLukaTable();renderMasterBHPDressingTable();renderMasterRetailTable();renderMasterKepatuhan();renderMasterPasienTable();renderMasterUserTable();switchMasterSubTab('sub-sdm');}if(id==='tab-registrasi'){renderTablePasien();populateMedicalRecordLookup();generateNextNoRM();}if(id==='tab-kasir')renderKasirPending();}
-  function requestSecureAccess(id){if(isOwnerLoggedIn)switchTab(id);else{window.pendingTab=id;$('modal-login').classList.remove('hidden');}}
-  function switchMasterSubTab(id){document.querySelectorAll('.sub-tab-content').forEach(e=>e.classList.add('hidden'));if($(`sub-master-${id.split('-')[1]}`)) $(`sub-master-${id.split('-')[1]}`).classList.remove('hidden');document.querySelectorAll('[id^="subnav-"]').forEach(b=>{b.className="px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-eco-500 hover:text-white rounded-t-xl transition cursor-pointer";if(b.id==='subnav-retail')b.className="px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-neon-orange hover:text-white rounded-t-xl transition cursor-pointer";if(b.id==='subnav-kepatuhan'||b.id==='subnav-branding')b.className="px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-neon-teal hover:text-white rounded-t-xl transition cursor-pointer";});const a=$('subnav-'+id.split('-')[1]);if(a)a.className="px-5 py-2.5 text-[11px] font-black tracking-widest bg-eco-900 border-t border-x border-eco-700/80 rounded-t-xl text-white shadow-[0_-5px_15px_rgba(16,185,129,0.1)] cursor-pointer";}
-  function convertToDirectDriveLink(u){if(!u)return"";const m=u.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)||u.match(/[\?&]id=([a-zA-Z0-9_-]+)/)||u.match(/\/d\/([a-zA-Z0-9_-]+)/);return m?"https://lh3.googleusercontent.com/d/"+m[1]:u;}
-  
-  function applyBranding(){
-    if($('brand-title'))$('brand-title').innerText=dbState.branding.nama_klinik||"ARK CARE";
-    if($('brand-subtitle'))$('brand-subtitle').innerText=dbState.branding.subtitle_klinik||"Smart Wound Care System";
-    const img=$('clinic-logo-img'),dIco=$('clinic-default-logo');
-    if(dbState.branding.logo_url){
-      if(img){img.src=convertToDirectDriveLink(dbState.branding.logo_url);img.classList.remove('hidden');}
-      if(dIco)dIco.classList.add('hidden');
-    }else{
-      if(img)img.classList.add('hidden');
-      if(dIco)dIco.classList.remove('hidden');
-    }
-    setV('brand-edit-app-id',dbState.branding.app_id||"arkcare");
-    setV('brand-edit-title',dbState.branding.nama_klinik||"");
-    setV('brand-edit-subtitle',dbState.branding.subtitle_klinik||"");
-    setV('brand-edit-logo',dbState.branding.logo_url||"");
-    setV('brand-edit-api',dbState.branding.api_url||"");
-    setV('brand-edit-supa-url',dbState.branding.supa_url||DEFAULT_SUPABASE_URL);
-    setV('brand-edit-supa-key',dbState.branding.supa_key||DEFAULT_SUPABASE_KEY);
-    if(typeof lucide!=='undefined')lucide.createIcons();
+  function showToast(m, ok = true) {
+    const t = $('toast-notif'), tc = $('toast-icon-container'), tm = $('toast-message');
+    if (!t) return;
+    if (tm) tm.innerText = m;
+    if (tc) tc.innerHTML = ok ? `<i data-lucide="check-circle" class="w-5 h-5 text-neon-green"></i>` : `<i data-lucide="alert-circle" class="w-5 h-5 text-red-500"></i>`;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    t.classList.remove('translate-y-24', 'opacity-0');
+    setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 3500);
   }
-  
-  function applyLogoPreviewTemporarily(){const u=v('brand-edit-logo'),img=$('clinic-logo-img'),dIco=$('clinic-default-logo');if(u){if(img){img.src=convertToDirectDriveLink(u);img.classList.remove('hidden');}if(dIco)dIco.classList.add('hidden');}else{if(img)img.classList.add('hidden');if(dIco)dIco.classList.remove('hidden');}if(typeof lucide!=='undefined')lucide.createIcons();}
 
-  function generateNextNoRM(){const rm=$('reg-no-rm');if(!rm)return;if(!dbState.pasien||dbState.pasien.length===0){rm.value="RM0001";return;}let m=0;dbState.pasien.forEach(p=>{let n=parseInt(p.no_rm.replace(/\D/g,''));if(!isNaN(n)&&n>m)m=n;});rm.value="RM"+(m+1).toString().padStart(4,'0');}
-  function handleSavePasien(e){e.preventDefault();const p={no_rm:v('reg-no-rm'),nik:v('reg-nik')||"Opsional",nama_lengkap:v('reg-nama'),tgl_lahir:v('reg-tgl-lahir'),gender:v('reg-gender'),whatsapp:v('reg-whatsapp'),alamat:v('reg-alamat'),tgl_masuk:v('reg-tgl-masuk')||new Date().toISOString().split('T')[0],faktor_sosial:"-",komorbid:"-",alergi:"-"};if(dbState.pasien.some(x=>x.no_rm===p.no_rm||(p.nik!=="Opsional"&&x.nik===p.nik)))return showToast("Gagal! No RM/NIK telah digunakan",false);dbState.pasien.push(p);saveState();e.target.reset();generateNextNoRM();renderTablePasien();populateMedicalRecordLookup();showToast("Pasien "+p.nama_lengkap+" berhasil didaftarkan!");}
+  function showCustomAlert(t, m) {
+    $('dialog-title').innerText = t; $('dialog-message').innerText = m;
+    $('dialog-actions').innerHTML = `<button onclick="closeCustomDialog()" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Selesai</button>`;
+    $('custom-dialog').classList.remove('hidden');
+  }
 
-  function renderTablePasien(){
-    const tb=$('tbody-pasien'), sv=v('search-pasien').toLowerCase().trim();
-    if(!tb)return; tb.innerHTML="";
-    const cleanSearch = sv.replace(/\D/g,'');
-    
-    // Urutkan pasien berdasarkan waktu kunjungan medis terbaru
-    const sortedPasien = [...dbState.pasien].sort((a, b) => {
-      const visitsA = dbState.kunjungan.filter(x => x.no_rm === a.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan));
-      const visitsB = dbState.kunjungan.filter(x => x.no_rm === b.no_rm).sort((x, y) => y.id_kunjungan.localeCompare(x.id_kunjungan));
-      const timeA = visitsA.length > 0 ? visitsA[0].id_kunjungan : (a.tgl_masuk || '0');
-      const timeB = visitsB.length > 0 ? visitsB[0].id_kunjungan : (b.tgl_masuk || '0');
-      return timeB.localeCompare(timeA);
+  function showCustomConfirm(t, m, oC) {
+    $('dialog-title').innerText = t; $('dialog-message').innerText = m;
+    $('dialog-actions').innerHTML = `<button onclick="closeCustomDialog()" class="btn-cancel w-auto px-5">Batal</button><button id="dialog-confirm-yes" class="btn-save w-auto px-6 bg-gradient-to-r from-neon-teal to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black border-none">Lanjutkan</button>`;
+    $('dialog-confirm-yes').onclick = () => { oC(); closeCustomDialog(); };
+    $('custom-dialog').classList.remove('hidden');
+  }
+
+  function parseCleanNumber(val) {
+    try {
+      if (!val) return 0;
+      if (typeof val === 'number') return isNaN(val) ? 0 : val;
+      let s = val.toString().replace(/[^\d,\.-]/g, '').trim();
+      if (s === '') return 0;
+      if (s.includes(',') && s.includes('.')) s = s.lastIndexOf(',') > s.lastIndexOf('.') ? s.replace(/\./g, '').replace(/,/g, '.') : s.replace(/,/g, '');
+      else if (s.includes(',')) s = (s.split(',')[1] && s.split(',')[1].length === 3) ? s.replace(/,/g, '') : s.replace(/,/g, '.');
+      else if (s.includes('.')) { if (s.split('.')[1] && s.split('.')[1].length === 3) s = s.replace(/\./g, ''); }
+      return parseFloat(s) || 0;
+    } catch (e) { return 0; }
+  }
+
+  function generateTxId(p) { return p + Date.now().toString() + Math.floor(Math.random() * 1000).toString().padStart(3, '0'); }
+
+  function switchMasterSubTab(id) {
+    document.querySelectorAll('.sub-tab-content').forEach(e => e.classList.add('hidden'));
+    if ($(`sub-master-${id.split('-')[1]}`)) $(`sub-master-${id.split('-')[1]}`).classList.remove('hidden');
+    document.querySelectorAll('[id^="subnav-"]').forEach(b => {
+      b.className = "px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-eco-500 hover:text-white rounded-t-xl transition cursor-pointer";
+      if (b.id === 'subnav-retail') b.className = "px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-neon-orange hover:text-white rounded-t-xl transition cursor-pointer";
+      if (b.id === 'subnav-kepatuhan' || b.id === 'subnav-branding') b.className = "px-5 py-2.5 text-[11px] font-black tracking-widest bg-[#010c09] border border-transparent text-neon-teal hover:text-white rounded-t-xl transition cursor-pointer";
     });
+    const a = $('subnav-' + id.split('-')[1]);
+    if (a) a.className = "px-5 py-2.5 text-[11px] font-black tracking-widest bg-eco-900 border-t border-x border-eco-700/80 rounded-t-xl text-white shadow-[0_-5px_15px_rgba(16,185,129,0.1)] cursor-pointer";
+  }
 
-    const f = sortedPasien.filter(p => {
-      const cleanWA = (p.whatsapp || '').replace(/\D/g,'');
+  function convertToDirectDriveLink(u) {
+    if (!u) return "";
+    const m = u.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || u.match(/[\?&]id=([a-zA-Z0-9_-]+)/) || u.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return m ? "https://lh3.googleusercontent.com/d/" + m[1] : u;
+  }
+
+  function applyBranding() {
+    if ($('brand-title')) $('brand-title').innerText = dbState.branding.nama_klinik || "ARK CARE";
+    if ($('brand-subtitle')) $('brand-subtitle').innerText = dbState.branding.subtitle_klinik || "Smart Wound Care System";
+    const img = $('clinic-logo-img'), dIco = $('clinic-default-logo');
+    if (dbState.branding.logo_url) {
+      if (img) { img.src = convertToDirectDriveLink(dbState.branding.logo_url); img.classList.remove('hidden'); }
+      if (dIco) dIco.classList.add('hidden');
+    } else {
+      if (img) img.classList.add('hidden');
+      if (dIco) dIco.classList.remove('hidden');
+    }
+    setV('brand-edit-app-id', dbState.branding.app_id || "arkcare");
+    setV('brand-edit-title', dbState.branding.nama_klinik || "");
+    setV('brand-edit-subtitle', dbState.branding.subtitle_klinik || "");
+    setV('brand-edit-logo', dbState.branding.logo_url || "");
+    setV('brand-edit-api', dbState.branding.api_url || "");
+    setV('brand-edit-supa-url', dbState.branding.supa_url || DEFAULT_SUPABASE_URL);
+    setV('brand-edit-supa-key', dbState.branding.supa_key || DEFAULT_SUPABASE_KEY);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function applyLogoPreviewTemporarily() {
+    const u = v('brand-edit-logo'), img = $('clinic-logo-img'), dIco = $('clinic-default-logo');
+    if (u) {
+      if (img) { img.src = convertToDirectDriveLink(u); img.classList.remove('hidden'); }
+      if (dIco) dIco.classList.add('hidden');
+    } else {
+      if (img) img.classList.add('hidden');
+      if (dIco) dIco.classList.remove('hidden');
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function generateNextNoRM() {
+    const rm = $('reg-no-rm'); if (!rm) return;
+    if (!dbState.pasien || dbState.pasien.length === 0) { rm.value = "RM0001"; return; }
+    let m = 0;
+    dbState.pasien.forEach(p => { let n = parseInt(p.no_rm.replace(/\D/g, '')); if (!isNaN(n) && n > m) m = n; });
+    rm.value = "RM" + (m + 1).toString().padStart(4, '0');
+  }
+
+  function handleSavePasien(e) {
+    e.preventDefault();
+    const p = {
+      no_rm: v('reg-no-rm'), nik: v('reg-nik') || "Opsional", nama_lengkap: v('reg-nama'),
+      tgl_lahir: v('reg-tgl-lahir'), gender: v('reg-gender'), whatsapp: v('reg-whatsapp'),
+      alamat: v('reg-alamat'), tgl_masuk: v('reg-tgl-masuk') || new Date().toISOString().split('T')[0],
+      faktor_sosial: "-", komorbid: "-", alergi: "-"
+    };
+    if (dbState.pasien.some(x => x.no_rm === p.no_rm || (p.nik !== "Opsional" && x.nik === p.nik))) {
+      return showToast("Gagal! No RM/NIK telah digunakan", false);
+    }
+    dbState.pasien.push(p);
+    saveState();
+    e.target.reset();
+    generateNextNoRM();
+    renderTablePasien();
+    populateMedicalRecordLookup();
+    showToast("Pasien " + p.nama_lengkap + " berhasil didaftarkan!");
+  }
+
+  function renderTablePasien() {
+    const tb = $('tbody-pasien'), sv = v('search-pasien').toLowerCase().trim();
+    if (!tb) return; tb.innerHTML = "";
+    const cleanSearch = sv.replace(/\D/g, '');
+
+    const f = dbState.pasien.filter(p => {
+      const cleanWA = (p.whatsapp || '').replace(/\D/g, '');
       const matchName = (p.nama_lengkap || '').toLowerCase().includes(sv);
       const matchRM = (p.no_rm || '').toLowerCase().includes(sv);
       const matchNIK = p.nik && (p.nik || '').toLowerCase().includes(sv);
@@ -825,9 +813,9 @@
       return matchName || matchRM || matchNIK || matchWA;
     });
 
-    if(!f.length){ tb.innerHTML=`<tr><td colspan="5" class="p-4 text-center italic text-eco-500 text-xs font-semibold">Tidak ada data pasien yang sesuai.</td></tr>`; return; }
-    tb.innerHTML=f.map(p=>`<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-neon-green text-xs font-black tracking-wider">${p.no_rm}</td><td class="td-cls text-white font-bold tracking-wide">${p.nama_lengkap} <span class="text-[9px] text-eco-500 ml-1">(NIK: ${p.nik==='Opsional'?'-':p.nik})</span></td><td class="td-cls text-xs">${p.gender}</td><td class="td-cls font-mono text-xs text-eco-400">${p.whatsapp}</td><td class="td-cls text-center"><button onclick="selectPasien('${p.no_rm}')" class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-lg text-white font-black text-[10px] tracking-widest uppercase shadow-md transition active:scale-95 cursor-pointer border border-emerald-400/50 flex items-center justify-center mx-auto gap-1.5"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> Pilih</button></td></tr>`).join('');
-    if(typeof lucide!=='undefined')lucide.createIcons();
+    if (!f.length) { tb.innerHTML = `<tr><td colspan="5" class="p-4 text-center italic text-eco-500 text-xs font-semibold">Tidak ada data pasien yang sesuai.</td></tr>`; return; }
+    tb.innerHTML = f.map(p => `<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-neon-green text-xs font-black tracking-wider">${p.no_rm}</td><td class="td-cls text-white font-bold tracking-wide">${p.nama_lengkap} <span class="text-[9px] text-eco-500 ml-1">(NIK: ${p.nik === 'Opsional' ? '-' : p.nik})</span></td><td class="td-cls text-xs">${p.gender}</td><td class="td-cls font-mono text-xs text-eco-400">${p.whatsapp}</td><td class="td-cls text-center"><button onclick="selectPasien('${p.no_rm}')" class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-lg text-white font-black text-[10px] tracking-widest uppercase shadow-md transition active:scale-95 cursor-pointer border border-emerald-400/50 flex items-center justify-center mx-auto gap-1.5"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> Pilih</button></td></tr>`).join('');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
   function populateMedicalRecordLookup() {
@@ -835,245 +823,505 @@
     if (rs) rs.innerHTML = "<option value=''>-- Cari Nama / RM / NIK Pasien --</option>" + dbState.pasien.map(p => `<option value="${p.no_rm}">${p.no_rm} - ${p.nama_lengkap} (NIK: ${p.nik !== 'Opsional' ? p.nik : '-'})</option>`).join('');
   }
 
-  function selectPasien(rm){const p=dbState.pasien.find(x=>x.no_rm===rm);if(!p)return;selectedPasienRM=rm;const nm=$('active-p-nama'),mt=$('active-p-meta'),kj=$('active-p-kunjungan');if(nm)nm.innerText=p.nama_lengkap;if(mt)mt.innerHTML=`<span class="text-neon-teal font-mono font-bold mr-2">${p.no_rm}</span> | <span class="ml-2 text-yellow-400">Alergi: ${p.alergi}</span> | <span class="text-red-400 ml-2">Komorbid: ${p.komorbid}</span> | <span class="text-blue-400 ml-2">Sosial: ${p.faktor_sosial||'-'}</span>`;const vc=dbState.kunjungan.filter(x=>x.no_rm===rm&&x.status_bayar!=='Pending').length+1;if(kj)kj.innerText=vc;setV('medrecord-lookup-pasien',rm);setV('s-sosial',p.faktor_sosial!=='-'?p.faktor_sosial:'');setV('s-alergi',p.alergi!=='-'?p.alergi:'');setV('s-komorbid',p.komorbid!=='-'?p.komorbid:'');const lV=dbState.kunjungan.filter(x=>x.no_rm===rm).sort((a,b)=>b.id_kunjungan.localeCompare(a.id_kunjungan))[0];if(lV){setV('s-nutrisi',lV.s_nutrisi||'');setV('s-keluarga',lV.s_keluarga||'');setV('s-kontrol',lV.s_kontrol||'');}else{['s-nutrisi','s-keluarga','s-kontrol'].forEach(id=>{const el=$(id);if(el&&el.options.length>0)el.selectedIndex=0;});}loadPasienMedicalRecordHistory();renderDossierInfoBox(rm);switchTab('tab-medis');showToast("Dossier "+p.nama_lengkap+" dibuka!");}
-  
-  function renderDossierInfoBox(rm){
-    const dbx=$('dossier-info-box');if(!dbx)return;
-    const ms=dbState.kunjungan.filter(x=>x.no_rm===rm&&x.status_bayar==='Lunas').sort((a,b)=>b.id_kunjungan.localeCompare(a.id_kunjungan));
-    if(ms.length===0){dbx.classList.add('hidden');return;}
+  function selectPasien(rm) {
+    const p = dbState.pasien.find(x => x.no_rm === rm); if (!p) return;
+    selectedPasienRM = rm;
+    const nm = $('active-p-nama'), mt = $('active-p-meta'), kj = $('active-p-kunjungan');
+    if (nm) nm.innerText = p.nama_lengkap;
+    if (mt) mt.innerHTML = `<span class="text-neon-teal font-mono font-bold mr-2">${p.no_rm}</span> | <span class="ml-2 text-yellow-400">Alergi: ${p.alergi}</span> | <span class="text-red-400 ml-2">Komorbid: ${p.komorbid}</span> | <span class="text-blue-400 ml-2">Sosial: ${p.faktor_sosial || '-'}</span>`;
+    const vc = dbState.kunjungan.filter(x => x.no_rm === rm && x.status_bayar !== 'Pending').length + 1;
+    if (kj) kj.innerText = vc;
+    setV('medrecord-lookup-pasien', rm);
+    setV('s-sosial', p.faktor_sosial !== '-' ? p.faktor_sosial : '');
+    setV('s-alergi', p.alergi !== '-' ? p.alergi : '');
+    setV('s-komorbid', p.komorbid !== '-' ? p.komorbid : '');
+    loadPasienMedicalRecordHistory();
+    renderDossierInfoBox(rm);
+    switchTab('tab-medis');
+    showToast("Dossier " + p.nama_lengkap + " dibuka!");
+  }
+
+  function renderDossierInfoBox(rm) {
+    const dbx = $('dossier-info-box'); if (!dbx) return;
+    const ms = dbState.kunjungan.filter(x => x.no_rm === rm && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    if (ms.length === 0) { dbx.classList.add('hidden'); return; }
     dbx.classList.remove('hidden');
-    const f=ms[ms.length-1], l=ms[0];
-    $('dos-awal-tgl').innerText="Kunjungan 1: "+f.tanggal;
-    $('dos-awal-kondisi').innerHTML=`${f.kondisi_luka||"-"}<br><span class="text-[10px] text-purple-400 font-bold mt-1 block">Dimensi: P:${f.r_panjang||'-'} x L:${f.r_lebar||'-'} x D:${f.r_dalam||'-'} cm</span>`;
-    $('dos-awal-jaringan').innerHTML=`<span class="text-neon-teal font-bold">${f.t_jaringan||'Jaringan Normal'}</span>`;
-    $('dos-akhir-tgl').innerText=`Kunjungan ${ms.length}: `+l.tanggal;
-    $('dos-akhir-kondisi').innerHTML=`${l.kondisi_luka||"-"}<br><span class="text-[10px] text-purple-400 font-bold mt-1 block">Dimensi: P:${l.r_panjang||'-'} x L:${l.r_lebar||'-'} x D:${l.r_dalam||'-'} cm</span>`;
-    $('dos-akhir-jaringan').innerHTML=`<span class="text-neon-teal font-bold">${l.t_jaringan||'Jaringan Normal'}</span>`;
+    const f = ms[ms.length - 1], l = ms[0];
+    $('dos-awal-tgl').innerText = "Kunjungan 1: " + f.tanggal;
+    $('dos-awal-kondisi').innerHTML = `${f.kondisi_luka || "-"}<br><span class="text-[10px] text-purple-400 font-bold mt-1 block">Dimensi: P:${f.r_panjang || '-'} x L:${f.r_lebar || '-'} x D:${f.r_dalam || '-'} cm</span>`;
+    $('dos-awal-jaringan').innerHTML = `<span class="text-neon-teal font-bold">${f.t_jaringan || 'Jaringan Normal'}</span>`;
+    $('dos-akhir-tgl').innerText = `Kunjungan ${ms.length}: ` + l.tanggal;
+    $('dos-akhir-kondisi').innerHTML = `${l.kondisi_luka || "-"}<br><span class="text-[10px] text-purple-400 font-bold mt-1 block">Dimensi: P:${l.r_panjang || '-'} x L:${l.r_lebar || '-'} x D:${l.r_dalam || '-'} cm</span>`;
+    $('dos-akhir-jaringan').innerHTML = `<span class="text-neon-teal font-bold">${l.t_jaringan || 'Jaringan Normal'}</span>`;
   }
 
-  function loadPasienMedicalRecordHistory(){
-    const rm=v('medrecord-lookup-pasien'),tl=$('visit-history-timeline'),tlp=$('medrecord-result-timeline');
-    if(!rm){
-      if(tl)tl.innerHTML=`<p class="text-eco-500 italic text-xs font-bold text-center mt-4">Pilih pasien terlebih dahulu.</p>`;
-      if(tlp)tlp.innerHTML=`<p class="text-eco-500 italic text-xs font-bold text-center mt-4">Pilih pasien terlebih dahulu.</p>`;
+  function loadPasienMedicalRecordHistory() {
+    const rm = v('medrecord-lookup-pasien'), tl = $('visit-history-timeline'), tlp = $('medrecord-result-timeline');
+    if (!rm) {
+      if (tl) tl.innerHTML = `<p class="text-eco-500 italic text-xs font-bold text-center mt-4">Pilih pasien terlebih dahulu.</p>`;
+      if (tlp) tlp.innerHTML = `<p class="text-eco-500 italic text-xs font-bold text-center mt-4">Pilih pasien terlebih dahulu.</p>`;
       return;
     }
-    const ms=dbState.kunjungan.filter(x=>x.no_rm===rm&&x.status_bayar==='Lunas').sort((a,b)=>b.id_kunjungan.localeCompare(a.id_kunjungan));
-    if(!ms.length){
-      if(tl)tl.innerHTML=`<p class="text-yellow-500 italic text-xs font-black text-center mt-4">Belum ada riwayat lunas.</p>`;
-      if(tlp)tlp.innerHTML=`<p class="text-yellow-500 italic text-xs font-black text-center mt-4">Belum ada riwayat lunas.</p>`;
+    const ms = dbState.kunjungan.filter(x => x.no_rm === rm && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    if (!ms.length) {
+      if (tl) tl.innerHTML = `<p class="text-yellow-500 italic text-xs font-black text-center mt-4">Belum ada riwayat lunas.</p>`;
+      if (tlp) tlp.innerHTML = `<p class="text-yellow-500 italic text-xs font-black text-center mt-4">Belum ada riwayat lunas.</p>`;
       return;
     }
-    selectedPasienRM=rm;
-    let h="";
-    if(ms.length>1) h+=`<div class="mb-3 p-3 bg-[#01140e]/60 border border-neon-green/40 rounded-xl shadow-inner"><div class="text-[10px] text-neon-green font-bold uppercase mb-1.5">RINGKASAN PROGRES KLINIS</div><div class="text-[10px] text-eco-100 flex justify-between border-b border-eco-800/50 pb-1.5"><span><b>Awal (${ms[ms.length-1].tanggal}):</b> ${ms[ms.length-1].kondisi_luka||'-'}</span></div><div class="text-[10px] text-eco-100 flex justify-between pt-1.5"><span><b>Akhir (${ms[0].tanggal}):</b> ${ms[0].kondisi_luka||'-'}</span></div></div>`;
-    
-    h+=ms.map(m=>{
-      let is="";try{is=JSON.parse(m.items_json).map(it=>`<span class="bg-[#01140e] border border-eco-700/50 text-[9px] text-neon-teal px-2 py-0.5 rounded shadow-sm">${it.name}</span>`).join(' ');}catch(e){}
-      return`<div class="p-4 rounded-2xl bg-gradient-to-br from-[#01140e]/90 to-[#010c09] border border-eco-800/80 space-y-2 text-[11px] font-semibold mb-3 shadow-[0_4px_15px_rgba(0,0,0,0.5)]"><div class="flex justify-between items-center border-b border-eco-800/60 pb-2"><span class="font-black tracking-widest text-neon-teal bg-neon-teal/10 px-2 py-1 rounded">KUNJUNGAN KE-${m.kunjungan_ke}</span><span class="font-mono text-neon-green font-bold">${m.tanggal}</span></div><div class="text-eco-100 pt-1"><b>Keluhan Utama:</b> <span class="text-white">${m.tipe_luka}</span></div><div class="text-eco-100"><b>Observasi Klinis:</b> ${m.kondisi_luka}</div><div class="text-purple-400 font-bold"><b>Status & Ukuran:</b> ${m.r_status||'-'} | P: ${m.r_panjang||'-'}cm x L: ${m.r_lebar||'-'}cm x D: ${m.r_dalam||'-'}cm</div><div class="mt-2.5 flex flex-wrap gap-2 text-[10px] font-black"><span class="text-neon-teal bg-[#01140e] px-2 py-1 border border-neon-teal/20 rounded">Jaringan: ${m.t_jaringan||'-'}</span><span class="text-purple-400 bg-[#01140e] px-2 py-1 border border-purple-500/20 rounded">Nutrisi: ${m.s_nutrisi||'-'}</span><span class="text-pink-400 bg-[#01140e] px-2 py-1 border border-pink-500/20 rounded">Keluarga: ${m.s_keluarga||'-'}</span><span class="text-emerald-400 bg-[#01140e] px-2 py-1 border border-emerald-500/20 rounded">Kontrol: ${m.s_kontrol||'-'}</span></div><div class="flex flex-wrap gap-1.5 items-center pt-2"><span class="text-[9px] text-eco-500 uppercase font-black tracking-wider">Modality Terapi:</span> ${is}</div><div class="flex justify-between items-center pt-2 mt-1 text-[10px] text-eco-600 border-t border-eco-900 font-bold uppercase tracking-wider"><span>Medis: ${m.petugas}</span></div></div>`;
+    selectedPasienRM = rm;
+    let h = "";
+    h += ms.map(m => {
+      let is = ""; try { is = JSON.parse(m.items_json).map(it => `<span class="bg-[#01140e] border border-eco-700/50 text-[9px] text-neon-teal px-2 py-0.5 rounded shadow-sm">${it.name}</span>`).join(' '); } catch (e) { }
+      return `<div class="p-4 rounded-2xl bg-gradient-to-br from-[#01140e]/90 to-[#010c09] border border-eco-800/80 space-y-2 text-[11px] font-semibold mb-3 shadow-[0_4px_15px_rgba(0,0,0,0.5)]"><div class="flex justify-between items-center border-b border-eco-800/60 pb-2"><span class="font-black tracking-widest text-neon-teal bg-neon-teal/10 px-2 py-1 rounded">KUNJUNGAN KE-${m.kunjungan_ke}</span><span class="font-mono text-neon-green font-bold">${m.tanggal}</span></div><div class="text-eco-100 pt-1"><b>Keluhan Utama:</b> <span class="text-white">${m.tipe_luka}</span></div><div class="text-eco-100"><b>Observasi Klinis:</b> ${m.kondisi_luka}</div><div class="text-purple-400 font-bold"><b>Status & Ukuran:</b> ${m.r_status || '-'} | P: ${m.r_panjang || '-'}cm x L: ${m.r_lebar || '-'}cm x D: ${m.r_dalam || '-'}cm</div><div class="mt-2.5 flex flex-wrap gap-2 text-[10px] font-black"><span class="text-neon-teal bg-[#01140e] px-2 py-1 border border-neon-teal/20 rounded">Jaringan: ${m.t_jaringan || '-'}</span></div><div class="flex flex-wrap gap-1.5 items-center pt-2"><span class="text-[9px] text-eco-500 uppercase font-black tracking-wider">Modality Terapi:</span> ${is}</div><div class="flex justify-between items-center pt-2 mt-1 text-[10px] text-eco-600 border-t border-eco-900 font-bold uppercase tracking-wider"><span>Medis: ${m.petugas}</span></div></div>`;
     }).join('');
-    
-    if(tl)tl.innerHTML=h;if(tlp)tlp.innerHTML=h;
+
+    if (tl) tl.innerHTML = h; if (tlp) tlp.innerHTML = h;
   }
 
-  function populateMedisDropdowns(){const pt=$('med-petugas'),tl=$('med-tipe-luka');if(pt)pt.innerHTML=dbState.sdm.map(s=>`<option value="${s.nama_petugas}">${s.nama_petugas}</option>`).join('');if(tl)tl.innerHTML=dbState.luka.map(l=>`<option value="${l.nama_luka}">${l.nama_luka}</option>`).join('');}
-  function populateBillingDropdowns(){const js=$('billing-jasa-select'),bh=$('billing-bhp-select');if(js)js.innerHTML=dbState.layanan.map(l=>`<option value="${l.kode_jasa}">${l.nama_tindakan} - Rp ${pCN(l.tarif).toLocaleString('id-ID')}</option>`).join('');if(bh)bh.innerHTML=dbState.bhp_dressing.map(b=>`<option value="${b.kode_item}">${b.nama_item} [${b.kategori}] (Stok: ${b.stok_gudang}) - Rp ${pCN(b.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join('');autoPopulateBhpPrice();}
-  function autoPopulateBhpPrice(){const sv=v('billing-bhp-select');const i=dbState.bhp_dressing.find(b=>b.kode_item===sv);setV('billing-bhp-custom-price',i?pCN(i.harga_jual_eceran):0);}
-  function populateTimeDropdowns(){const mt=dbState.master_time;const sO=(id,a)=>{const e=$(id);if(e&&a)e.innerHTML=a.map(x=>`<option value="${x}">${x}</option>`).join('');};sO('m-level-eksudat',mt.eksudat_level);sO('m-jenis-eksudat',mt.eksudat_jenis);populateKepatuhanSelect('s-nutrisi','nutrisi');populateKepatuhanSelect('s-keluarga','keluarga');populateKepatuhanSelect('s-kontrol','kontrol');}
-  function populateKepatuhanSelect(id,c){const e=$(id);if(!e)return;e.innerHTML=dbState.kepatuhan_options.filter(x=>x.kategori===c).map(o=>`<option value="${o.opsi}">${o.opsi}</option>`).join('');}
-  function addJasaToCart(){if(!selectedPasienRM)return showToast("Pilih pasien terlebih dahulu!",false);const cd=v('billing-jasa-select');const s=dbState.layanan.find(l=>l.kode_jasa===cd);if(!s||billingCart.find(i=>i.type==='jasa'&&i.code===cd))return showToast("Tindakan sudah ada di draft!",false);billingCart.push({type:'jasa',code:s.kode_jasa,name:s.nama_tindakan,qty:1,price:pCN(s.tarif),hpp:0,komisi_persen:pCN(s.persen_jasa_medis),fee_custom:pCN(s.fee_custom)});renderCartTable();}
-  function addBhpToCart(){if(!selectedPasienRM)return showToast("Pilih pasien terlebih dahulu!",false);const sv=v('billing-bhp-select'),qt=parseInt(v('billing-bhp-qty'))||1,cp=pCN(v('billing-bhp-custom-price'));const i=dbState.bhp_dressing.find(b=>b.kode_item===sv);if(!i)return;if(pCN(i.stok_gudang)<qt)return showToast("Stok tidak mencukupi!",false);const ex=billingCart.find(x=>x.code===sv);if(ex){ex.qty+=qt;ex.price=cp;}else{billingCart.push({type:i.kategori.toLowerCase(),code:i.kode_item,name:i.nama_item,qty:qt,price:cp,hpp:pCN(i.harga_beli_grosir)});}renderCartTable();}
-  function deleteCartItem(i){billingCart.splice(i,1);renderCartTable();}
-  function renderCartTable(){const tb=$('tbody-billing-cart');if(!tb)return;if(!billingCart.length){tb.innerHTML=`<tr><td colspan="4" class="p-4 text-center italic text-eco-500/80 text-xs font-bold border border-dashed border-eco-800/50 rounded-xl mt-2 block">Keranjang / draft tindakan kosong.</td></tr>`;return;}tb.innerHTML=billingCart.map((it,i)=>`<tr class="border-b border-eco-800/80 text-[10px] font-semibold hover:bg-[#000000]/50 transition"><td class="p-1.5"><div class="text-white text-xs font-bold">${it.name}</div><div class="text-[9px] text-neon-teal font-mono uppercase font-black tracking-widest mt-0.5">Tarif: Rp ${it.price.toLocaleString('id-ID')}</div></td><td class="p-1.5 text-center text-xs font-bold">${it.qty}</td><td class="p-1.5 text-right text-neon-teal text-xs font-mono font-bold">Rp ${(it.price*it.qty).toLocaleString('id-ID')}</td><td class="p-1.5 text-center"><button onclick="deleteCartItem(${i})" class="text-red-500 text-xs font-bold hover:bg-red-500/20 px-2.5 py-1.5 rounded-lg transition-all duration-200 shadow-md cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  
-  function handleSendToKasir(){
-    if(!selectedPasienRM)return showToast("Pilih pasien di tab Pendaftaran.",false);
-    if(!billingCart.length)return showToast("Draft Terapi Kosong!",false);
-    const pI=dbState.pasien.findIndex(x=>x.no_rm===selectedPasienRM);
-    if(pI!==-1){
-      dbState.pasien[pI].faktor_sosial=v('s-sosial').trim()||"-";
-      dbState.pasien[pI].alergi=v('s-alergi').trim()||"-";
-      dbState.pasien[pI].komorbid=v('s-komorbid').trim()||"-";
-    }
-    let tI=0,tH=0;
-    billingCart.forEach(it=>{
-      tI+=(it.price*it.qty);
-      tH+=(it.hpp*it.qty);
-      if(it.type==='bhp'||it.type==='dressing'){
-        const b=dbState.bhp_dressing.find(x=>x.kode_item===it.code);
-        if(b)b.stok_gudang=Math.max(0,pCN(b.stok_gudang)-it.qty);
+  function populateMedisDropdowns() { const pt = $('med-petugas'), tl = $('med-tipe-luka'); if (pt) pt.innerHTML = dbState.sdm.map(s => `<option value="${s.nama_petugas}">${s.nama_petugas}</option>`).join(''); if (tl) tl.innerHTML = dbState.luka.map(l => `<option value="${l.nama_luka}">${l.nama_luka}</option>`).join(''); }
+  function populateBillingDropdowns() { const js = $('billing-jasa-select'), bh = $('billing-bhp-select'); if (js) js.innerHTML = dbState.layanan.map(l => `<option value="${l.kode_jasa}">${l.nama_tindakan} - Rp ${pCN(l.tarif).toLocaleString('id-ID')}</option>`).join(''); if (bh) bh.innerHTML = dbState.bhp_dressing.map(b => `<option value="${b.kode_item}">${b.nama_item} [${b.kategori}] (Stok: ${b.stok_gudang}) - Rp ${pCN(b.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join(''); autoPopulateBhpPrice(); }
+  function autoPopulateBhpPrice() { const sv = v('billing-bhp-select'); const i = dbState.bhp_dressing.find(b => b.kode_item === sv); setV('billing-bhp-custom-price', i ? pCN(i.harga_jual_eceran) : 0); }
+  function populateTimeDropdowns() { const mt = dbState.master_time; const sO = (id, a) => { const e = $(id); if (e && a) e.innerHTML = a.map(x => `<option value="${x}">${x}</option>`).join(''); }; sO('m-level-eksudat', mt.eksudat_level); sO('m-jenis-eksudat', mt.eksudat_jenis); populateKepatuhanSelect('s-nutrisi', 'nutrisi'); populateKepatuhanSelect('s-keluarga', 'keluarga'); populateKepatuhanSelect('s-kontrol', 'kontrol'); }
+  function populateKepatuhanSelect(id, c) { const e = $(id); if (!e) return; e.innerHTML = dbState.kepatuhan_options.filter(x => x.kategori === c).map(o => `<option value="${o.opsi}">${o.opsi}</option>`).join(''); }
+
+  function addJasaToCart() {
+    if (!selectedPasienRM) return showToast("Pilih pasien terlebih dahulu!", false);
+    const cd = v('billing-jasa-select');
+    const s = dbState.layanan.find(l => l.kode_jasa === cd);
+    if (!s || billingCart.find(i => i.type === 'jasa' && i.code === cd)) return showToast("Tindakan sudah ada di draft!", false);
+    billingCart.push({ type: 'jasa', code: s.kode_jasa, name: s.nama_tindakan, qty: 1, price: pCN(s.tarif), hpp: 0, komisi_persen: pCN(s.persen_jasa_medis), fee_custom: pCN(s.fee_custom) });
+    renderCartTable();
+  }
+
+  function addBhpToCart() {
+    if (!selectedPasienRM) return showToast("Pilih pasien terlebih dahulu!", false);
+    const sv = v('billing-bhp-select'), qt = parseInt(v('billing-bhp-qty')) || 1, cp = pCN(v('billing-bhp-custom-price'));
+    const i = dbState.bhp_dressing.find(b => b.kode_item === sv); if (!i) return;
+    if (pCN(i.stok_gudang) < qt) return showToast("Stok tidak mencukupi!", false);
+    const ex = billingCart.find(x => x.code === sv);
+    if (ex) { ex.qty += qt; ex.price = cp; } else { billingCart.push({ type: i.kategori.toLowerCase(), code: i.kode_item, name: i.nama_item, qty: qt, price: cp, hpp: pCN(i.harga_beli_grosir) }); }
+    renderCartTable();
+  }
+
+  function deleteCartItem(i) { billingCart.splice(i, 1); renderCartTable(); }
+
+  function renderCartTable() {
+    const tb = $('tbody-billing-cart'); if (!tb) return;
+    if (!billingCart.length) { tb.innerHTML = `<tr><td colspan="4" class="p-4 text-center italic text-eco-500/80 text-xs font-bold border border-dashed border-eco-800/50 rounded-xl mt-2 block">Keranjang / draft tindakan kosong.</td></tr>`; return; }
+    tb.innerHTML = billingCart.map((it, i) => `<tr class="border-b border-eco-800/80 text-[10px] font-semibold hover:bg-[#000000]/50 transition"><td class="p-1.5"><div class="text-white text-xs font-bold">${it.name}</div><div class="text-[9px] text-neon-teal font-mono uppercase font-black tracking-widest mt-0.5">Tarif: Rp ${it.price.toLocaleString('id-ID')}</div></td><td class="p-1.5 text-center text-xs font-bold">${it.qty}</td><td class="p-1.5 text-right text-neon-teal text-xs font-mono font-bold">Rp ${(it.price * it.qty).toLocaleString('id-ID')}</td><td class="p-1.5 text-center"><button onclick="deleteCartItem(${i})" class="text-red-500 text-xs font-bold hover:bg-red-500/20 px-2.5 py-1.5 rounded-lg transition-all duration-200 shadow-md cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function handleSendToKasir() {
+    if (!selectedPasienRM) return showToast("Pilih pasien di tab Pendaftaran.", false);
+    if (!billingCart.length) return showToast("Draft Terapi Kosong!", false);
+
+    let tI = 0, tH = 0;
+    billingCart.forEach(it => {
+      tI += (it.price * it.qty);
+      tH += (it.hpp * it.qty);
+      if (it.type === 'bhp' || it.type === 'dressing') {
+        const b = dbState.bhp_dressing.find(x => x.kode_item === it.code);
+        if (b) b.stok_gudang = Math.max(0, pCN(b.stok_gudang) - it.qty);
       }
     });
-    const cK=dbState.kunjungan.filter(x=>x.no_rm===selectedPasienRM&&x.status_bayar!=='Pending').length+1;
+
+    const cK = dbState.kunjungan.filter(x => x.no_rm === selectedPasienRM && x.status_bayar !== 'Pending').length + 1;
     dbState.kunjungan.push({
-      id_kunjungan:generateTxId("TX"),
-      no_rm:selectedPasienRM,
-      tanggal:new Date().toISOString().split('T')[0],
-      kunjungan_ke:cK,
-      petugas:v('med-petugas'),
-      tipe_luka:v('med-tipe-luka'),
-      kondisi_luka:v('med-kondisi')||"-",
-      penyebab:v('med-penyebab')||"-",
-      r_status:v('r-status')||"-",
-      r_panjang:v('r-panjang')||"-",
-      r_lebar:v('r-lebar')||"-",
-      r_dalam:v('r-dalam')||"-",
-      t_jaringan:`Hitam: ${v('t-hitam')||0}%, Kuning: ${v('t-kuning')||0}%, Merah: ${v('t-merah')||0}%, Pink: ${v('t-pink')||0}%`,
-      i_nyeri:$('i-nyeri').checked,i_panas:$('i-panas').checked,i_bengkak:$('i-bengkak').checked,i_bau:$('i-bau').checked,i_antimikroba:"-",i_kemerahan:$('i-kemerahan').checked,i_fungsi:false,i_nanah:false,
-      m_level_eksudat:v('m-level-eksudat'),m_jenis_eksudat:v('m-jenis-eksudat'),e_kallus:$('e-kallus').checked,e_maserasi:$('e-maserasi').checked,
-      s_nutrisi:v('s-nutrisi')||"-",s_keluarga:v('s-keluarga')||"-",s_kontrol:v('s-kontrol')||"-",
-      items_json:JSON.stringify(billingCart),jasa_sarana:0,diskon:0,grand_total:tI,modal_hpp:tH,status_bayar:'Pending'
+      id_kunjungan: generateTxId("TX"), no_rm: selectedPasienRM, tanggal: new Date().toISOString().split('T')[0],
+      kunjungan_ke: cK, petugas: v('med-petugas'), tipe_luka: v('med-tipe-luka'),
+      kondisi_luka: v('med-kondisi') || "-", penyebab: v('med-penyebab') || "-",
+      r_status: v('r-status') || "-", r_panjang: v('r-panjang') || "-", r_lebar: v('r-lebar') || "-", r_dalam: v('r-dalam') || "-",
+      t_jaringan: `Hitam: ${v('t-hitam') || 0}%, Kuning: ${v('t-kuning') || 0}%, Merah: ${v('t-merah') || 0}%, Pink: ${v('t-pink') || 0}%`,
+      items_json: JSON.stringify(billingCart), jasa_sarana: 0, diskon: 0, grand_total: tI, modal_hpp: tH, status_bayar: 'Pending'
     });
+
     saveState();
-    billingCart=[];
+    billingCart = [];
     renderCartTable();
     $('form-medis-kunjungan').reset();
-    setV('r-status','-');
-    ['r-panjang','r-lebar','r-dalam','t-hitam','t-kuning','t-merah','t-pink','s-sosial','s-alergi','s-komorbid'].forEach(id=>setV(id,''));
-    ['s-nutrisi','s-keluarga','s-kontrol'].forEach(id=>{const el=$(id);if(el&&el.options.length>0)el.selectedIndex=0;});
-    ['i-nyeri','i-panas','i-bengkak','i-kemerahan','i-bau','e-kallus','e-maserasi'].forEach(id=>$(id).checked=false);
     selectPasien(selectedPasienRM);
     populateBillingDropdowns();
     showToast("Medis Diproses, Menunggu Kasir!");
   }
 
-  function renderKasirPending(){const tb=$('tbody-kasir-pending');if(!tb)return;const pd=dbState.kunjungan.filter(x=>x.status_bayar==='Pending').sort((a,b)=>b.id_kunjungan.localeCompare(a.id_kunjungan));if(!pd.length){tb.innerHTML=`<tr><td colspan="4" class="p-4 text-center italic text-eco-500 text-[11px] font-bold border border-dashed border-eco-800/50 rounded-xl mt-2 block">Tidak ada antrean rekam medis.</td></tr>`;renderKasirHistory();return;}tb.innerHTML=pd.map(vObj=>{const ps=dbState.pasien.find(p=>p.no_rm===vObj.no_rm);let it="Detail kosong";try{it=JSON.parse(vObj.items_json).map(i=>i.name).join(', ');}catch(e){}return`<tr class="border-b border-eco-800/80 hover:bg-[#000000]/50 transition"><td class="p-3 font-mono text-neon-green font-black text-xs">${vObj.tanggal}</td><td class="p-3 text-white text-xs"><b>${ps?.nama_lengkap||'Unknown'}</b><br><span class="text-[9px] font-mono text-eco-500 font-bold bg-[#010c09] px-1.5 py-0.5 rounded">${vObj.no_rm}</span></td><td class="p-3 truncate max-w-[120px] text-[11px] font-semibold text-eco-100">${it}</td><td class="p-3 text-center"><button onclick="loadToKasirCart('${vObj.id_kunjungan}')" class="px-5 py-2 bg-gradient-to-b from-yellow-500 to-yellow-600 border border-yellow-400 hover:from-yellow-400 hover:to-yellow-550 text-black font-black tracking-widest uppercase rounded-lg shadow-[0_4px_15px_rgba(234,179,8,0.3)] text-[10px] transition-all duration-200 active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 mx-auto"><i data-lucide="arrow-right-circle" class="w-3.5 h-3.5"></i> Proses</button></td></tr>`;}).join('');renderKasirHistory();if(typeof lucide!=='undefined')lucide.createIcons();}
-  function toggleKasirJasaInput(){const ji=$('kasir-jasa-sarana');if(!ji)return;if(pendingCheckoutVisitId){ji.disabled=false;ji.classList.remove('opacity-50','bg-[#000000]');ji.value=15000;}else{ji.disabled=true;ji.value=0;ji.classList.add('opacity-50','bg-[#000000]');}calculateKasirTotals();}
-  function calculateKasirTotals(){const s=kasirCart.reduce((a,it)=>a+(it.price*it.qty),0),sr=pCN(v('kasir-jasa-sarana')),dk=pCN(v('kasir-diskon'));$('kasir-grand-total').innerText="Rp "+Math.max(0,s+sr-dk).toLocaleString('id-ID');}
-  function loadToKasirCart(tId){const vO=dbState.kunjungan.find(x=>x.id_kunjungan===tId);if(!vO)return;pendingCheckoutVisitId=tId;const p=dbState.pasien.find(x=>x.no_rm===vO.no_rm);$('kasir-pasien-nama').innerText=p?p.nama_lengkap:'Unknown';try{kasirCart=JSON.parse(vO.items_json);}catch(e){kasirCart=[];}toggleKasirJasaInput();renderKasirCartTable();calculateKasirTotals();showToast(`Menarik tagihan ${p?.nama_lengkap}...`);}
-  function populateKasirRetailDropdown(){const rs=$('retail-select');if(rs)rs.innerHTML=dbState.retail.map(r=>`<option value="RTL-${r.kode_retail}">${r.nama_produk} (Stok: ${r.stok}) - Rp${pCN(r.harga_jual).toLocaleString('id-ID')}</option>`).join('')+dbState.bhp_dressing.map(d=>`<option value="DRS-${d.kode_item}">${d.nama_item} [${d.kategori}] (Stok: ${d.stok_gudang}) - Rp${pCN(d.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join('');}
-  function addRetailToCart(){const vl=v('retail-select').split('-'),qt=parseInt(v('retail-qty'))||1,iD=vl[0]==='DRS',it=iD?dbState.bhp_dressing.find(d=>d.kode_item===vl[1]):dbState.retail.find(r=>r.kode_retail===vl[1]);if(!it)return;if(!iD&&pCN(it.stok)<qt)return showToast("Stok produk tidak mencukupi!",false);const ex=kasirCart.find(x=>x.code===vl[1]);if(ex)ex.qty+=qt;else kasirCart.push({type:iD?'dressing':'retail',code:vl[1],name:iD?it.nama_item:it.nama_produk,qty:qt,price:iD?pCN(it.harga_jual_eceran):pCN(it.harga_jual),hpp:iD?pCN(it.harga_beli_grosir):pCN(it.harga_modal),isNew:true});if(!pendingCheckoutVisitId&&kasirCart.length>0)toggleKasirJasaInput();renderKasirCartTable();calculateKasirTotals();}
-  function removeKasirCartItem(i){const rm=kasirCart[i];if(pendingCheckoutVisitId&&!rm.isNew){if(rm.type==='bhp'||rm.type==='dressing'){const b=dbState.bhp_dressing.find(x=>x.kode_item===rm.code);if(b)b.stok_gudang+=rm.qty;}}kasirCart.splice(i,1);if(kasirCart.length===0){pendingCheckoutVisitId=null;$('kasir-pasien-nama').innerText="Pembeli Umum";toggleKasirJasaInput();}renderKasirCartTable();calculateKasirTotals();}
-  function renderKasirCartTable(){const tb=$('tbody-kasir-cart');if(!tb)return;if(!kasirCart.length){tb.innerHTML=`<tr><td class="p-3 text-center italic text-eco-500 text-[11px] font-bold border border-dashed border-eco-800/50 rounded-xl mt-2 block">Belum ada item dibayar.</td></tr>`;return;}tb.innerHTML=kasirCart.map((it,i)=>`<tr class="border-b border-eco-800/80 hover:bg-[#000000]/50 transition text-xs font-semibold"><td class="p-2.5 text-white font-bold tracking-wide">${it.name}<br><span class="text-[9px] text-neon-teal font-mono uppercase tracking-widest font-black">Tarif: Rp ${it.price.toLocaleString('id-ID')}</span></td><td class="p-2.5 text-center text-xs font-black text-yellow-400">x${it.qty}</td><td class="p-2.5 text-right text-neon-green text-xs font-mono font-black tracking-widest">Rp ${(it.price*it.qty).toLocaleString('id-ID')}</td><td class="p-2.5 text-center"><button onclick="removeKasirCartItem(${i})" class="text-red-500 bg-red-950/40 border border-red-900/50 text-xs font-black hover:bg-600 hover:text-white px-2.5 py-1.5 rounded-lg transition-all duration-200 shadow-md cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  function prosesPembayaranKasir(){if(!kasirCart.length)return showToast("Keranjang kasir kosong!",false);let tI=0,tH=0;kasirCart.forEach(it=>{tI+=(it.price*it.qty);tH+=(it.hpp*it.qty);if(it.isNew||!pendingCheckoutVisitId){if(it.type==='retail'){const r=dbState.retail.find(x=>x.kode_retail===it.code);if(r)r.stok=Math.max(0,pCN(r.stok)-it.qty);}else if(it.type==='dressing'||it.type==='bhp'){const b=dbState.bhp_dressing.find(x=>x.kode_item===it.code);if(b)b.stok_gudang=Math.max(0,pCN(b.stok_gudang)-it.qty);}}});const sr=pCN(v('kasir-jasa-sarana')),dk=pCN(v('kasir-diskon')),gt=Math.max(0,tI+sr-dk);if(pendingCheckoutVisitId){const vO=dbState.kunjungan.find(x=>x.id_kunjungan===pendingCheckoutVisitId);if(vO){vO.items_json=JSON.stringify(kasirCart);vO.jasa_sarana=sr;vO.diskon=dk;vO.grand_total=gt;vO.modal_hpp=tH;vO.status_bayar='Lunas';}}else{dbState.kunjungan.push({id_kunjungan:generateTxId("RTL"),no_rm:"UMUM",tanggal:new Date().toISOString().split('T')[0],kunjungan_ke:0,petugas:"Kasir",tipe_luka:"Pembelian Retail",kondisi_luka:"-",penyebab:"-",ryb_json:JSON.stringify({}),items_json:JSON.stringify(kasirCart),jasa_sarana:sr,diskon:dk,grand_total:gt,modal_hpp:tH,status_bayar:'Lunas'});}saveState();kasirCart=[];pendingCheckoutVisitId=null;toggleKasirJasaInput();renderKasirCartTable();calculateKasirTotals();$('kasir-pasien-nama').innerText="Pembeli Umum";renderKasirPending();populateKasirRetailDropdown();showToast("Pembayaran Lunas & Omzet Bertambah!");}
-  
-  function renderKasirHistory(){
-    const ct=$('kasir-history-list');if(!ct)return;
-    const ln=dbState.kunjungan.filter(x=>x.status_bayar==='Lunas').sort((a,b)=>b.id_kunjungan.localeCompare(a.id_kunjungan));
-    if(!ln.length){ct.innerHTML=`<p class="text-[10px] text-eco-500 italic font-bold text-center mt-4">Belum ada riwayat lunas hari ini.</p>`;return;}
-    ct.innerHTML=ln.map(vO=>{
-      let itemsDesc = vO.tipe_luka;
-      try {
-        const parsed = JSON.parse(vO.items_json);
-        if (parsed.length > 0) itemsDesc = parsed.map(i => i.name).join(', ');
-      } catch(e) {}
-      return `<div class="p-3 border border-eco-800/80 rounded-xl bg-[#010e0a]/80 flex flex-col gap-1.5 text-[9px] shadow-sm"><div class="flex justify-between items-center"><span class="font-black tracking-widest text-white text-[11px]">${vO.no_rm==='UMUM'?'Retail Umum':vO.no_rm}</span><span class="text-neon-green font-mono font-bold bg-eco-950 px-1.5 py-0.5 rounded">${vO.tanggal}</span></div><div class="flex justify-between items-center pt-1 mt-1 border-t border-eco-900"><span class="text-neon-teal truncate w-2/3 text-[10px] font-bold">${itemsDesc}</span><span class="font-black text-neon-green text-[11px] font-mono tracking-widest">Rp ${pCN(vO.grand_total).toLocaleString('id-ID')}</span></div></div>`;
+  function renderKasirPending() {
+    const tb = $('tbody-kasir-pending'); if (!tb) return;
+    const pd = dbState.kunjungan.filter(x => x.status_bayar === 'Pending').sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    if (!pd.length) { tb.innerHTML = `<tr><td colspan="4" class="p-4 text-center italic text-eco-500 text-[11px] font-bold border border-dashed border-eco-800/50 rounded-xl mt-2 block">Tidak ada antrean rekam medis.</td></tr>`; renderKasirHistory(); return; }
+    tb.innerHTML = pd.map(vObj => {
+      const ps = dbState.pasien.find(p => p.no_rm === vObj.no_rm);
+      let it = "Detail kosong"; try { it = JSON.parse(vObj.items_json).map(i => i.name).join(', '); } catch (e) { }
+      return `<tr class="border-b border-eco-800/80 hover:bg-[#000000]/50 transition"><td class="p-3 font-mono text-neon-green font-black text-xs">${vObj.tanggal}</td><td class="p-3 text-white text-xs"><b>${ps?.nama_lengkap || 'Unknown'}</b><br><span class="text-[9px] font-mono text-eco-500 font-bold bg-[#010c09] px-1.5 py-0.5 rounded">${vObj.no_rm}</span></td><td class="p-3 truncate max-w-[120px] text-[11px] font-semibold text-eco-100">${it}</td><td class="p-3 text-center"><button onclick="loadToKasirCart('${vObj.id_kunjungan}')" class="px-5 py-2 bg-gradient-to-b from-yellow-500 to-yellow-600 border border-yellow-400 hover:from-yellow-400 text-black font-black tracking-widest uppercase rounded-lg shadow-md text-[10px] transition active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 mx-auto"><i data-lucide="arrow-right-circle" class="w-3.5 h-3.5"></i> Proses</button></td></tr>`;
     }).join('');
+    renderKasirHistory();
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
-  function downloadLaporanKasir(){const ln=dbState.kunjungan.filter(x=>x.status_bayar==='Lunas');let c="ID,Waktu Transaksi,RM,Nama/Ket,Total Bayar\n";ln.forEach(vO=>{const p=dbState.pasien.find(x=>x.no_rm===vO.no_rm);let wt=vO.tanggal;try{const ts=parseInt(vO.id_kunjungan.replace(/\D/g,'').substring(0,13));if(!isNaN(ts)&&ts>1600000000000){wt=new Date(ts).toLocaleString('id-ID');}}catch(e){}c+=`${vO.id_kunjungan},"${wt}",${vO.no_rm},"${p?p.nama_lengkap:vO.tipe_luka}",${vO.grand_total}\n`;});const l=document.createElement("a");l.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));l.download=`Laporan_Kasir_${Date.now()}.csv`;l.click();showToast("Laporan Kasir Diunduh");}
-
-  function handleCetakStrukKasir(){
-    if(!kasirCart.length)return;
-    const sr=pCN(v('kasir-jasa-sarana')),dk=pCN(v('kasir-diskon')),pN=$('kasir-pasien-nama').innerText;
-    let it=kasirCart.map(i=>`<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px"><span>${i.name}(x${i.qty})</span><span>Rp${(i.price*i.qty).toLocaleString('id-ID')}</span></div>`).join('');
-    const gt=Math.max(0,kasirCart.reduce((s,i)=>s+(i.price*i.qty),0)+sr-dk);
-    const lg=dbState.branding.logo_url?`<div style="text-align:center;margin-bottom:8px"><img src="${convertToDirectDriveLink(dbState.branding.logo_url)}" style="width:40px;border-radius:6px"></div>`:"";
-    const w=window.open('','_blank');
-    w.document.write(`<html><body style="font-family:monospace;width:300px;padding:10px;margin:0 auto">${lg}<div style="text-align:center;font-weight:bold;font-size:14px">${dbState.branding.nama_klinik}<br><span style="font-size:10px;font-weight:normal">${dbState.branding.subtitle_klinik}</span></div><hr style="border-top:1px dashed #000"><div style="font-size:10px">Tgl: ${new Date().toLocaleDateString('id-ID')}<br>Customer: ${pN}</div><hr style="border-top:1px dashed #000">${it}<div style="display:flex;justify-content:space-between;font-size:10px;margin-top:5px"><span>Sarana:</span><span>Rp${sr.toLocaleString('id-ID')}</span></div><div style="display:flex;justify-content:space-between;font-size:10px"><span>Diskon:</span><span>-Rp${dk.toLocaleString('id-ID')}</span></div><hr style="border-top:1px solid #000"><div style="display:flex;justify-weight:bold;font-size:12px"><span>TOTAL:</span><span>Rp${gt.toLocaleString('id-ID')}</span></div><hr style="border-top:1px dashed #000"><p style="text-align:center;font-size:9px;margin-top:10px">Terima Kasih</p></body></html>`);
-    w.document.close();
-    w.print();
+  function toggleKasirJasaInput() {
+    const ji = $('kasir-jasa-sarana'); if (!ji) return;
+    if (pendingCheckoutVisitId) {
+      ji.disabled = false; ji.classList.remove('opacity-50', 'bg-[#000000]'); ji.value = 15000;
+    } else {
+      ji.disabled = true; ji.value = 0; ji.classList.add('opacity-50', 'bg-[#000000]');
+    }
+    calculateKasirTotals();
   }
 
-  function renderPelaporanTab(){
-    let o=0,h=0,k=0;
-    dbState.kunjungan.forEach(vO=>{
-      if(vO.status_bayar==='Lunas'){
-        const omzet = pCN(vO.grand_total);
-        o += omzet;
+  function calculateKasirTotals() {
+    const s = kasirCart.reduce((a, it) => a + (it.price * it.qty), 0), sr = pCN(v('kasir-jasa-sarana')), dk = pCN(v('kasir-diskon'));
+    $('kasir-grand-total').innerText = "Rp " + Math.max(0, s + sr - dk).toLocaleString('id-ID');
+  }
 
-        let visitHpp = pCN(vO.modal_hpp);
-        let calcHpp = 0;
+  function loadToKasirCart(tId) {
+    const vO = dbState.kunjungan.find(x => x.id_kunjungan === tId); if (!vO) return;
+    pendingCheckoutVisitId = tId;
+    const p = dbState.pasien.find(x => x.no_rm === vO.no_rm);
+    $('kasir-pasien-nama').innerText = p ? p.nama_lengkap : 'Unknown';
+    try { kasirCart = JSON.parse(vO.items_json); } catch (e) { kasirCart = []; }
+    toggleKasirJasaInput(); renderKasirCartTable(); calculateKasirTotals();
+    showToast(`Menarik tagihan ${p?.nama_lengkap}...`);
+  }
 
-        try{
-          JSON.parse(vO.items_json || '[]').forEach(i=>{
-            const qty = pCN(i.qty) || 1;
-            if(i.type==='jasa'){
-              const price = pCN(i.price);
-              const pct = pCN(i.komisi_persen);
-              const fee = pCN(i.fee_custom);
-              k += ((price * (pct / 100)) + fee) * qty;
-            } else {
-              let itemHpp = pCN(i.hpp);
-              if (itemHpp === 0) {
-                const bMatch = dbState.bhp_dressing.find(b => b.kode_item === i.code || b.nama_item === i.name);
-                const rMatch = dbState.retail.find(r => r.kode_retail === i.code || r.nama_produk === i.name);
-                if (bMatch) itemHpp = pCN(bMatch.harga_beli_grosir);
-                else if (rMatch) itemHpp = pCN(rMatch.harga_modal);
-              }
-              calcHpp += (itemHpp * qty);
-            }
-          });
-        }catch(e){}
+  function populateKasirRetailDropdown() {
+    const rs = $('retail-select'); if (!rs) return;
+    rs.innerHTML = dbState.retail.map(r => `<option value="RTL-${r.kode_retail}">${r.nama_produk} (Stok: ${r.stok}) - Rp${pCN(r.harga_jual).toLocaleString('id-ID')}</option>`).join('') + dbState.bhp_dressing.map(d => `<option value="DRS-${d.kode_item}">${d.nama_item} [${d.kategori}] (Stok: ${d.stok_gudang}) - Rp${pCN(d.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join('');
+  }
 
-        if (visitHpp === 0) visitHpp = calcHpp;
-        h += visitHpp;
+  function addRetailToCart() {
+    const vl = v('retail-select').split('-'), qt = parseInt(v('retail-qty')) || 1, iD = vl[0] === 'DRS';
+    const it = iD ? dbState.bhp_dressing.find(d => d.kode_item === vl[1]) : dbState.retail.find(r => r.kode_retail === vl[1]);
+    if (!it) return;
+    if (!iD && pCN(it.stok) < qt) return showToast("Stok produk tidak mencukupi!", false);
+    const ex = kasirCart.find(x => x.code === vl[1]);
+    if (ex) ex.qty += qt;
+    else kasirCart.push({ type: iD ? 'dressing' : 'retail', code: vl[1], name: iD ? it.nama_item : it.nama_produk, qty: qt, price: iD ? pCN(it.harga_jual_eceran) : pCN(it.harga_jual), hpp: iD ? pCN(it.harga_beli_grosir) : pCN(it.harga_modal), isNew: true });
+    if (!pendingCheckoutVisitId && kasirCart.length > 0) toggleKasirJasaInput();
+    renderKasirCartTable(); calculateKasirTotals();
+  }
+
+  function removeKasirCartItem(i) {
+    const rm = kasirCart[i];
+    if (pendingCheckoutVisitId && !rm.isNew) {
+      if (rm.type === 'bhp' || rm.type === 'dressing') {
+        const b = dbState.bhp_dressing.find(x => x.kode_item === rm.code);
+        if (b) b.stok_gudang += rm.qty;
+      }
+    }
+    kasirCart.splice(i, 1);
+    if (kasirCart.length === 0) { pendingCheckoutVisitId = null; $('kasir-pasien-nama').innerText = "Pembeli Umum"; toggleKasirJasaInput(); }
+    renderKasirCartTable(); calculateKasirTotals();
+  }
+
+  function renderKasirCartTable() {
+    const tb = $('tbody-kasir-cart'); if (!tb) return;
+    if (!kasirCart.length) { tb.innerHTML = `<tr><td class="p-3 text-center italic text-eco-500 text-[11px] font-bold border border-dashed border-eco-800/50 rounded-xl mt-2 block">Belum ada item dibayar.</td></tr>`; return; }
+    tb.innerHTML = kasirCart.map((it, i) => `<tr class="border-b border-eco-800/80 hover:bg-[#000000]/50 transition text-xs font-semibold"><td class="p-2.5 text-white font-bold tracking-wide">${it.name}<br><span class="text-[9px] text-neon-teal font-mono uppercase font-black">Tarif: Rp ${it.price.toLocaleString('id-ID')}</span></td><td class="p-2.5 text-center text-xs font-black text-yellow-400">x${it.qty}</td><td class="p-2.5 text-right text-neon-green text-xs font-mono font-black tracking-widest">Rp ${(it.price * it.qty).toLocaleString('id-ID')}</td><td class="p-2.5 text-center"><button onclick="removeKasirCartItem(${i})" class="text-red-500 bg-red-950/40 border border-red-900/50 text-xs font-black hover:bg-600 hover:text-white px-2.5 py-1.5 rounded-lg transition shadow cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function prosesPembayaranKasir() {
+    if (!kasirCart.length) return showToast("Keranjang kasir kosong!", false);
+    let tI = 0, tH = 0;
+    kasirCart.forEach(it => {
+      tI += (it.price * it.qty);
+      tH += (it.hpp * it.qty);
+      if (it.isNew || !pendingCheckoutVisitId) {
+        if (it.type === 'retail') {
+          const r = dbState.retail.find(x => x.kode_retail === it.code);
+          if (r) r.stok = Math.max(0, pCN(r.stok) - it.qty);
+        } else if (it.type === 'dressing' || it.type === 'bhp') {
+          const b = dbState.bhp_dressing.find(x => x.kode_item === it.code);
+          if (b) b.stok_gudang = Math.max(0, pCN(b.stok_gudang) - it.qty);
+        }
       }
     });
 
-    if($('dash-omzet'))$('dash-omzet').innerText="Rp "+o.toLocaleString('id-ID');
-    if($('dash-hpp'))$('dash-hpp').innerText="Rp "+h.toLocaleString('id-ID');
-    if($('dash-laba'))$('dash-laba').innerText="Rp "+Math.max(0,o-h-k).toLocaleString('id-ID');
+    const sr = pCN(v('kasir-jasa-sarana')), dk = pCN(v('kasir-diskon')), gt = Math.max(0, tI + sr - dk);
+    if (pendingCheckoutVisitId) {
+      const vO = dbState.kunjungan.find(x => x.id_kunjungan === pendingCheckoutVisitId);
+      if (vO) {
+        vO.items_json = JSON.stringify(kasirCart); vO.jasa_sarana = sr; vO.diskon = dk;
+        vO.grand_total = gt; vO.modal_hpp = tH; vO.status_bayar = 'Lunas';
+      }
+    } else {
+      dbState.kunjungan.push({
+        id_kunjungan: generateTxId("RTL"), no_rm: "UMUM", tanggal: new Date().toISOString().split('T')[0],
+        kunjungan_ke: 0, petugas: "Kasir", tipe_luka: "Pembelian Retail", kondisi_luka: "-", penyebab: "-",
+        items_json: JSON.stringify(kasirCart), jasa_sarana: sr, diskon: dk, grand_total: gt, modal_hpp: tH, status_bayar: 'Lunas'
+      });
+    }
 
-    const c=dbState.bhp_dressing.filter(b=>pCN(b.stok_gudang)<=pCN(b.stok_min));
-    if($('dash-critical-count'))$('dash-critical-count').innerText=c.length+" Items";
-    const cl=$('dash-critical-list');
-    if(cl)cl.innerHTML=c.length?c.map(b=>`<div class="flex justify-between items-center text-red-200 border-b border-red-900/30 pb-1.5 mb-1.5"><span class="font-bold">${b.nama_item}</span><span class="font-black text-red-400 text-xs font-mono bg-red-950/50 px-2 py-0.5 rounded border border-red-800/50">${b.stok_gudang} <span class="text-[9px] text-red-500">(Min: ${b.stok_min})</span></span></div>`).join(''):`<p class="text-emerald-400 italic text-xs font-bold text-center mt-3">Stok seluruh bahan medik aman.</p>`;
+    saveState();
+    kasirCart = []; pendingCheckoutVisitId = null;
+    toggleKasirJasaInput(); renderKasirCartTable(); calculateKasirTotals();
+    $('kasir-pasien-nama').innerText = "Pembeli Umum";
+    renderKasirPending(); populateKasirRetailDropdown();
+    showToast("Pembayaran Lunas & Omzet Bertambah!");
+  }
+
+  function renderKasirHistory() {
+    const ct = $('kasir-history-list'); if (!ct) return;
+    const ln = dbState.kunjungan.filter(x => x.status_bayar === 'Lunas' || x.status_bayar === 'lunas').sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    if (!ln.length) { ct.innerHTML = `<p class="text-[10px] text-eco-500 italic font-bold text-center mt-4">Belum ada riwayat lunas hari ini.</p>`; return; }
+    ct.innerHTML = ln.map(vO => {
+      let itemsDesc = vO.tipe_luka;
+      try { const parsed = JSON.parse(vO.items_json); if (parsed.length > 0) itemsDesc = parsed.map(i => i.name).join(', '); } catch (e) { }
+      return `<div class="p-3 border border-eco-800/80 rounded-xl bg-[#010e0a]/80 flex flex-col gap-1.5 text-[9px] shadow-sm"><div class="flex justify-between items-center"><span class="font-black tracking-widest text-white text-[11px]">${vO.no_rm === 'UMUM' ? 'Retail Umum' : vO.no_rm}</span><span class="text-neon-green font-mono font-bold bg-eco-950 px-1.5 py-0.5 rounded">${vO.tanggal}</span></div><div class="flex justify-between items-center pt-1 mt-1 border-t border-eco-900"><span class="text-neon-teal truncate w-2/3 text-[10px] font-bold">${itemsDesc}</span><span class="font-black text-neon-green text-[11px] font-mono tracking-widest">Rp ${pCN(vO.grand_total).toLocaleString('id-ID')}</span></div></div>`;
+    }).join('');
+  }
+
+  function downloadLaporanKasir() {
+    const ln = dbState.kunjungan.filter(x => x.status_bayar === 'Lunas' || x.status_bayar === 'lunas');
+    let c = "ID,Waktu Transaksi,RM,Nama/Ket,Total Bayar\n";
+    ln.forEach(vO => {
+      const p = dbState.pasien.find(x => x.no_rm === vO.no_rm);
+      c += `${vO.id_kunjungan},"${vO.tanggal}",${vO.no_rm},"${p ? p.nama_lengkap : vO.tipe_luka}",${vO.grand_total}\n`;
+    });
+    const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], { type: 'text/csv' }));
+    l.download = `Laporan_Kasir_${Date.now()}.csv`; l.click();
+    showToast("Laporan Kasir Diunduh!");
+  }
+
+  function handleCetakStrukKasir() {
+    if (!kasirCart.length) return;
+    const sr = pCN(v('kasir-jasa-sarana')), dk = pCN(v('kasir-diskon')), pN = $('kasir-pasien-nama').innerText;
+    let it = kasirCart.map(i => `<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px"><span>${i.name}(x${i.qty})</span><span>Rp${(i.price * i.qty).toLocaleString('id-ID')}</span></div>`).join('');
+    const gt = Math.max(0, kasirCart.reduce((s, i) => s + (i.price * i.qty), 0) + sr - dk);
+    const lg = dbState.branding.logo_url ? `<div style="text-align:center;margin-bottom:8px"><img src="${convertToDirectDriveLink(dbState.branding.logo_url)}" style="width:40px;border-radius:6px"></div>` : "";
+    const w = window.open('', '_blank');
+    w.document.write(`<html><body style="font-family:monospace;width:300px;padding:10px;margin:0 auto">${lg}<div style="text-align:center;font-weight:bold;font-size:14px">${dbState.branding.nama_klinik}<br><span style="font-size:10px;font-weight:normal">${dbState.branding.subtitle_klinik}</span></div><hr style="border-top:1px dashed #000"><div style="font-size:10px">Tgl: ${new Date().toLocaleDateString('id-ID')}<br>Customer: ${pN}</div><hr style="border-top:1px dashed #000">${it}<div style="display:flex;justify-content:space-between;font-size:10px;margin-top:5px"><span>Sarana:</span><span>Rp${sr.toLocaleString('id-ID')}</span></div><div style="display:flex;justify-content:space-between;font-size:10px"><span>Diskon:</span><span>-Rp${dk.toLocaleString('id-ID')}</span></div><hr style="border-top:1px solid #000"><div style="display:flex;justify-content:space-between;font-weight:bold;font-size:12px"><span>TOTAL:</span><span>Rp${gt.toLocaleString('id-ID')}</span></div><hr style="border-top:1px dashed #000"><p style="text-align:center;font-size:9px;margin-top:10px">Terima Kasih</p></body></html>`);
+    w.document.close(); w.print();
+  }
+
+  function renderPelaporanTab() {
+    let totalOmzet = 0, omzetJasa = 0, omzetRetail = 0;
+
+    dbState.kunjungan.forEach(vO => {
+      const st = (vO.status_bayar || '').toLowerCase().trim();
+      if (st === 'lunas') {
+        let visitOmzet = pCN(vO.grand_total);
+        let itemSum = 0;
+
+        try {
+          const items = JSON.parse(vO.items_json || '[]');
+          items.forEach(i => {
+            const qty = pCN(i.qty) || 1;
+            const price = pCN(i.price);
+            const lineTotal = price * qty;
+            itemSum += lineTotal;
+
+            if (i.type === 'jasa') {
+              omzetJasa += lineTotal;
+            } else {
+              omzetRetail += lineTotal;
+            }
+          });
+        } catch (e) { }
+
+        if (visitOmzet === 0 && itemSum > 0) {
+          visitOmzet = Math.max(0, itemSum + pCN(vO.jasa_sarana) - pCN(vO.diskon));
+        }
+
+        totalOmzet += visitOmzet;
+      }
+    });
+
+    if ($('dash-omzet')) $('dash-omzet').innerText = "Rp " + totalOmzet.toLocaleString('id-ID');
+    if ($('dash-omzet-jasa')) $('dash-omzet-jasa').innerText = "Rp " + omzetJasa.toLocaleString('id-ID');
+    if ($('dash-omzet-retail')) $('dash-omzet-retail').innerText = "Rp " + omzetRetail.toLocaleString('id-ID');
+
+    const c = dbState.bhp_dressing.filter(b => pCN(b.stok_gudang) <= pCN(b.stok_min));
+    if ($('dash-critical-count')) $('dash-critical-count').innerText = c.length + " Items";
+    const cl = $('dash-critical-list');
+    if (cl) cl.innerHTML = c.length ? c.map(b => `<div class="flex justify-between items-center text-red-200 border-b border-red-900/30 pb-1.5 mb-1.5"><span class="font-bold">${b.nama_item}</span><span class="font-black text-red-400 text-xs font-mono bg-red-950/50 px-2 py-0.5 rounded border border-red-800/50">${b.stok_gudang} <span class="text-[9px] text-red-500">(Min: ${b.stok_min})</span></span></div>`).join('') : `<p class="text-emerald-400 italic text-xs font-bold text-center mt-3">Stok seluruh bahan medik aman.</p>`;
 
     renderWoundDistributionStats();
     renderServiceProductivity();
     renderEmployeePayslips();
   }
 
-  function renderWoundDistributionStats(){const dt={};dbState.luka.forEach(l=>dt[l.nama_luka]={c:0,o:0});dbState.kunjungan.forEach(vO=>{if(vO.status_bayar==='Lunas'&&dt[vO.tipe_luka]){dt[vO.tipe_luka].c++;dt[vO.tipe_luka].o+=pCN(vO.grand_total);}});const tb=$('tbody-wound-stats');if(tb)tb.innerHTML=dbState.luka.map(l=>`<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px]">${l.nama_luka}</td><td class="td-cls text-center text-neon-teal text-xs font-bold">${dt[l.nama_luka]?.c||0}</td><td class="td-cls text-right text-neon-green text-xs font-mono font-bold">Rp ${(dt[l.nama_luka]?.o||0).toLocaleString('id-ID')}</td></tr>`).join('');const cv=$('woundDonutChart');if(cv){const cx=cv.getContext('2d');if(donutChartInstance)donutChartInstance.destroy();donutChartInstance=new Chart(cx,{type:'doughnut',data:{labels:dbState.luka.map(l=>l.nama_luka),datasets:[{data:dbState.luka.map(l=>dt[l.nama_luka]?.c||0),backgroundColor:['#39ff14','#00f3ff','#10b981','#f59e0b','#ec4899','#8b5cf6'],borderColor:'#011c14',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'70%'}});} }
-  function renderServiceProductivity(){const tb=$('tbody-productivity-services');if(!tb)return;const s={};dbState.layanan.forEach(l=>s[l.nama_tindakan]={c:0,o:0});dbState.kunjungan.forEach(vO=>{if(vO.status_bayar==='Lunas'){try{JSON.parse(vO.items_json).forEach(i=>{if(i.type==='jasa'&&s[i.name]){s[i.name].c++;s[i.name].o+=(pCN(i.price)*i.qty);}});}catch(e){}}});tb.innerHTML=dbState.layanan.map(l=>`<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px] font-bold">${l.nama_tindakan}</td><td class="td-cls text-center text-xs font-black text-white">${s[l.nama_tindakan]?.c||0}</td><td class="td-cls text-right text-neon-teal text-xs font-mono font-bold tracking-widest">Rp ${(s[l.nama_tindakan]?.o||0).toLocaleString('id-ID')}</td></tr>`).join('');}
-  function renderEmployeePayslips(){const tb=$('tbody-employee-payslips');if(!tb)return;tb.innerHTML=dbState.sdm.map(s=>{let kt=0;dbState.kunjungan.filter(vO=>vO.petugas===s.nama_petugas&&vO.status_bayar==='Lunas').forEach(vO=>{try{JSON.parse(vO.items_json).forEach(i=>{if(i.type==='jasa')kt+=(pCN(i.price)*(pCN(i.komisi_persen)/100))+pCN(i.fee_custom);});}catch(e){}});const gp=pCN(s.gaji_pokok);return`<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px] font-bold">${s.nama_petugas}</td><td class="td-cls text-right text-xs font-mono font-bold text-gray-300">Rp ${gp.toLocaleString('id-ID')}</td><td class="td-cls text-right text-neon-teal text-xs font-mono font-bold">Rp ${kt.toLocaleString('id-ID')}</td><td class="td-cls text-right font-black text-neon-green text-[13px] font-mono tracking-widest">Rp ${(gp+kt).toLocaleString('id-ID')}</td></tr>`;}).join('');}
-  function printReport(id){const el=$(id==='wound-stat'?'wound-statistics-report':'payroll-statistics-report');if(!el)return;const t=id==='wound-stat'?"DISTRIBUSI LUKA":"GAJI KARYAWAN",w=window.open('','_blank');w.document.write(`<html><head><style>body{font-family:sans-serif;padding:40px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:8px}th{background:#eee}</style></head><body><h2>${t} - ${dbState.branding.nama_klinik}</h2><hr>${el.innerHTML}</body></html>`);w.document.close();w.print();}
-  function downloadCSVEpidemiologiUmur(){let c="RM,Nama,Usia,Jenis Kelamin,Diagnosis Luka\n";dbState.kunjungan.filter(vO=>vO.status_bayar==='Lunas'&&vO.no_rm!=='UMUM').forEach(vO=>{const p=dbState.pasien.find(x=>x.no_rm===vO.no_rm);let u="-";if(p&&p.tgl_lahir){const df=Date.now()-new Date(p.tgl_lahir).getTime();u=Math.abs(new Date(df).getUTCFullYear()-1970);}c+=`${vO.no_rm},"${p?p.nama_lengkap:'-'}",${u},${p?p.gender:'-'},"${vO.tipe_luka}"\n`;});const l=document.createElement("a");l.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));l.download=`Sebaran_Kasus_Umur_${Date.now()}.csv`;l.click();showToast("CSV Demografi Pasien Diunduh!");}
-  function downloadCSVEpidemiologi10Besar(){const dt={};dbState.kunjungan.filter(vO=>vO.status_bayar==='Lunas'&&vO.no_rm!=='UMUM').forEach(vO=>{if(!dt[vO.tipe_luka])dt[vO.tipe_luka]=0;dt[vO.tipe_luka]++;});const st=Object.entries(dt).sort((a,b)=>b[1]-a[1]).slice(0,10);let c="Peringkat,Jenis Penyakit/Luka,Jumlah Kasus\n";st.forEach((i,x)=>c+=`${x+1},"${i[0]}",${i[1]}\n`);const l=document.createElement("a");l.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));l.download=`10_Besar_Penyakit_${Date.now()}.csv`;l.click();showToast("CSV 10 Besar Penyakit Diunduh!");}
+  function renderWoundDistributionStats() {
+    const dt = {};
+    dbState.luka.forEach(l => dt[l.nama_luka] = { c: 0, o: 0 });
+    dbState.kunjungan.forEach(vO => {
+      const st = (vO.status_bayar || '').toLowerCase().trim();
+      if (st === 'lunas' && dt[vO.tipe_luka]) {
+        dt[vO.tipe_luka].c++;
+        dt[vO.tipe_luka].o += pCN(vO.grand_total);
+      }
+    });
+    const tb = $('tbody-wound-stats');
+    if (tb) tb.innerHTML = dbState.luka.map(l => `<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px]">${l.nama_luka}</td><td class="td-cls text-center text-neon-teal text-xs font-bold">${dt[l.nama_luka]?.c || 0}</td><td class="td-cls text-right text-neon-green text-xs font-mono font-bold">Rp ${(dt[l.nama_luka]?.o || 0).toLocaleString('id-ID')}</td></tr>`).join('');
+    const cv = $('woundDonutChart');
+    if (cv) {
+      const cx = cv.getContext('2d');
+      if (donutChartInstance) donutChartInstance.destroy();
+      donutChartInstance = new Chart(cx, {
+        type: 'doughnut',
+        data: {
+          labels: dbState.luka.map(l => l.nama_luka),
+          datasets: [{ data: dbState.luka.map(l => dt[l.nama_luka]?.c || 0), backgroundColor: ['#39ff14', '#00f3ff', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'], borderColor: '#011c14', borderWidth: 2 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '70%' }
+      });
+    }
+  }
 
-  function cancelEdit(c){if(c==='pasien-master'){['mp-no-rm','mp-tgl-masuk','mp-nik','mp-nama','mp-whatsapp','mp-alamat','mp-sosial','mp-alergi','mp-komorbid'].forEach(id=>{if($(id))$(id).value='';});editPasienIndex=null;if($('btn-save-pasien-master'))$('btn-save-pasien-master').disabled=true;}else if(c==='kepatuhan'){setV('kp-opsi','');editKepatuhanIndex=null;}else{document.querySelectorAll(`[id^="${c}-"]`).forEach(e=>{if(e.tagName==='INPUT'||e.tagName==='TEXTAREA'||e.tagName==='SELECT')e.value='';});if(c==='sdm')editSDMIndex=null;if(c==='layanan')editLayananIndex=null;if(c==='luka')editLukaIndex=null;if(c==='bhpdressing')editBHPDressingIndex=null;if(c==='retail')editRetailIndex=null;if(c==='user')editUserIndex=null;}const b=$('btn-cancel-'+c);if(b)b.classList.add('hidden');}
-  function editMasterItem(c,i){if(c==='sdm'){editSDMIndex=i;setV('sdm-nama',dbState.sdm[i].nama_petugas);setV('sdm-gaji',pCN(dbState.sdm[i].gaji_pokok));$('btn-cancel-sdm').classList.remove('hidden');}else if(c==='layanan'){editLayananIndex=i;setV('layanan-nama',dbState.layanan[i].nama_tindakan);setV('layanan-tarif',pCN(dbState.layanan[i].tarif));setV('layanan-persen',pCN(dbState.layanan[i].persen_jasa_medis));setV('layanan-fee',pCN(dbState.layanan[i].fee_custom));$('btn-cancel-layanan').classList.remove('hidden');}else if(c==='luka'){editLukaIndex=i;setV('luka-nama',dbState.luka[i].nama_luka);$('btn-cancel-luka').classList.remove('hidden');}else if(c==='bhpdressing'){editBHPDressingIndex=i;const d=dbState.bhp_dressing[i];setV('bhpdressing-nama',d.nama_item);setV('bhpdressing-kategori',d.kategori);setV('bhpdressing-satuan-beli',d.satuan_beli||'');setV('bhpdressing-satuan-jual',d.satuan_jual||'');setV('bhpdressing-stok',pCN(d.stok_gudang));setV('bhpdressing-stok-min',pCN(d.stok_min));setV('bhpdressing-harga-modal',pCN(d.harga_beli_grosir));setV('bhpdressing-harga-jual',pCN(d.harga_jual_eceran));$('btn-cancel-bhpdressing').classList.remove('hidden');}else if(c==='retail'){editRetailIndex=i;const d=dbState.retail[i];setV('retail-nama',d.nama_produk);setV('retail-kategori',d.kategori);setV('retail-stok',pCN(d.stok));setV('retail-modal',pCN(d.harga_modal));setV('retail-jual',pCN(d.harga_jual));$('btn-cancel-retail').classList.remove('hidden');}else if(c==='kepatuhan'){editKepatuhanIndex=i;setV('kp-kategori',dbState.kepatuhan_options[i].kategori);setV('kp-opsi',dbState.kepatuhan_options[i].opsi);$('btn-cancel-kepatuhan').classList.remove('hidden');}else if(c==='pasien'){editPasienIndex=i;const d=dbState.pasien[i];setV('mp-no-rm',d.no_rm);setV('mp-tgl-masuk',d.tgl_masuk||'');setV('mp-nik',d.nik);setV('mp-nama',d.nama_lengkap);setV('mp-whatsapp',d.whatsapp);setV('mp-alamat',d.alamat);setV('mp-sosial',d.faktor_sosial||'');setV('mp-alergi',d.alergi||'');setV('mp-komorbid',d.komorbid||'');$('btn-save-pasien-master').disabled=false;$('btn-cancel-pasien-master').classList.remove('hidden');}else if(c==='user'){editUserIndex=i;setV('user-nama',dbState.users[i].nama);setV('user-username',dbState.users[i].username);setV('user-password',dbState.users[i].password);setV('user-role',dbState.users[i].role);$('btn-cancel-user').classList.remove('hidden');}}
-  function deleteMasterItem(c,i){showCustomConfirm("Hapus Item","Hapus permanen data master ini dari sistem?",()=>{let k=c;if(c==='bhpdressing')k='bhp_dressing';if(c==='kepatuhan')k='kepatuhan_options';if(dbState[k]){dbState[k].splice(i,1);saveState();if(c==='sdm')renderMasterSDMTable();else if(c==='layanan')renderMasterLayananTable();else if(c==='luka'){renderMasterLukaTable();populateMedisDropdowns();}else if(c==='bhpdressing'){renderMasterBHPDressingTable();populateBillingDropdowns();populateKasirRetailDropdown();}else if(c==='retail'){renderMasterRetailTable();populateKasirRetailDropdown();}else if(c==='kepatuhan'){renderMasterKepatuhan();populateTimeDropdowns();}else if(c==='pasien'){renderMasterPasienTable();renderTablePasien();populateMedicalRecordLookup();}else if(c==='user')renderMasterUserTable();showToast("Item dihapus!");}});}
+  function renderServiceProductivity() {
+    const tb = $('tbody-productivity-services'); if (!tb) return;
+    const s = {}; dbState.layanan.forEach(l => s[l.nama_tindakan] = { c: 0, o: 0 });
+    dbState.kunjungan.forEach(vO => {
+      const st = (vO.status_bayar || '').toLowerCase().trim();
+      if (st === 'lunas') {
+        try {
+          JSON.parse(vO.items_json).forEach(i => {
+            if (i.type === 'jasa' && s[i.name]) { s[i.name].c++; s[i.name].o += (pCN(i.price) * i.qty); }
+          });
+        } catch (e) { }
+      }
+    });
+    tb.innerHTML = dbState.layanan.map(l => `<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px] font-bold">${l.nama_tindakan}</td><td class="td-cls text-center text-xs font-black text-white">${s[l.nama_tindakan]?.c || 0}</td><td class="td-cls text-right text-neon-teal text-xs font-mono font-bold tracking-widest">Rp ${(s[l.nama_tindakan]?.o || 0).toLocaleString('id-ID')}</td></tr>`).join('');
+  }
 
-  function renderMasterSDMTable(){const tb=$('tbody-master-sdm');if(tb)tb.innerHTML=dbState.sdm.map((s,i)=>`<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-eco-500">${i+1}</td><td class="td-cls text-white font-bold">${s.nama_petugas}</td><td class="td-cls text-right font-mono text-neon-teal">Rp ${pCN(s.gaji_pokok).toLocaleString('id-ID')}</td><td class="td-cls text-center"><button onclick="editMasterItem('sdm',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('sdm',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  function handleSaveSDM(e){e.preventDefault();const n=v('sdm-nama').trim(),g=pCN(v('sdm-gaji'));if(!n)return;if(editSDMIndex!==null){dbState.sdm[editSDMIndex]={nama_petugas:n,gaji_pokok:g};editSDMIndex=null;}else dbState.sdm.push({nama_petugas:n,gaji_pokok:g});saveState();e.target.reset();cancelEdit('sdm');renderMasterSDMTable();populateMedisDropdowns();showToast("SDM disimpan!");}
-  function renderMasterLayananTable(){const tb=$('tbody-master-layanan');if(tb)tb.innerHTML=dbState.layanan.map((l,i)=>`<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-eco-500">${l.kode_jasa}</td><td class="td-cls text-white font-bold">${l.nama_tindakan}</td><td class="td-cls text-right font-mono text-neon-teal">Rp ${pCN(l.tarif).toLocaleString('id-ID')}</td><td class="td-cls text-center font-mono">${l.persen_jasa_medis}%</td><td class="td-cls text-right font-mono">Rp ${pCN(l.fee_custom).toLocaleString('id-ID')}</td><td class="td-cls text-center"><button onclick="editMasterItem('layanan',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('layanan',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  function handleSaveLayanan(e){e.preventDefault();const n=v('layanan-nama').trim(),t=pCN(v('layanan-tarif')),p=pCN(v('layanan-persen')),f=pCN(v('layanan-fee'));if(!n)return;if(editLayananIndex!==null){dbState.layanan[editLayananIndex]={kode_jasa:dbState.layanan[editLayananIndex].kode_jasa,nama_tindakan:n,tarif:t,persen_jasa_medis:p,fee_custom:f};editLayananIndex=null;}else dbState.layanan.push({kode_jasa:"JS"+(dbState.layanan.length+1).toString().padStart(3,'0'),nama_tindakan:n,tarif:t,persen_jasa_medis:p,fee_custom:f});saveState();e.target.reset();cancelEdit('layanan');renderMasterLayananTable();populateBillingDropdowns();showToast("Layanan disimpan!");}
-  function renderMasterLukaTable(){const tb=$('tbody-master-luka');if(tb)tb.innerHTML=dbState.luka.map((l,i)=>`<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-eco-500">${i+1}</td><td class="td-cls text-white font-bold">${l.nama_luka}</td><td class="td-cls text-center"><button onclick="editMasterItem('luka',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('luka',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  function handleSaveLuka(e){e.preventDefault();const n=v('luka-nama').trim();if(!n)return;if(editLukaIndex!==null){dbState.luka[editLukaIndex].nama_luka=n;editLukaIndex=null;}else dbState.luka.push({nama_luka:n});saveState();e.target.reset();cancelEdit('luka');renderMasterLukaTable();populateMedisDropdowns();showToast("Diagnosa disimpan!");}
-  function renderMasterBHPDressingTable(){const tb=$('tbody-master-bhpdressing');if(tb)tb.innerHTML=dbState.bhp_dressing.map((b,i)=>{const k=pCN(b.stok_gudang)<=pCN(b.stok_min);return`<tr class="border-b border-eco-900/60 ${k?'bg-red-950/20':''}"><td class="td-cls font-mono text-eco-500">${b.kode_item}</td><td class="td-cls text-white font-bold">${b.nama_item}</td><td class="td-cls text-xs">${b.kategori}</td><td class="td-cls text-center font-black ${k?'text-red-400':'text-neon-green'} font-mono">${b.stok_gudang} / ${b.stok_min}</td><td class="td-cls text-right font-mono">Rp ${pCN(b.harga_beli_grosir).toLocaleString('id-ID')}</td><td class="td-cls text-right font-mono text-neon-teal">Rp ${pCN(b.harga_jual_eceran).toLocaleString('id-ID')}</td><td class="td-cls text-center"><button onclick="editMasterItem('bhpdressing',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('bhpdressing',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`;}).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  function handleSaveBHPDressing(e){e.preventDefault();const n=v('bhpdressing-nama').trim(),k=v('bhpdressing-kategori'),sb=v('bhpdressing-satuan-beli'),sj=v('bhpdressing-satuan-jual'),sg=pCN(v('bhpdressing-stok')),sm=pCN(v('bhpdressing-stok-min')),hb=pCN(v('bhpdressing-harga-modal')),hj=pCN(v('bhpdressing-harga-jual'));if(!n)return;if(editBHPDressingIndex!==null){dbState.bhp_dressing[editBHPDressingIndex]={kode_item:dbState.bhp_dressing[editBHPDressingIndex].kode_item,nama_item:n,kategori:k,satuan_beli:sb,satuan_jual:sj,stok_gudang:sg,stok_min:sm,harga_beli_grosir:hb,harga_jual_eceran:hj};editBHPDressingIndex=null;}else dbState.bhp_dressing.push({kode_item:(k==='BHP'?'BHP':'DRS')+(dbState.bhp_dressing.length+1).toString().padStart(3,'0'),nama_item:n,kategori:k,satuan_beli:sb,satuan_jual:sj,stok_gudang:sg,stok_min:sm,harga_beli_grosir:hb,harga_jual_eceran:hj});saveState();e.target.reset();cancelEdit('bhpdressing');renderMasterBHPDressingTable();populateBillingDropdowns();populateKasirRetailDropdown();showToast("BHP/Dressing disimpan!");}
-  function renderMasterRetailTable(){const tb=$('tbody-master-retail');if(tb)tb.innerHTML=dbState.retail.map((r,i)=>`<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-eco-500">${r.kode_retail}</td><td class="td-cls text-white font-bold">${r.nama_produk}</td><td class="td-cls text-xs">${r.kategori}</td><td class="td-cls text-center font-mono font-bold">${r.stok}</td><td class="td-cls text-right font-mono">Rp ${pCN(r.harga_modal).toLocaleString('id-ID')}</td><td class="td-cls text-right font-mono text-neon-teal">Rp ${pCN(r.harga_jual).toLocaleString('id-ID')}</td><td class="td-cls text-center"><button onclick="editMasterItem('retail',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('retail',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  function handleSaveRetail(e){e.preventDefault();const n=v('retail-nama').trim(),k=v('retail-kategori').trim(),s=pCN(v('retail-stok')),m=pCN(v('retail-modal')),j=pCN(v('retail-jual'));if(!n)return;if(editRetailIndex!==null){dbState.retail[editRetailIndex]={kode_retail:dbState.retail[editRetailIndex].kode_retail,nama_produk:n,kategori:k,stok:s,harga_modal:m,harga_jual:j};editRetailIndex=null;}else dbState.retail.push({kode_retail:"RTL"+(dbState.retail.length+1).toString().padStart(3,'0'),nama_produk:n,kategori:k,stok:s,harga_modal:m,harga_jual:j});saveState();e.target.reset();cancelEdit('retail');renderMasterRetailTable();populateKasirRetailDropdown();showToast("Retail disimpan!");}
-  function renderMasterKepatuhan(){const tb=$('tbody-master-kepatuhan');if(tb)tb.innerHTML=dbState.kepatuhan_options.map((k,i)=>`<tr class="border-b border-eco-900/60"><td class="td-cls font-bold text-white capitalize">${k.kategori==='nutrisi'?'Status Nutrisi':k.kategori==='keluarga'?'Dukungan Keluarga':'Kepatuhan Kontrol'}</td><td class="td-cls font-mono text-neon-teal">${k.opsi}</td><td class="td-cls text-center"><button onclick="editMasterItem('kepatuhan',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('kepatuhan',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  function handleSaveKepatuhanMaster(e){e.preventDefault();const k=v('kp-kategori'),o=v('kp-opsi').trim();if(!o)return;if(editKepatuhanIndex!==null){dbState.kepatuhan_options[editKepatuhanIndex].kategori=k;dbState.kepatuhan_options[editKepatuhanIndex].opsi=o;editKepatuhanIndex=null;}else dbState.kepatuhan_options.push({id:"KP"+Date.now(),kategori:k,opsi:o});saveState();e.target.reset();cancelEdit('kepatuhan');renderMasterKepatuhan();populateTimeDropdowns();showToast("Kepatuhan disimpan!");}
-  function renderMasterPasienTable(){const tb=$('tbody-master-pasien');if(tb)tb.innerHTML=dbState.pasien.map((p,i)=>`<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-neon-green">${p.no_rm}</td><td class="td-cls text-white font-bold">${p.nama_lengkap}</td><td class="td-cls font-mono text-xs">${p.whatsapp}</td><td class="td-cls text-center"><button onclick="editMasterItem('pasien',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('pasien',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');if(typeof lucide!=='undefined')lucide.createIcons();}
-  
-  function handleSavePasienMaster(e){
-    e.preventDefault();
-    if(editPasienIndex===null)return;
+  function renderEmployeePayslips() {
+    const tb = $('tbody-employee-payslips'); if (!tb) return;
+    tb.innerHTML = dbState.sdm.map(s => {
+      let kt = 0;
+      dbState.kunjungan.filter(vO => vO.petugas === s.nama_petugas && (vO.status_bayar === 'Lunas' || vO.status_bayar === 'lunas')).forEach(vO => {
+        try {
+          JSON.parse(vO.items_json).forEach(i => {
+            if (i.type === 'jasa') kt += (pCN(i.price) * (pCN(i.komisi_persen) / 100)) + pCN(i.fee_custom);
+          });
+        } catch (e) { }
+      });
+      const gp = pCN(s.gaji_pokok);
+      return `<tr class="border-b border-eco-800/60"><td class="td-cls text-[11px] font-bold">${s.nama_petugas}</td><td class="td-cls text-right text-xs font-mono font-bold text-gray-300">Rp ${gp.toLocaleString('id-ID')}</td><td class="td-cls text-right text-neon-teal text-xs font-mono font-bold">Rp ${kt.toLocaleString('id-ID')}</td><td class="td-cls text-right font-black text-neon-green text-[13px] font-mono tracking-widest">Rp ${(gp + kt).toLocaleString('id-ID')}</td></tr>`;
+    }).join('');
+  }
+
+  function printReport(id) {
+    const el = $(id === 'wound-stat' ? 'wound-statistics-report' : 'payroll-statistics-report'); if (!el) return;
+    const t = id === 'wound-stat' ? "DISTRIBUSI LUKA" : "GAJI KARYAWAN", w = window.open('', '_blank');
+    w.document.write(`<html><head><style>body{font-family:sans-serif;padding:40px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:8px}th{background:#eee}</style></head><body><h2>${t} - ${dbState.branding.nama_klinik}</h2><hr>${el.innerHTML}</body></html>`);
+    w.document.close(); w.print();
+  }
+
+  function downloadCSVEpidemiologiUmur() {
+    let c = "RM,Nama,Usia,Jenis Kelamin,Diagnosis Luka\n";
+    dbState.kunjungan.filter(vO => (vO.status_bayar === 'Lunas' || vO.status_bayar === 'lunas') && vO.no_rm !== 'UMUM').forEach(vO => {
+      const p = dbState.pasien.find(x => x.no_rm === vO.no_rm);
+      let u = "-"; if (p && p.tgl_lahir) { const df = Date.now() - new Date(p.tgl_lahir).getTime(); u = Math.abs(new Date(df).getUTCFullYear() - 1970); }
+      c += `${vO.no_rm},"${p ? p.nama_lengkap : '-'}",${u},${p ? p.gender : '-'}"${vO.tipe_luka}"\n`;
+    });
+    const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], { type: 'text/csv' }));
+    l.download = `Sebaran_Kasus_Umur_${Date.now()}.csv`; l.click();
+    showToast("CSV Demografi Pasien Diunduh!");
+  }
+
+  function downloadCSVEpidemiologi10Besar() {
+    const dt = {};
+    dbState.kunjungan.filter(vO => (vO.status_bayar === 'Lunas' || vO.status_bayar === 'lunas') && vO.no_rm !== 'UMUM').forEach(vO => {
+      if (!dt[vO.tipe_luka]) dt[vO.tipe_luka] = 0; dt[vO.tipe_luka]++;
+    });
+    const st = Object.entries(dt).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    let c = "Peringkat,Jenis Penyakit/Luka,Jumlah Kasus\n";
+    st.forEach((i, x) => c += `${x + 1},"${i[0]}",${i[1]}\n`);
+    const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], { type: 'text/csv' }));
+    l.download = `10_Besar_Penyakit_${Date.now()}.csv`; l.click();
+    showToast("CSV 10 Besar Penyakit Diunduh!");
+  }
+
+  function cancelEdit(c) {
+    if (c === 'pasien-master') {
+      ['mp-no-rm', 'mp-tgl-masuk', 'mp-nik', 'mp-nama', 'mp-whatsapp', 'mp-alamat', 'mp-sosial', 'mp-alergi', 'mp-komorbid'].forEach(id => { if ($(id)) $(id).value = ''; });
+      editPasienIndex = null; if ($('btn-save-pasien-master')) $('btn-save-pasien-master').disabled = true;
+    } else if (c === 'kepatuhan') {
+      setV('kp-opsi', ''); editKepatuhanIndex = null;
+    } else {
+      document.querySelectorAll(`[id^="${c}-"]`).forEach(e => { if (e.tagName === 'INPUT' || e.tagName === 'TEXTAREA' || e.tagName === 'SELECT') e.value = ''; });
+      if (c === 'sdm') editSDMIndex = null; if (c === 'layanan') editLayananIndex = null; if (c === 'luka') editLukaIndex = null;
+      if (c === 'bhpdressing') editBHPDressingIndex = null; if (c === 'retail') editRetailIndex = null; if (c === 'user') editUserIndex = null;
+    }
+    const b = $('btn-cancel-' + c); if (b) b.classList.add('hidden');
+  }
+
+  function editMasterItem(c, i) {
+    if (c === 'sdm') {
+      editSDMIndex = i; setV('sdm-nama', dbState.sdm[i].nama_petugas); setV('sdm-gaji', pCN(dbState.sdm[i].gaji_pokok)); $('btn-cancel-sdm').classList.remove('hidden');
+    } else if (c === 'layanan') {
+      editLayananIndex = i; setV('layanan-nama', dbState.layanan[i].nama_tindakan); setV('layanan-tarif', pCN(dbState.layanan[i].tarif)); setV('layanan-persen', pCN(dbState.layanan[i].persen_jasa_medis)); setV('layanan-fee', pCN(dbState.layanan[i].fee_custom)); $('btn-cancel-layanan').classList.remove('hidden');
+    } else if (c === 'luka') {
+      editLukaIndex = i; setV('luka-nama', dbState.luka[i].nama_luka); $('btn-cancel-luka').classList.remove('hidden');
+    } else if (c === 'bhpdressing') {
+      editBHPDressingIndex = i; const d = dbState.bhp_dressing[i];
+      setV('bhpdressing-nama', d.nama_item); setV('bhpdressing-kategori', d.kategori); setV('bhpdressing-satuan-beli', d.satuan_beli || ''); setV('bhpdressing-satuan-jual', d.satuan_jual || ''); setV('bhpdressing-stok', pCN(d.stok_gudang)); setV('bhpdressing-stok-min', pCN(d.stok_min)); setV('bhpdressing-harga-modal', pCN(d.harga_beli_grosir)); setV('bhpdressing-harga-jual', pCN(d.harga_jual_eceran)); $('btn-cancel-bhpdressing').classList.remove('hidden');
+    } else if (c === 'retail') {
+      editRetailIndex = i; const d = dbState.retail[i];
+      setV('retail-nama', d.nama_produk); setV('retail-kategori', d.kategori); setV('retail-stok', pCN(d.stok)); setV('retail-modal', pCN(d.harga_modal)); setV('retail-jual', pCN(d.harga_jual)); $('btn-cancel-retail').classList.remove('hidden');
+    } else if (c === 'kepatuhan') {
+      editKepatuhanIndex = i; setV('kp-kategori', dbState.kepatuhan_options[i].kategori); setV('kp-opsi', dbState.kepatuhan_options[i].opsi); $('btn-cancel-kepatuhan').classList.remove('hidden');
+    } else if (c === 'pasien') {
+      editPasienIndex = i; const d = dbState.pasien[i];
+      setV('mp-no-rm', d.no_rm); setV('mp-tgl-masuk', d.tgl_masuk || ''); setV('mp-nik', d.nik); setV('mp-nama', d.nama_lengkap); setV('mp-whatsapp', d.whatsapp); setV('mp-alamat', d.alamat); setV('mp-sosial', d.faktor_sosial || ''); setV('mp-alergi', d.alergi || ''); setV('mp-komorbid', d.komorbid || ''); $('btn-save-pasien-master').disabled = false; $('btn-cancel-pasien-master').classList.remove('hidden');
+    } else if (c === 'user') {
+      editUserIndex = i; setV('user-nama', dbState.users[i].nama); setV('user-username', dbState.users[i].username); setV('user-password', dbState.users[i].password); setV('user-role', dbState.users[i].role); $('btn-cancel-user').classList.remove('hidden');
+    }
+  }
+
+  function deleteMasterItem(c, i) {
+    showCustomConfirm("Hapus Item", "Hapus permanen data master ini dari sistem?", () => {
+      let k = c; if (c === 'bhpdressing') k = 'bhp_dressing'; if (c === 'kepatuhan') k = 'kepatuhan_options';
+      if (dbState[k]) {
+        dbState[k].splice(i, 1);
+        saveState();
+        if (c === 'sdm') renderMasterSDMTable(); else if (c === 'layanan') renderMasterLayananTable();
+        else if (c === 'luka') { renderMasterLukaTable(); populateMedisDropdowns(); }
+        else if (c === 'bhpdressing') { renderMasterBHPDressingTable(); populateBillingDropdowns(); populateKasirRetailDropdown(); }
+        else if (c === 'retail') { renderMasterRetailTable(); populateKasirRetailDropdown(); }
+        else if (c === 'kepatuhan') { renderMasterKepatuhan(); populateTimeDropdowns(); }
+        else if (c === 'pasien') { renderMasterPasienTable(); renderTablePasien(); populateMedicalRecordLookup(); }
+        else if (c === 'user') renderMasterUserTable();
+        showToast("Item dihapus!");
+      }
+    });
+  }
+
+  function renderMasterSDMTable() { const tb = $('tbody-master-sdm'); if (tb) tb.innerHTML = dbState.sdm.map((s, i) => `<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-eco-500">${i + 1}</td><td class="td-cls text-white font-bold">${s.nama_petugas}</td><td class="td-cls text-right font-mono text-neon-teal">Rp ${pCN(s.gaji_pokok).toLocaleString('id-ID')}</td><td class="td-cls text-center"><button onclick="editMasterItem('sdm',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('sdm',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join(''); if (typeof lucide !== 'undefined') lucide.createIcons(); }
+  function handleSaveSDM(e) { e.preventDefault(); const n = v('sdm-nama').trim(), g = pCN(v('sdm-gaji')); if (!n) return; if (editSDMIndex !== null) { dbState.sdm[editSDMIndex] = { nama_petugas: n, gaji_pokok: g }; editSDMIndex = null; } else dbState.sdm.push({ nama_petugas: n, gaji_pokok: g }); saveState(); e.target.reset(); cancelEdit('sdm'); renderMasterSDMTable(); populateMedisDropdowns(); showToast("SDM disimpan!"); }
+
+  function renderMasterLayananTable() { const tb = $('tbody-master-layanan'); if (tb) tb.innerHTML = dbState.layanan.map((l, i) => `<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-eco-500">${l.kode_jasa}</td><td class="td-cls text-white font-bold">${l.nama_tindakan}</td><td class="td-cls text-right font-mono text-neon-teal">Rp ${pCN(l.tarif).toLocaleString('id-ID')}</td><td class="td-cls text-center font-mono">${l.persen_jasa_medis}%</td><td class="td-cls text-right font-mono">Rp ${pCN(l.fee_custom).toLocaleString('id-ID')}</td><td class="td-cls text-center"><button onclick="editMasterItem('layanan',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('layanan',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join(''); if (typeof lucide !== 'undefined') lucide.createIcons(); }
+  function handleSaveLayanan(e) { e.preventDefault(); const n = v('layanan-nama').trim(), t = pCN(v('layanan-tarif')), p = pCN(v('layanan-persen')), f = pCN(v('layanan-fee')); if (!n) return; if (editLayananIndex !== null) { dbState.layanan[editLayananIndex] = { kode_jasa: dbState.layanan[editLayananIndex].kode_jasa, nama_tindakan: n, tarif: t, persen_jasa_medis: p, fee_custom: f }; editLayananIndex = null; } else dbState.layanan.push({ kode_jasa: "JS" + (dbState.layanan.length + 1).toString().padStart(3, '0'), nama_tindakan: n, tarif: t, persen_jasa_medis: p, fee_custom: f }); saveState(); e.target.reset(); cancelEdit('layanan'); renderMasterLayananTable(); populateBillingDropdowns(); showToast("Layanan disimpan!"); }
+
+  function renderMasterLukaTable() { const tb = $('tbody-master-luka'); if (tb) tb.innerHTML = dbState.luka.map((l, i) => `<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-eco-500">${i + 1}</td><td class="td-cls text-white font-bold">${l.nama_luka}</td><td class="td-cls text-center"><button onclick="editMasterItem('luka',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('luka',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join(''); if (typeof lucide !== 'undefined') lucide.createIcons(); }
+  function handleSaveLuka(e) { e.preventDefault(); const n = v('luka-nama').trim(); if (!n) return; if (editLukaIndex !== null) { dbState.luka[editLukaIndex].nama_luka = n; editLukaIndex = null; } else dbState.luka.push({ nama_luka: n }); saveState(); e.target.reset(); cancelEdit('luka'); renderMasterLukaTable(); populateMedisDropdowns(); showToast("Diagnosa disimpan!"); }
+
+  function renderMasterBHPDressingTable() { const tb = $('tbody-master-bhpdressing'); if (tb) tb.innerHTML = dbState.bhp_dressing.map((b, i) => { const k = pCN(b.stok_gudang) <= pCN(b.stok_min); return `<tr class="border-b border-eco-900/60 ${k ? 'bg-red-950/20' : ''}"><td class="td-cls font-mono text-eco-500">${b.kode_item}</td><td class="td-cls text-white font-bold">${b.nama_item}</td><td class="td-cls text-xs">${b.kategori}</td><td class="td-cls text-center font-black ${k ? 'text-red-400' : 'text-neon-green'} font-mono">${b.stok_gudang} / ${b.stok_min}</td><td class="td-cls text-right font-mono">Rp ${pCN(b.harga_beli_grosir).toLocaleString('id-ID')}</td><td class="td-cls text-right font-mono text-neon-teal">Rp ${pCN(b.harga_jual_eceran).toLocaleString('id-ID')}</td><td class="td-cls text-center"><button onclick="editMasterItem('bhpdressing',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('bhpdressing',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`; }).join(''); if (typeof lucide !== 'undefined') lucide.createIcons(); }
+  function handleSaveBHPDressing(e) { e.preventDefault(); const n = v('bhpdressing-nama').trim(), k = v('bhpdressing-kategori'), sb = v('bhpdressing-satuan-beli'), sj = v('bhpdressing-satuan-jual'), sg = pCN(v('bhpdressing-stok')), sm = pCN(v('bhpdressing-stok-min')), hb = pCN(v('bhpdressing-harga-modal')), hj = pCN(v('bhpdressing-harga-jual')); if (!n) return; if (editBHPDressingIndex !== null) { dbState.bhp_dressing[editBHPDressingIndex] = { kode_item: dbState.bhp_dressing[editBHPDressingIndex].kode_item, nama_item: n, kategori: k, satuan_beli: sb, satuan_jual: sj, stok_gudang: sg, stok_min: sm, harga_beli_grosir: hb, harga_jual_eceran: hj }; editBHPDressingIndex = null; } else dbState.bhp_dressing.push({ kode_item: (k === 'BHP' ? 'BHP' : 'DRS') + (dbState.bhp_dressing.length + 1).toString().padStart(3, '0'), nama_item: n, kategori: k, satuan_beli: sb, satuan_jual: sj, stok_gudang: sg, stok_min: sm, harga_beli_grosir: hb, harga_jual_eceran: hj }); saveState(); e.target.reset(); cancelEdit('bhpdressing'); renderMasterBHPDressingTable(); populateBillingDropdowns(); populateKasirRetailDropdown(); showToast("BHP/Dressing disimpan!"); }
+
+  function renderMasterRetailTable() { const tb = $('tbody-master-retail'); if (tb) tb.innerHTML = dbState.retail.map((r, i) => `<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-eco-500">${r.kode_retail}</td><td class="td-cls text-white font-bold">${r.nama_produk}</td><td class="td-cls text-xs">${r.kategori}</td><td class="td-cls text-center font-mono font-bold">${r.stok}</td><td class="td-cls text-right font-mono">Rp ${pCN(r.harga_modal).toLocaleString('id-ID')}</td><td class="td-cls text-right font-mono text-neon-teal">Rp ${pCN(r.harga_jual).toLocaleString('id-ID')}</td><td class="td-cls text-center"><button onclick="editMasterItem('retail',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('retail',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join(''); if (typeof lucide !== 'undefined') lucide.createIcons(); }
+  function handleSaveRetail(e) { e.preventDefault(); const n = v('retail-nama').trim(), k = v('retail-kategori').trim(), s = pCN(v('retail-stok')), m = pCN(v('retail-modal')), j = pCN(v('retail-jual')); if (!n) return; if (editRetailIndex !== null) { dbState.retail[editRetailIndex] = { kode_retail: dbState.retail[editRetailIndex].kode_retail, nama_produk: n, kategori: k, stok: s, harga_modal: m, harga_jual: j }; editRetailIndex = null; } else dbState.retail.push({ kode_retail: "RTL" + (dbState.retail.length + 1).toString().padStart(3, '0'), nama_produk: n, kategori: k, stok: s, harga_modal: m, harga_jual: j }); saveState(); e.target.reset(); cancelEdit('retail'); renderMasterRetailTable(); populateKasirRetailDropdown(); showToast("Retail disimpan!"); }
+
+  function renderMasterKepatuhan() { const tb = $('tbody-master-kepatuhan'); if (tb) tb.innerHTML = dbState.kepatuhan_options.map((k, i) => `<tr class="border-b border-eco-900/60"><td class="td-cls font-bold text-white capitalize">${k.kategori === 'nutrisi' ? 'Status Nutrisi' : k.kategori === 'keluarga' ? 'Dukungan Keluarga' : 'Kepatuhan Kontrol'}</td><td class="td-cls font-mono text-neon-teal">${k.opsi}</td><td class="td-cls text-center"><button onclick="editMasterItem('kepatuhan',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('kepatuhan',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join(''); if (typeof lucide !== 'undefined') lucide.createIcons(); }
+  function handleSaveKepatuhanMaster(e) { e.preventDefault(); const k = v('kp-kategori'), o = v('kp-opsi').trim(); if (!o) return; if (editKepatuhanIndex !== null) { dbState.kepatuhan_options[editKepatuhanIndex].kategori = k; dbState.kepatuhan_options[editKepatuhanIndex].opsi = o; editKepatuhanIndex = null; } else dbState.kepatuhan_options.push({ id: "KP" + Date.now(), kategori: k, opsi: o }); saveState(); e.target.reset(); cancelEdit('kepatuhan'); renderMasterKepatuhan(); populateTimeDropdowns(); showToast("Kepatuhan disimpan!"); }
+
+  function renderMasterPasienTable() { const tb = $('tbody-master-pasien'); if (tb) tb.innerHTML = dbState.pasien.map((p, i) => `<tr class="border-b border-eco-900/60"><td class="td-cls font-mono text-neon-green">${p.no_rm}</td><td class="td-cls text-white font-bold">${p.nama_lengkap}</td><td class="td-cls font-mono text-xs">${p.whatsapp}</td><td class="td-cls text-center"><button onclick="editMasterItem('pasien',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('pasien',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join(''); if (typeof lucide !== 'undefined') lucide.createIcons(); }
+  function handleSavePasienMaster(e) {
+    e.preventDefault(); if (editPasienIndex === null) return;
     const p = dbState.pasien[editPasienIndex];
     p.tgl_masuk = v('mp-tgl-masuk') || p.tgl_masuk || new Date().toISOString().split('T')[0];
-    p.nik = v('mp-nik').trim()||"Opsional";
-    p.nama_lengkap = v('mp-nama').trim();
-    p.whatsapp = v('mp-whatsapp').trim();
-    p.alamat = v('mp-alamat').trim();
-    p.faktor_sosial = v('mp-sosial').trim()||"-";
-    p.alergi = v('mp-alergi').trim()||"-";
-    p.komorbid = v('mp-komorbid').trim()||"-";
-    saveState();
-    cancelEdit('pasien-master');
-    renderMasterPasienTable();
-    renderTablePasien();
-    populateMedicalRecordLookup();
+    p.nik = v('mp-nik').trim() || "Opsional"; p.nama_lengkap = v('mp-nama').trim();
+    p.whatsapp = v('mp-whatsapp').trim(); p.alamat = v('mp-alamat').trim();
+    p.faktor_sosial = v('mp-sosial').trim() || "-"; p.alergi = v('mp-alergi').trim() || "-";
+    p.komorbid = v('mp-komorbid').trim() || "-";
+    saveState(); cancelEdit('pasien-master');
+    renderMasterPasienTable(); renderTablePasien(); populateMedicalRecordLookup();
     showToast("Data pasien berhasil diubah!");
   }
 
-  async function handleUpdateBranding(e){
+  async function handleUpdateBranding(e) {
     e.preventDefault();
     const appId = (v('brand-edit-app-id') || "arkcare").trim().toLowerCase();
-    
     dbState.branding.app_id = appId;
     dbState.branding.nama_klinik = v('brand-edit-title').trim();
     dbState.branding.subtitle_klinik = v('brand-edit-subtitle').trim();
@@ -1081,120 +1329,82 @@
     dbState.branding.api_url = v('brand-edit-api').trim();
     dbState.branding.supa_url = v('brand-edit-supa-url').trim() || DEFAULT_SUPABASE_URL;
     dbState.branding.supa_key = v('brand-edit-supa-key').trim() || DEFAULT_SUPABASE_KEY;
-    
+
     saveConfigToLocalStorage();
     applyBranding();
-    initSupabaseClient();
-
-    if(supabaseClient){
-      try{
-        await pingSupabase();
+    const client = await ensureSupabaseClient();
+    if (client) {
+      try {
+        const payload = {
+          app_id: appId, gas_url: dbState.branding.api_url || '',
+          supabase_url: dbState.branding.supa_url || '', supabase_anon_key: dbState.branding.supa_key || '',
+          nama_klinik: dbState.branding.nama_klinik || '', subtitle_klinik: dbState.branding.subtitle_klinik || '',
+          logo_url: dbState.branding.logo_url || '', updated_at: new Date().toISOString()
+        };
+        await client.from('system_config').upsert(payload, { onConflict: 'app_id' });
         showToast("Konfigurasi Dipancarkan ke Supabase terpusat!");
-        if(realtimeChannel){
-          realtimeChannel.send({ type: 'broadcast', event: 'data_sync', payload: { sender: myClientId, updated: true } });
-        }
-        fetchApiData();
-      }catch(err){
-        showToast("Gagal pancar ke Supabase: " + err.toString(), false);
-      }
-    }else{
-      showToast("Konfigurasi Berhasil Diperbarui!");
-      fetchApiData();
+      } catch (err) { }
     }
+    fetchApiData();
   }
 
-  function backupDatabase(){
+  function backupDatabase() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbState, null, 2));
-    const dlAnchorElem = document.createElement('a');
-    dlAnchorElem.setAttribute("href", dataStr);
-    dlAnchorElem.setAttribute("download", `smartclinic_backup_${new Date().toISOString().slice(0,10)}.json`);
-    dlAnchorElem.click();
-    showToast("Database berhasil diunduh!");
+    const dlAnchorElem = document.createElement('a'); dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", `smartclinic_backup_${new Date().toISOString().slice(0, 10)}.json`);
+    dlAnchorElem.click(); showToast("Database berhasil diunduh!");
   }
 
-  function restoreDatabase(){
+  function restoreDatabase() {
     const fileInput = $('restore-file');
-    if(!fileInput || !fileInput.files.length) return showToast("Pilih file cadangan terlebih dahulu!", false);
-    const file = fileInput.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e){
-      try{
+    if (!fileInput || !fileInput.files.length) return showToast("Pilih file cadangan terlebih dahulu!", false);
+    const file = fileInput.files[0]; const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
         const parsed = JSON.parse(e.target.result);
-        if(parsed.branding && Array.isArray(parsed.pasien)){
-          dbState = parsed;
-          saveState();
-          overwriteLocalWithCloudData(dbState);
-          showToast("Database berhasil dipulihkan!");
-          fileInput.value = '';
-        } else {
-          showToast("Format file backup tidak valid!", false);
-        }
-      }catch(err){
-        showToast("Gagal membaca file backup!", false);
-      }
+        if (parsed.branding && Array.isArray(parsed.pasien)) {
+          dbState = parsed; saveState(); overwriteLocalWithCloudData(dbState);
+          showToast("Database berhasil dipulihkan!"); fileInput.value = '';
+        } else showToast("Format file backup tidak valid!", false);
+      } catch (err) { showToast("Gagal membaca file backup!", false); }
     };
     reader.readAsText(file);
   }
 
-  function renderMasterUserTable(){
-    const tb = $('tbody-master-user');
-    if(tb) tb.innerHTML = dbState.users.map((u, i) => `<tr class="border-b border-eco-900/60"><td class="td-cls text-white font-bold">${u.nama}</td><td class="td-cls font-mono">${u.username}</td><td class="td-cls text-xs">${u.role}</td><td class="td-cls text-center"><button onclick="editMasterItem('user',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('user',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');
-    if(typeof lucide !== 'undefined') lucide.createIcons();
+  function renderMasterUserTable() {
+    const tb = $('tbody-master-user'); if (tb) tb.innerHTML = dbState.users.map((u, i) => `<tr class="border-b border-eco-900/60"><td class="td-cls text-white font-bold">${u.nama}</td><td class="td-cls font-mono">${u.username}</td><td class="td-cls text-xs">${u.role}</td><td class="td-cls text-center"><button onclick="editMasterItem('user',${i})" class="act-e"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button><button onclick="deleteMasterItem('user',${i})" class="act-x"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td></tr>`).join('');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
-  function handleSaveUser(e){
+  function handleSaveUser(e) {
     e.preventDefault();
     const n = v('user-nama').trim(), u = v('user-username').trim(), p = v('user-password').trim(), r = v('user-role');
-    if(!n || !u || !p) return;
-    if(editUserIndex !== null){
-      dbState.users[editUserIndex] = {nama: n, username: u, password: p, role: r};
+    if (!n || !u || !p) return;
+    if (editUserIndex !== null) {
+      dbState.users[editUserIndex] = { nama: n, username: u, password: p, role: r };
       editUserIndex = null;
-    } else {
-      dbState.users.push({nama: n, username: u, password: p, role: r});
-    }
-    saveState();
-    e.target.reset();
-    cancelEdit('user');
-    renderMasterUserTable();
-    showToast("Data akses pengguna berhasil disimpan!");
+    } else dbState.users.push({ nama: n, username: u, password: p, role: r });
+    saveState(); e.target.reset(); cancelEdit('user'); renderMasterUserTable();
+    showToast("Data akses pengguna disimpan!");
   }
 
   function cetakRekamMedisPerPasien() {
-    const rm = v('medrecord-lookup-pasien');
-    if(!rm) return showToast("Pilih pasien terlebih dahulu!", false);
-    const p = dbState.pasien.find(x => x.no_rm === rm);
-    if(!p) return;
-    const ms = dbState.kunjungan.filter(x => x.no_rm === rm && x.status_bayar === 'Lunas').sort((a,b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
-    if(!ms.length) return showToast("Belum ada riwayat medis yang lunas untuk dicetak!", false);
-    
+    const rm = v('medrecord-lookup-pasien'); if (!rm) return showToast("Pilih pasien terlebih dahulu!", false);
+    const p = dbState.pasien.find(x => x.no_rm === rm); if (!p) return;
+    const ms = dbState.kunjungan.filter(x => x.no_rm === rm && (x.status_bayar === 'Lunas' || x.status_bayar === 'lunas')).sort((a, b) => b.id_kunjungan.localeCompare(a.id_kunjungan));
+    if (!ms.length) return showToast("Belum ada riwayat medis lunas!", false);
+
     const w = window.open('', '_blank');
     let content = `<html><head><title>Rekam Medis - ${p.nama_lengkap}</title><style>body{font-family:sans-serif;padding:30px;color:#333}table{width:100%;border-collapse:collapse;margin-top:15px}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:11px}th{background:#f5f5f5}.header{text-align:center;margin-bottom:20px}.details{margin-bottom:20px;font-size:12px}</style></head><body>`;
     content += `<div class="header"><h2>${dbState.branding.nama_klinik}</h2><p>${dbState.branding.subtitle_klinik}</p><hr><h3>REKAM MEDIS PASIEN</h3></div>`;
-    content += `<div class="details">
-      <b>No Rekam Medis:</b> ${p.no_rm}<br>
-      <b>Nama Pasien:</b> ${p.nama_lengkap}<br>
-      <b>NIK KTP:</b> ${p.nik}<br>
-      <b>WhatsApp:</b> ${p.whatsapp}<br>
-      <b>Alamat:</b> ${p.alamat}
-    </div>`;
+    content += `<div class="details"><b>No Rekam Medis:</b> ${p.no_rm}<br><b>Nama Pasien:</b> ${p.nama_lengkap}<br><b>NIK KTP:</b> ${p.nik}<br><b>WhatsApp:</b> ${p.whatsapp}<br><b>Alamat:</b> ${p.alamat}</div>`;
     content += `<table><thead><tr><th>Tgl</th><th>Kunjungan Ke</th><th>Keluhan/Diagnosa</th><th>Observasi Klinis</th><th>Ukuran & Kondisi Luka</th><th>Terapi/BHP</th><th>Petugas</th></tr></thead><tbody>`;
     content += ms.map(m => {
-      let items = "-";
-      try { items = JSON.parse(m.items_json).map(it => it.name).join(', '); } catch(e) {}
-      return `<tr>
-        <td>${m.tanggal}</td>
-        <td>${m.kunjungan_ke}</td>
-        <td><b>${m.tipe_luka}</b></td>
-        <td>${m.kondisi_luka}</td>
-        <td>Status: ${m.r_status}<br>P: ${m.r_panjang}cm | L: ${m.r_lebar}cm | D: ${m.r_dalam}cm<br>Jaringan: ${m.t_jaringan}</td>
-        <td>${items}</td>
-        <td>${m.petugas}</td>
-      </tr>`;
+      let items = "-"; try { items = JSON.parse(m.items_json).map(it => it.name).join(', '); } catch (e) { }
+      return `<tr><td>${m.tanggal}</td><td>${m.kunjungan_ke}</td><td><b>${m.tipe_luka}</b></td><td>${m.kondisi_luka}</td><td>Status: ${m.r_status}<br>P: ${m.r_panjang}cm | L: ${m.r_lebar}cm | D: ${m.r_dalam}cm<br>Jaringan: ${m.t_jaringan}</td><td>${items}</td><td>${m.petugas}</td></tr>`;
     }).join('');
     content += `</tbody></table></body></html>`;
-    w.document.write(content);
-    w.document.close();
-    w.print();
+    w.document.write(content); w.document.close(); w.print();
   }
 </script>
 </body>
