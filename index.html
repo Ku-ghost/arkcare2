@@ -109,6 +109,23 @@
     </div>
   </div>
 
+  <div id="modal-operasional-expense" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+    <div class="bg-[#011c14]/95 border-2 border-yellow-500/40 rounded-3xl max-w-sm w-full p-6 shadow-[0_0_40px_rgba(250,204,21,0.2)] backdrop-blur-xl">
+      <h3 class="text-sm font-black text-white mb-2 flex items-center gap-2 text-glow"><i data-lucide="dollar-sign" class="text-yellow-400 w-5 h-5"></i> Tambah Biaya Operasional</h3>
+      <p class="text-[11px] text-eco-100/70 mb-4">Catat biaya operasional klinik (Listrik, Air, Sewa, Internet, Dll) untuk memotong Laba Bersih.</p>
+      <form onsubmit="handleSavePengeluaranLain(event)" class="space-y-3">
+        <div><label class="lbl">Tanggal Pengeluaran</label><input type="date" id="exp-tanggal" required class="inp"></div>
+        <div><label class="lbl">Kategori Biaya</label><select id="exp-kategori" class="inp"><option value="Listrik & Air">Listrik & Air</option><option value="Sewa Tempat">Sewa Tempat / Gedung</option><option value="Internet & Wifi">Internet & Telepon</option><option value="Kebersihan & Sampah">Kebersihan & Sampah Medis</option><option value="Lain-Lain">Pengeluaran Operasional Lain</option></select></div>
+        <div><label class="lbl">Deskripsi / Keterangan</label><input type="text" id="exp-deskripsi" required placeholder="Cth: Bayar Listrik Bulan Ini" class="inp"></div>
+        <div><label class="lbl">Nominal Biaya (Rp)</label><input type="number" id="exp-nominal" required placeholder="0" class="inp font-mono font-bold text-yellow-400"></div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeOperasionalExpenseModal()" class="btn-cancel w-auto">Batal</button>
+          <button type="submit" class="btn-save w-auto px-5 bg-gradient-to-r from-yellow-500 to-amber-600 text-black border-none">Simpan Biaya</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div id="custom-dialog" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden">
     <div class="bg-[#011c14]/95 border-2 border-neon-teal/40 rounded-3xl max-w-sm w-full p-6 shadow-[0_0_40px_rgba(0,243,255,0.3)] backdrop-blur-xl text-center">
       <h3 id="dialog-title" class="text-base font-black text-white mb-2 text-glow">Notifikasi</h3>
@@ -146,13 +163,11 @@
         <div class="neon-glass-card lg:col-span-2 flex flex-col">
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-3 border-b border-eco-800/50 pb-2">
             <h2 class="text-xs font-black text-white flex items-center gap-2 text-glow whitespace-nowrap"><i data-lucide="users" class="text-neon-teal w-4 h-4"></i> Database Pasien Aktif</h2>
-            
             <div class="flex flex-wrap items-center justify-end gap-2 w-full md:w-auto">
               <div class="relative flex-1 md:w-64 min-w-[180px]">
                 <i data-lucide="search" class="w-4 h-4 absolute left-3 top-[10px] text-eco-500"></i>
                 <input type="text" id="search-pasien" oninput="renderTablePasien()" placeholder="Cari Nama, No RM, NIK, WA..." class="inp pl-9 border-neon-teal/50 bg-[#000000]/70 text-xs">
               </div>
-              
               <select id="pasien-date-filter" onchange="togglePasienCustomDateAndRender()" class="inp w-auto text-[11px] font-bold border-neon-teal/50 bg-[#000000] text-neon-green">
                 <option value="semua">Semua Pasien</option>
                 <option value="hari_ini">Hari Ini</option>
@@ -160,7 +175,6 @@
                 <option value="tahun_ini">Tahun Ini</option>
                 <option value="custom">Custom Tanggal</option>
               </select>
-
               <div id="pasien-custom-date-box" class="hidden flex items-center gap-1.5">
                 <input type="date" id="pasien-tgl-mulai" onchange="renderTablePasien()" class="inp w-auto font-mono text-[10px] px-1.5">
                 <span class="text-[10px] text-eco-500 font-bold">s/d</span>
@@ -286,24 +300,40 @@
             <input type="date" id="dash-tgl-akhir" onchange="renderPelaporanTab()" class="inp w-auto font-mono text-[11px]">
           </div>
         </div>
-        <button onclick="exportPelaporanPDF()" class="btn-save w-full md:w-auto px-5 bg-gradient-to-r from-neon-teal to-emerald-500 text-black border-none font-black text-xs tracking-wider shadow-[0_0_15px_rgba(0,243,255,0.3)] active:scale-95 cursor-pointer">
-          <i data-lucide="file-text" class="w-4 h-4 font-bold"></i> Cetak Laporan PDF (A4)
-        </button>
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+          <button onclick="openOperasionalExpenseModal()" class="btn-save w-full md:w-auto px-4 bg-gradient-to-r from-yellow-500 to-amber-600 text-black border-none font-black text-xs tracking-wider shadow-md active:scale-95 cursor-pointer">
+            <i data-lucide="plus-circle" class="w-4 h-4 font-bold"></i> + Beban Operasional
+          </button>
+          <button onclick="exportPelaporanPDF()" class="btn-save w-full md:w-auto px-5 bg-gradient-to-r from-neon-teal to-emerald-500 text-black border-none font-black text-xs tracking-wider shadow-[0_0_15px_rgba(0,243,255,0.3)] active:scale-95 cursor-pointer">
+            <i data-lucide="file-text" class="w-4 h-4 font-bold"></i> Cetak Laporan Laba Rugi (A4)
+          </button>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-32 border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.15)] bg-gradient-to-br from-[#01140e] to-[#010c09]">
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-36 border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.15)] bg-gradient-to-br from-[#01140e] to-[#010c09]">
           <div class="flex justify-between items-start">
             <span class="text-[10px] font-black uppercase text-neon-green tracking-wider text-glow">Total Omzet Klinik</span>
             <div class="p-1.5 bg-eco-950 rounded-lg text-neon-green"><i data-lucide="wallet" class="w-4 h-4"></i></div>
           </div>
           <div>
             <div id="dash-omzet" class="text-xl font-black text-neon-green font-mono text-glow">Rp 0</div>
-            <div class="text-[9px] text-eco-400 font-semibold mt-1">* Net Setelah Diskon & Jasa Sarana</div>
+            <div class="text-[9px] text-eco-400 font-semibold mt-1">* Total Penerimaan Kasir Lunas</div>
           </div>
         </div>
 
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-32">
+        <div id="card-laba-bersih" class="neon-glass-card p-4 flex flex-col justify-between h-36 border-emerald-400/50 shadow-[0_0_20px_rgba(16,185,129,0.25)] bg-gradient-to-br from-[#022c20] to-[#01140e]">
+          <div class="flex justify-between items-start">
+            <span class="text-[10px] font-black uppercase text-emerald-300 tracking-wider text-glow">LABA BERSIH (NET PROFIT)</span>
+            <div class="p-1.5 bg-eco-950 rounded-lg text-emerald-400"><i data-lucide="trending-up" class="w-4 h-4"></i></div>
+          </div>
+          <div>
+            <div id="dash-laba-bersih" class="text-2xl font-black text-emerald-300 font-mono text-glow">Rp 0</div>
+            <div id="dash-margin-laba" class="text-[10px] text-emerald-400 font-bold mt-1">Margin: 0%</div>
+          </div>
+        </div>
+
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-36">
           <div class="flex justify-between items-start">
             <span class="text-[10px] font-bold uppercase text-neon-teal tracking-wider text-glow">Omzet Jasa & Tindakan</span>
             <div class="p-1.5 bg-eco-950 rounded-lg text-neon-teal"><i data-lucide="stethoscope" class="w-4 h-4"></i></div>
@@ -314,7 +344,7 @@
           </div>
         </div>
 
-        <div class="neon-glass-card p-4 flex flex-col justify-between h-32">
+        <div class="neon-glass-card p-4 flex flex-col justify-between h-36">
           <div class="flex justify-between items-start">
             <span class="text-[10px] font-bold uppercase text-yellow-500 tracking-wider text-glow">Omzet Retail & BHP</span>
             <div class="p-1.5 bg-eco-950 rounded-lg text-yellow-500"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div>
@@ -324,13 +354,36 @@
             <div class="text-[9px] text-eco-400 font-semibold mt-1">* Penjualan Obat, Alkes & Dressing</div>
           </div>
         </div>
+      </div>
 
-        <div id="dash-critical-card" class="p-4 rounded-2xl flex flex-col justify-between h-32 bg-red-950/30 border border-red-900 shadow-lg">
-          <div class="flex justify-between items-center border-b border-red-900/60 pb-1">
-            <span class="font-bold text-red-400 uppercase tracking-wider text-[9px] flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-red-500"></i> Stok Kritis</span>
-            <span id="dash-critical-count" class="px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 text-[8px] font-black border border-red-800/40">0 Items</span>
+      <div class="neon-glass-card p-5 border-emerald-500/30 bg-gradient-to-br from-[#011c14] to-[#010e0a]">
+        <div class="flex justify-between items-center mb-4 border-b border-eco-800/80 pb-2">
+          <h3 class="text-xs font-black text-white flex items-center gap-2 text-glow">
+            <i data-lucide="pie-chart" class="text-neon-green w-4 h-4"></i> Rangkuman Laba Rugi Klinik (Profit & Loss Statement)
+          </h3>
+          <span class="text-[10px] font-bold text-eco-400 bg-eco-950 px-2 py-1 rounded border border-eco-800">Kalkulasi Otomatis Presisi</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+          <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
+            <span class="text-[10px] text-eco-400 font-bold uppercase block">1. Gross Revenue</span>
+            <div id="pnl-gross-revenue" class="text-base font-black text-white font-mono">Rp 0</div>
+            <span class="text-[9px] text-eco-500 block">Total Omzet Sebelum HPP</span>
           </div>
-          <div id="dash-critical-list" class="space-y-1 my-1 max-h-[62px] overflow-y-auto pr-1"><p class="text-red-400 italic text-[9px]">Stok aman.</p></div>
+          <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
+            <span class="text-[10px] text-red-400 font-bold uppercase block">2. Total HPP (COGS)</span>
+            <div id="pnl-total-hpp" class="text-base font-black text-red-400 font-mono">Rp 0</div>
+            <span id="pnl-detail-hpp" class="text-[9px] text-eco-500 block">Bahan: Rp 0 | Retail: Rp 0</span>
+          </div>
+          <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
+            <span class="text-[10px] text-yellow-400 font-bold uppercase block">3. Laba Kotor (Gross Profit)</span>
+            <div id="pnl-gross-profit" class="text-base font-black text-yellow-400 font-mono">Rp 0</div>
+            <span class="text-[9px] text-eco-500 block">Revenue dikurangi HPP</span>
+          </div>
+          <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
+            <span class="text-[10px] text-orange-400 font-bold uppercase block">4. Total Beban Operasional</span>
+            <div id="pnl-total-beban" class="text-base font-black text-orange-400 font-mono">Rp 0</div>
+            <span id="pnl-detail-beban" class="text-[9px] text-eco-500 block">Gaji: Rp 0 | Komisi: Rp 0 | Lain: Rp 0</span>
+          </div>
         </div>
       </div>
 
@@ -454,7 +507,7 @@
             </div>
             <form onsubmit="handleUpdateBranding(event)" class="space-y-3">
               <div class="grid grid-cols-2 gap-3">
-                <div><label class="lbl text-yellow-400">ID Aplikasi (APP_ID / ID)</label><input type="password" id="brand-edit-app-id" readonly required placeholder="arkcare" class="inp font-mono text-[11px] text-yellow-400 font-bold lowercase opacity-50 bg-[#000000]/70"></div>
+                <div><label class="lbl text-yellow-400">ID Aplikasi (APP_ID / ID)</label><input type="password" id="brand-edit-app-id" readonly required placeholder="arkcare01" class="inp font-mono text-[11px] text-yellow-400 font-bold lowercase opacity-50 bg-[#000000]/70"></div>
                 <div><label class="lbl">Nama Klinik Utama</label><input type="text" id="brand-edit-title" required class="inp"></div>
               </div>
               <div><label class="lbl">Subtitle Klinik</label><input type="text" id="brand-edit-subtitle" required class="inp"></div>
@@ -525,6 +578,7 @@
       kode_pengaman: "kugoskom36"
     },
     users:[],pasien:[],kunjungan:[],sdm:[],layanan:[],luka:[],bhp_dressing:[],retail:[],
+    pengeluaran_lain:[],
     kepatuhan_options:[{id:"KP1",kategori:"nutrisi",opsi:"Baik / Terpenuhi"},{id:"KP2",kategori:"nutrisi",opsi:"Kurang / Malnutrisi"},{id:"KP3",kategori:"nutrisi",opsi:"Sangat Kurang"},{id:"KP4",kategori:"keluarga",opsi:"Sangat Mendukung"},{id:"KP5",kategori:"keluarga",opsi:"Cukup Mendukung"},{id:"KP6",kategori:"keluarga",opsi:"Kurang Mendukung"},{id:"KP7",kategori:"kontrol",opsi:"Patuh / Tepat Waktu"},{id:"KP8",kategori:"kontrol",opsi:"Sering Terlambat"},{id:"KP9",kategori:"kontrol",opsi:"Tidak Patuh"}],
     master_time:{eksudat_level:["Kering","Sedikit (Low)","Sedang (Moderate)","Banyak (High)"],eksudat_jenis:["Serous","Serosanguineous","Sanguineous","Purulent"],antimikroba:["Non-Antimikroba","Silver Dressing","PHMB","DACC"]}
   };
@@ -538,6 +592,8 @@
   let editRetailIndex = null, editPasienIndex = null, editUserIndex = null, editKepatuhanIndex = null, pendingCheckoutVisitId = null;
   let supabaseClient = null;
   let realtimeChannel = null;
+  let isFetchingApi = false;
+  let isSavingApi = false;
 
   const $=id=>document.getElementById(id); 
   const v=id=>$(id)?$(id).value:""; 
@@ -651,6 +707,45 @@
     if (dlg) dlg.classList.add('hidden');
   };
 
+  function openOperasionalExpenseModal() {
+    const m = $('modal-operasional-expense');
+    if (m) {
+      m.classList.remove('hidden');
+      setV('exp-tanggal', new Date().toISOString().split('T')[0]);
+      setV('exp-deskripsi', '');
+      setV('exp-nominal', '');
+    }
+  }
+
+  function closeOperasionalExpenseModal() {
+    const m = $('modal-operasional-expense');
+    if (m) m.classList.add('hidden');
+  }
+
+  function handleSavePengeluaranLain(e) {
+    if (e) e.preventDefault();
+    const tgl = v('exp-tanggal') || new Date().toISOString().split('T')[0];
+    const kat = v('exp-kategori');
+    const desk = v('exp-deskripsi').trim();
+    const nom = pCN(v('exp-nominal'));
+
+    if (!desk || nom <= 0) return showToast("Isi deskripsi dan nominal pengeluaran!", false);
+
+    if (!Array.isArray(dbState.pengeluaran_lain)) dbState.pengeluaran_lain = [];
+    dbState.pengeluaran_lain.push({
+      id: generateTxId("EXP"),
+      tanggal: tgl,
+      kategori: kat,
+      deskripsi: desk,
+      nominal: nom
+    });
+
+    saveState();
+    closeOperasionalExpenseModal();
+    renderPelaporanTab();
+    showToast("Pengeluaran operasional berhasil dicatat!");
+  }
+
   function toggleAntenaLockModal() {
     if (isAntenaUnlocked) {
       isAntenaUnlocked = false;
@@ -724,31 +819,16 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
-  function loadConfigFromSession() {
-    try {
-      const saved = sessionStorage.getItem('smartclinic_branding_session');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') {
-          if (parsed.api_url && parsed.api_url.trim().startsWith('http')) {
-            dbState.branding.api_url = parsed.api_url.trim();
-          }
-          if (parsed.supa_url) dbState.branding.supa_url = parsed.supa_url;
-          if (parsed.supa_key) dbState.branding.supa_key = parsed.supa_key;
-          if (parsed.app_id) dbState.branding.app_id = parsed.app_id;
-          if (parsed.nama_klinik) dbState.branding.nama_klinik = parsed.nama_klinik;
-          if (parsed.subtitle_klinik) dbState.branding.subtitle_klinik = parsed.subtitle_klinik;
-          if (parsed.logo_url) dbState.branding.logo_url = parsed.logo_url;
-          if (parsed.kode_pengaman) dbState.branding.kode_pengaman = parsed.kode_pengaman;
-        }
-      }
-    } catch (e) {}
-  }
-
-  function saveConfigToSession() {
-    try {
-      sessionStorage.setItem('smartclinic_branding_session', JSON.stringify(dbState.branding));
-    } catch (e) {}
+  function cleanAndFixGasUrl(url) {
+    if (!url) return "";
+    let clean = url.trim();
+    if (clean.includes('/edit')) {
+      clean = clean.replace(/\/edit.*$/, '/exec');
+    }
+    if (clean.includes('/dev')) {
+      clean = clean.replace(/\/dev.*$/, '/exec');
+    }
+    return clean;
   }
 
   async function ensureSupabaseClient() {
@@ -772,21 +852,45 @@
   function setupSupabaseRealtimeListener(client) {
     if (!client || realtimeChannel) return;
     try {
-      const targetAppId = (dbState.branding.app_id || 'arkcare01').toLowerCase();
-      realtimeChannel = client.channel(`smartclinic_channel_${targetAppId}`);
-      
-      realtimeChannel
-        .on('broadcast', { event: 'SIGNAL_DATA_UPDATED' }, payload => {
-          showToast("Data Diperbarui oleh Perangkat Lain...", true);
-          fetchApiData({ silent: true });
-        })
-        .subscribe(status => {
+      realtimeChannel = client.channel('pantau-konfigurasi')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'system_config' },
+          (payload) => {
+            console.log("⚡ Konfigurasi Supabase Diperbarui Live!", payload);
+            if (payload.new) {
+              let newGas = cleanAndFixGasUrl(payload.new.gas_url || payload.new.api_url || '');
+              if (newGas && newGas.startsWith('http')) {
+                dbState.branding.api_url = newGas;
+              }
+              if (payload.new.nama_klinik) dbState.branding.nama_klinik = payload.new.nama_klinik;
+              if (payload.new.subtitle_klinik) dbState.branding.subtitle_klinik = payload.new.subtitle_klinik;
+              if (payload.new.logo_url) dbState.branding.logo_url = payload.new.logo_url;
+              applyBranding();
+              showToast("URL GAS & Konfigurasi Diperbarui Realtime!", true);
+              fetchApiData({ silent: true });
+            }
+          }
+        )
+        .on(
+          'broadcast',
+          { event: 'SIGNAL_DATA_UPDATED' },
+          (payload) => {
+            // Mencegah "Thundering Herd" dengan jeda acak 0.5 - 3.5 detik per perangkat 
+            const randomDelay = Math.floor(Math.random() * 3000) + 500;
+            showToast(`Perubahan dari perangkat lain, sinkronisasi dalam ${(randomDelay/1000).toFixed(1)}s...`, true);
+            setTimeout(() => {
+                fetchApiData({ silent: true });
+            }, randomDelay);
+          }
+        )
+        .subscribe((status) => {
           if (status === 'SUBSCRIBED') {
-            console.log("Realtime Listener Active for App:", targetAppId);
+            console.log("✅ Realtime Listener Active for system_config & broadcast!");
           }
         });
     } catch (err) {
-      console.warn("Realtime setup notice:", err);
+      console.warn("Realtime listener error:", err);
     }
   }
 
@@ -803,9 +907,6 @@
   }
 
   async function pullAnchorConfigFromSupabase() {
-    loadConfigFromSession();
-    applyBranding();
-
     const client = await ensureSupabaseClient();
     if (client) {
       setupSupabaseRealtimeListener(client);
@@ -825,15 +926,13 @@
         }
 
         if (data) {
-          // Kunci Branding 100% dari Supabase!
           if (data.app_id) dbState.branding.app_id = data.app_id;
           if (data.nama_klinik) dbState.branding.nama_klinik = data.nama_klinik;
           if (data.subtitle_klinik) dbState.branding.subtitle_klinik = data.subtitle_klinik;
           if (data.logo_url) dbState.branding.logo_url = data.logo_url;
           
-          let remoteGas = (data.gas_url || data.api_url || '').trim();
+          let remoteGas = cleanAndFixGasUrl(data.gas_url || data.api_url || '');
           if (remoteGas && remoteGas.startsWith('http')) {
-            if (remoteGas.includes('/edit')) remoteGas = remoteGas.replace(/\/edit.*$/, '/exec');
             dbState.branding.api_url = remoteGas;
           }
 
@@ -841,23 +940,22 @@
           if (data.supabase_anon_key) dbState.branding.supa_key = data.supabase_anon_key;
           if (data.kode_pengaman) dbState.branding.kode_pengaman = data.kode_pengaman;
 
-          saveConfigToSession();
           applyBranding();
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn("Supabase anchor fetch notice:", e);
+      }
     }
+    // Setlah URL GAS & branding terkonfirmasi dari Supabase, baru tarik data medis dari Google Apps Script
     fetchApiData();
   }
 
   function fetchApiData(options = {}) {
+    if (isFetchingApi) return;
     const isSilent = options.silent || false;
-    let tApi = (dbState.branding.api_url || "").trim();
-    
-    if (tApi.includes('/edit')) {
-      tApi = tApi.replace(/\/edit.*$/, '/exec');
-      dbState.branding.api_url = tApi;
-      saveConfigToSession();
-    }
+
+    let tApi = cleanAndFixGasUrl(dbState.branding.api_url || "");
+    dbState.branding.api_url = tApi;
 
     const sD = $('login-dot'), sT = $('login-text'), sB = $('sync-status-badge');
     if (!isSilent && sD && sT && sB) {
@@ -868,9 +966,15 @@
     }
 
     if (tApi && tApi.startsWith('http')) {
+      isFetchingApi = true;
       const fetchUrl = tApi + (tApi.includes('?') ? '&' : '?') + "action=load&nocache=" + Date.now();
-      fetch(fetchUrl, { cache: 'no-store', redirect: 'follow' })
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 detik timeout prevent hang
+
+      fetch(fetchUrl, { cache: 'no-store', redirect: 'follow', signal: controller.signal })
         .then(async r => {
+          clearTimeout(timeoutId);
           if (!r.ok) {
             throw new Error(`HTTP ${r.status} - Gagal merespon`);
           }
@@ -878,7 +982,7 @@
           try {
             return JSON.parse(textResp);
           } catch (err) {
-            throw new Error("Akses GAS Belum 'Anyone' / URL Salah!");
+            throw new Error("Respon GAS bukan JSON (Limit eksekusi / URL Salah): " + textResp.substring(0, 30));
           }
         })
         .then(d => {
@@ -896,13 +1000,17 @@
           }
         })
         .catch(e => {
-          if (!isSilent) showToast("Koneksi GAS Terputus: " + e.message, false);
+          const errMsg = e.name === 'AbortError' ? 'Koneksi Timeout (GAS terlalu lambat)' : e.message;
+          if (!isSilent) showToast("Koneksi GAS Terputus: " + errMsg, false);
           if (sD && sT && sB) {
             sB.className = "flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#000000]/60 border border-red-900 text-[11px] backdrop-blur-md shadow-[0_0_15px_rgba(239,68,68,0.15)] cursor-pointer";
             sD.className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]";
             sT.className = "font-black text-red-400 tracking-wider";
             sT.innerText = "KONEKSI GAS OFFLINE";
           }
+        })
+        .finally(() => {
+          isFetchingApi = false;
         });
     } else {
       if (!isSilent) showToast("URL Google Apps Script belum diisi / tidak valid!", false);
@@ -916,9 +1024,7 @@
   }
 
   function overwriteLocalWithCloudData(c) {
-    // PROTEKSI BRANDING: Data branding DARI SHEET SAMA SEKALI TIDAK BOLEH MENIMPA Supabase!
-    // Kita hanya mengambil array operasional dari Google Sheet
-    ['pasien','kunjungan','sdm','layanan','luka','bhp_dressing','retail','kepatuhan_options','users'].forEach(k => {
+    ['pasien','kunjungan','sdm','layanan','luka','bhp_dressing','retail','kepatuhan_options','pengeluaran_lain','users'].forEach(k => {
       if (Array.isArray(c[k]) && c[k].length > 0) dbState[k] = c[k];
     });
 
@@ -939,22 +1045,36 @@
     if (!isDataLoadedFromCloud) {
       return showToast("Peringatan: Data Cloud belum siap. Mencoba mengirim...", false);
     }
+    if (isSavingApi) return showToast("Sedang menyimpan data, mohon tunggu...", false);
 
     const b = $('btn-finalisasi');
     if (b) b.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin font-bold"></i> Menyimpan...`;
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
-    saveConfigToSession();
-
-    const tApi = dbState.branding.api_url || "";
+    const tApi = cleanAndFixGasUrl(dbState.branding.api_url || "");
     if (tApi && tApi.startsWith('http')) {
+      isSavingApi = true;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 detik timeout prevent hang
+
       fetch(tApi, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "sync", state: dbState })
+        body: JSON.stringify({ action: "sync", state: dbState }),
+        signal: controller.signal
       })
-      .then(r => r.json())
-      .then(async r => {
+      .then(r => {
+        clearTimeout(timeoutId);
+        return r.text();
+      })
+      .then(async textResp => {
+        let r;
+        try {
+            r = JSON.parse(textResp);
+        } catch (err) {
+            throw new Error("Respon GAS bukan JSON (Mungkin limit Google): " + textResp.substring(0, 30));
+        }
+        
         if (r.success) {
           showToast("Sinkronisasi Cloud Sukses!");
           broadcastRealtimeSignal();
@@ -965,9 +1085,13 @@
         if (typeof lucide !== 'undefined') lucide.createIcons();
       })
       .catch(e => {
-        showToast("Gagal Jaringan saat menyimpan.", false);
+        const errMsg = e.name === 'AbortError' ? 'Waktu habis saat menyimpan ke GAS' : e.message;
+        showToast("Gagal Jaringan: " + errMsg, false);
         if (b) b.innerHTML = `<i data-lucide="send" class="w-4 h-4 font-bold"></i> Simpan & Kirim Tagihan ke Kasir`;
         if (typeof lucide !== 'undefined') lucide.createIcons();
+      })
+      .finally(() => {
+        isSavingApi = false;
       });
     } else {
       showToast("URL Google Apps Script Belum Terkonfigurasi!", false);
@@ -1264,13 +1388,24 @@
     renderCartTable();
   }
 
+  function getUnitHpp(item) {
+    if (!item) return 0;
+    let unitModal = pCN(item.hpp || item.harga_modal || item.harga_beli_grosir);
+    let sellPrice = pCN(item.price || item.harga_jual || item.harga_jual_eceran);
+    if (unitModal > sellPrice && sellPrice > 0) {
+      unitModal = Math.round(sellPrice * 0.7);
+    }
+    return unitModal;
+  }
+
   function addBhpToCart() {
     if (!selectedPasienRM) return showToast("Pilih pasien terlebih dahulu!", false);
     const sv = v('billing-bhp-select'), qt = parseInt(v('billing-bhp-qty')) || 1, cp = pCN(v('billing-bhp-custom-price'));
     const i = dbState.bhp_dressing.find(b => String(b.kode_item) === String(sv)); if (!i) return;
     if (pCN(i.stok_gudang) < qt) return showToast("Stok tidak mencukupi!", false);
+    const calculatedHpp = getUnitHpp({ hpp: i.harga_beli_grosir, price: cp });
     const ex = billingCart.find(x => String(x.code) === String(sv));
-    if (ex) { ex.qty += qt; ex.price = cp; } else { billingCart.push({ type: String(i.kategori || '').toLowerCase(), code: i.kode_item, name: i.nama_item, qty: qt, price: cp, hpp: pCN(i.harga_beli_grosir) }); }
+    if (ex) { ex.qty += qt; ex.price = cp; ex.hpp = calculatedHpp; } else { billingCart.push({ type: String(i.kategori || '').toLowerCase(), code: i.kode_item, name: i.nama_item, qty: qt, price: cp, hpp: calculatedHpp }); }
     renderCartTable();
   }
 
@@ -1365,8 +1500,12 @@
     if (!it) return;
     if (!iD && pCN(it.stok) < qt) return showToast("Stok produk tidak mencukupi!", false);
     const ex = kasirCart.find(x => String(x.code) === String(vl[1]));
+    const sellPrice = iD ? pCN(it.harga_jual_eceran) : pCN(it.harga_jual);
+    const rawModal = iD ? pCN(it.harga_beli_grosir) : pCN(it.harga_modal);
+    const calculatedHpp = getUnitHpp({ hpp: rawModal, price: sellPrice });
+
     if (ex) ex.qty += qt;
-    else kasirCart.push({ type: iD ? 'dressing' : 'retail', code: vl[1], name: iD ? it.nama_item : it.nama_produk, qty: qt, price: iD ? pCN(it.harga_jual_eceran) : pCN(it.harga_jual), hpp: iD ? pCN(it.harga_beli_grosir) : pCN(it.harga_modal), isNew: true });
+    else kasirCart.push({ type: iD ? 'dressing' : 'retail', code: vl[1], name: iD ? it.nama_item : it.nama_produk, qty: qt, price: sellPrice, hpp: calculatedHpp, isNew: true });
     if (!pendingCheckoutVisitId && kasirCart.length > 0) toggleKasirJasaInput();
     renderKasirCartTable(); calculateKasirTotals();
   }
@@ -1396,7 +1535,8 @@
     let tI = 0, tH = 0;
     kasirCart.forEach(it => {
       tI += (it.price * it.qty);
-      tH += (it.hpp * it.qty);
+      const unitHpp = getUnitHpp(it);
+      tH += (unitHpp * it.qty);
       if (it.isNew || !pendingCheckoutVisitId) {
         if (it.type === 'retail') {
           const r = dbState.retail.find(x => String(x.kode_retail) === String(it.code));
@@ -1518,12 +1658,15 @@
     const filteredVisits = getFilteredVisits();
 
     let totalOmzet = 0, omzetJasa = 0, omzetRetail = 0;
+    let totalHppBhp = 0, totalHppRetail = 0;
+    let totalKomisiSDM = 0, totalDiskonAll = 0;
 
     filteredVisits.forEach(vO => {
       let rawJasa = 0;
       let rawRetail = 0;
       const sarana = pCN(vO.jasa_sarana);
       const diskon = pCN(vO.diskon);
+      totalDiskonAll += diskon;
 
       try {
         const items = JSON.parse(vO.items_json || '[]');
@@ -1531,10 +1674,18 @@
           const qty = pCN(i.qty) || 1;
           const price = pCN(i.price);
           const lineTotal = price * qty;
+          const unitHpp = getUnitHpp(i);
+          const lineHpp = unitHpp * qty;
+
           if (i.type === 'jasa') {
             rawJasa += lineTotal;
+            const komisiPct = pCN(i.komisi_persen);
+            const feeCustom = pCN(i.fee_custom);
+            totalKomisiSDM += ((price * (komisiPct / 100)) + feeCustom) * qty;
           } else {
             rawRetail += lineTotal;
+            if (i.type === 'retail') totalHppRetail += lineHpp;
+            else totalHppBhp += lineHpp;
           }
         });
       } catch (e) { }
@@ -1563,9 +1714,49 @@
       totalOmzet += netVisitTotal;
     });
 
+    const totalHPP = totalHppBhp + totalHppRetail;
+    const labaKotor = Math.max(0, totalOmzet - totalHPP);
+
+    const totalGajiPokok = (dbState.sdm || []).reduce((sum, s) => sum + pCN(s.gaji_pokok), 0);
+    const totalPengeluaranLain = (dbState.pengeluaran_lain || []).reduce((sum, e) => {
+      const tglMulai = v('dash-tgl-mulai'), tglAkhir = v('dash-tgl-akhir');
+      const preset = v('dash-filter-preset');
+      if (preset === 'semua' || (!tglMulai && !tglAkhir)) return sum + pCN(e.nominal);
+      const vt = String(e.tanggal || '');
+      if (tglMulai && vt < tglMulai) return sum;
+      if (tglAkhir && vt > tglAkhir) return sum;
+      return sum + pCN(e.nominal);
+    }, 0);
+
+    const totalBebanOperasional = totalKomisiSDM + totalGajiPokok + totalDiskonAll + totalPengeluaranLain;
+    const labaBersih = totalOmzet - (totalHPP + totalBebanOperasional);
+    const marginLaba = totalOmzet > 0 ? ((labaBersih / totalOmzet) * 100).toFixed(1) : 0;
+
     if ($('dash-omzet')) $('dash-omzet').innerText = "Rp " + Math.round(totalOmzet).toLocaleString('id-ID');
     if ($('dash-omzet-jasa')) $('dash-omzet-jasa').innerText = "Rp " + Math.round(omzetJasa).toLocaleString('id-ID');
     if ($('dash-omzet-retail')) $('dash-omzet-retail').innerText = "Rp " + Math.round(omzetRetail).toLocaleString('id-ID');
+    
+    if ($('dash-laba-bersih')) {
+      $('dash-laba-bersih').innerText = "Rp " + Math.round(labaBersih).toLocaleString('id-ID');
+      const cLb = $('card-laba-bersih');
+      if (cLb) {
+        if (labaBersih >= 0) {
+          cLb.className = "neon-glass-card p-4 flex flex-col justify-between h-36 border-emerald-400/50 shadow-[0_0_20px_rgba(16,185,129,0.25)] bg-gradient-to-br from-[#022c20] to-[#01140e]";
+          $('dash-laba-bersih').className = "text-2xl font-black text-emerald-300 font-mono text-glow";
+        } else {
+          cLb.className = "neon-glass-card p-4 flex flex-col justify-between h-36 border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.25)] bg-gradient-to-br from-red-950/40 to-[#01140e]";
+          $('dash-laba-bersih').className = "text-2xl font-black text-red-400 font-mono text-glow";
+        }
+      }
+    }
+    if ($('dash-margin-laba')) $('dash-margin-laba').innerText = `Margin Laba Bersih: ${marginLaba}%`;
+
+    if ($('pnl-gross-revenue')) $('pnl-gross-revenue').innerText = "Rp " + Math.round(totalOmzet).toLocaleString('id-ID');
+    if ($('pnl-total-hpp')) $('pnl-total-hpp').innerText = "Rp " + Math.round(totalHPP).toLocaleString('id-ID');
+    if ($('pnl-detail-hpp')) $('pnl-detail-hpp').innerText = `Bahan: Rp ${Math.round(totalHppBhp).toLocaleString('id-ID')} | Retail: Rp ${Math.round(totalHppRetail).toLocaleString('id-ID')}`;
+    if ($('pnl-gross-profit')) $('pnl-gross-profit').innerText = "Rp " + Math.round(labaKotor).toLocaleString('id-ID');
+    if ($('pnl-total-beban')) $('pnl-total-beban').innerText = "Rp " + Math.round(totalBebanOperasional).toLocaleString('id-ID');
+    if ($('pnl-detail-beban')) $('pnl-detail-beban').innerText = `Gaji: Rp ${Math.round(totalGajiPokok).toLocaleString('id-ID')} | Komisi: Rp ${Math.round(totalKomisiSDM).toLocaleString('id-ID')} | Ops: Rp ${Math.round(totalPengeluaranLain).toLocaleString('id-ID')}`;
 
     const c = dbState.bhp_dressing.filter(b => pCN(b.stok_gudang) <= pCN(b.stok_min));
     if ($('dash-critical-count')) $('dash-critical-count').innerText = c.length + " Items";
@@ -1704,16 +1895,36 @@
     const periodLabel = preset === 'semua' ? 'Semua Periode Transaksi' : `Periode: ${tglMulai} s/d ${tglAkhir}`;
 
     let totalOmzet = 0, omzetJasa = 0, omzetRetail = 0;
+    let totalHppBhp = 0, totalHppRetail = 0;
+    let totalKomisiSDM = 0, totalDiskonAll = 0;
+
     filteredVisits.forEach(vO => {
       let rawJasa = 0, rawRetail = 0;
       const sarana = pCN(vO.jasa_sarana), diskon = pCN(vO.diskon);
+      totalDiskonAll += diskon;
+
       try {
         const items = JSON.parse(vO.items_json || '[]');
         items.forEach(i => {
-          const lineTotal = pCN(i.price) * (pCN(i.qty) || 1);
-          if (i.type === 'jasa') rawJasa += lineTotal; else rawRetail += lineTotal;
+          const qty = pCN(i.qty) || 1;
+          const price = pCN(i.price);
+          const lineTotal = price * qty;
+          const unitHpp = getUnitHpp(i);
+          const lineHpp = unitHpp * qty;
+
+          if (i.type === 'jasa') {
+            rawJasa += lineTotal;
+            const komisiPct = pCN(i.komisi_persen);
+            const feeCustom = pCN(i.fee_custom);
+            totalKomisiSDM += ((price * (komisiPct / 100)) + feeCustom) * qty;
+          } else {
+            rawRetail += lineTotal;
+            if (i.type === 'retail') totalHppRetail += lineHpp;
+            else totalHppBhp += lineHpp;
+          }
         });
       } catch (e) {}
+
       rawJasa += sarana;
       const grossTotal = rawJasa + rawRetail;
       let netVisitTotal = pCN(vO.grand_total);
@@ -1727,23 +1938,39 @@
       omzetJasa += netJasa; omzetRetail += netRetail; totalOmzet += netVisitTotal;
     });
 
+    const totalHPP = totalHppBhp + totalHppRetail;
+    const labaKotor = Math.max(0, totalOmzet - totalHPP);
+    const totalGajiPokok = (dbState.sdm || []).reduce((sum, s) => sum + pCN(s.gaji_pokok), 0);
+    const totalPengeluaranLain = (dbState.pengeluaran_lain || []).reduce((sum, e) => {
+      if (preset === 'semua' || (!tglMulai && !tglAkhir)) return sum + pCN(e.nominal);
+      const vt = String(e.tanggal || '');
+      if (tglMulai && vt < tglMulai) return sum;
+      if (tglAkhir && vt > tglAkhir) return sum;
+      return sum + pCN(e.nominal);
+    }, 0);
+
+    const totalBebanOperasional = totalKomisiSDM + totalGajiPokok + totalDiskonAll + totalPengeluaranLain;
+    const labaBersih = totalOmzet - (totalHPP + totalBebanOperasional);
+    const marginLaba = totalOmzet > 0 ? ((labaBersih / totalOmzet) * 100).toFixed(1) : 0;
+
     const w = window.open('', '_blank');
     let logoHtml = dbState.branding.logo_url ? `<img src="${convertToDirectDriveLink(dbState.branding.logo_url)}" style="max-height: 50px; margin-bottom: 8px;">` : '';
 
     let content = `
       <html>
       <head>
-        <title>Laporan Keuangan & Operasional - ${dbState.branding.nama_klinik}</title>
+        <title>Laporan Laba Rugi - ${dbState.branding.nama_klinik}</title>
         <style>
           body { font-family: Arial, sans-serif; padding: 30px; color: #111; line-height: 1.4; font-size: 11px; }
           .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 20px; }
           .header h2 { margin: 0; font-size: 18px; text-transform: uppercase; }
           .header p { margin: 2px 0 0; font-size: 11px; color: #444; }
           .period-badge { background: #f0fdf4; border: 1px solid #10b981; padding: 6px 12px; display: inline-block; font-weight: bold; font-size: 11px; border-radius: 4px; margin-bottom: 15px; }
-          .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-          .summary-card { border: 1px solid #ccc; padding: 10px; border-radius: 6px; background: #fafafa; }
-          .summary-card span { font-size: 9px; text-transform: uppercase; color: #555; font-weight: bold; display: block; }
-          .summary-card h3 { margin: 5px 0 0; font-size: 15px; color: #000; }
+          .pnl-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11px; }
+          .pnl-table td { padding: 6px 10px; border-bottom: 1px solid #e2e8f0; }
+          .pnl-table .row-header { font-weight: bold; background: #f8fafc; text-transform: uppercase; }
+          .pnl-table .row-sub { padding-left: 25px; color: #475569; }
+          .pnl-table .row-total { font-weight: bold; font-size: 12px; background: #10b981; color: white; }
           table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 10px; }
           th, td { border: 1px solid #999; padding: 6px 8px; text-align: left; }
           th { background: #e2e8f0; font-weight: bold; text-transform: uppercase; font-size: 9px; }
@@ -1761,25 +1988,45 @@
         </div>
 
         <div style="text-align: center;">
-          <div class="period-badge">RANGKUMAN LAPORAN OPERASIONAL & KEUANGAN KLINIK<br><span style="font-size:10px; font-weight:normal;">${periodLabel}</span></div>
+          <div class="period-badge">LAPORAN LABA RUGI KLINIK (PROFIT & LOSS STATEMENT)<br><span style="font-size:10px; font-weight:normal;">${periodLabel}</span></div>
         </div>
 
-        <div class="summary-grid">
-          <div class="summary-card">
-            <span>Total Omzet Klinik</span>
-            <h3>Rp ${Math.round(totalOmzet).toLocaleString('id-ID')}</h3>
-          </div>
-          <div class="summary-card">
-            <span>Omzet Jasa & Tindakan</span>
-            <h3>Rp ${Math.round(omzetJasa).toLocaleString('id-ID')}</h3>
-          </div>
-          <div class="summary-card">
-            <span>Omzet Retail & BHP</span>
-            <h3>Rp ${Math.round(omzetRetail).toLocaleString('id-ID')}</h3>
-          </div>
-        </div>
+        <table class="pnl-table">
+          <tr class="row-header">
+            <td>1. PENDAPATAN / OMZET KOTOR (GROSS REVENUE)</td>
+            <td style="text-align:right;">Rp ${Math.round(totalOmzet).toLocaleString('id-ID')}</td>
+          </tr>
+          <tr class="row-sub"><td> - Omzet Pelayanan Jasa Medis</td><td style="text-align:right;">Rp ${Math.round(omzetJasa).toLocaleString('id-ID')}</td></tr>
+          <tr class="row-sub"><td> - Omzet Penjualan Retail & Apotek</td><td style="text-align:right;">Rp ${Math.round(omzetRetail).toLocaleString('id-ID')}</td></tr>
+          
+          <tr class="row-header" style="color:#dc2626;">
+            <td>2. HARGA POKOK PENJUALAN (HPP / COGS)</td>
+            <td style="text-align:right;">- Rp ${Math.round(totalHPP).toLocaleString('id-ID')}</td>
+          </tr>
+          <tr class="row-sub"><td> - HPP Material Medis (BHP & Dressing)</td><td style="text-align:right;">Rp ${Math.round(totalHppBhp).toLocaleString('id-ID')}</td></tr>
+          <tr class="row-sub"><td> - HPP Barang Retail & Apotek</td><td style="text-align:right;">Rp ${Math.round(totalHppRetail).toLocaleString('id-ID')}</td></tr>
+          
+          <tr class="row-header" style="background:#fef08a;">
+            <td>3. LABA KOTOR (GROSS PROFIT)</td>
+            <td style="text-align:right; font-weight:bold;">Rp ${Math.round(labaKotor).toLocaleString('id-ID')}</td>
+          </tr>
 
-        <div class="section-title">1. Epidemiologi Sebaran Kasus Luka</div>
+          <tr class="row-header" style="color:#d97706;">
+            <td>4. TOTAL BEBAN OPERASIONAL & SDM</td>
+            <td style="text-align:right;">- Rp ${Math.round(totalBebanOperasional).toLocaleString('id-ID')}</td>
+          </tr>
+          <tr class="row-sub"><td> - Beban Gaji Pokok SDM</td><td style="text-align:right;">Rp ${Math.round(totalGajiPokok).toLocaleString('id-ID')}</td></tr>
+          <tr class="row-sub"><td> - Beban Komisi Medis SDM</td><td style="text-align:right;">Rp ${Math.round(totalKomisiSDM).toLocaleString('id-ID')}</td></tr>
+          <tr class="row-sub"><td> - Beban Diskon Pelayanan</td><td style="text-align:right;">Rp ${Math.round(totalDiskonAll).toLocaleString('id-ID')}</td></tr>
+          <tr class="row-sub"><td> - Beban Operasional Tambahan (Listrik/Air/Sewa)</td><td style="text-align:right;">Rp ${Math.round(totalPengeluaranLain).toLocaleString('id-ID')}</td></tr>
+
+          <tr class="row-total">
+            <td>LABA BERSIH SISA (NET PROFIT) [Margin: ${marginLaba}%]</td>
+            <td style="text-align:right;">Rp ${Math.round(labaBersih).toLocaleString('id-ID')}</td>
+          </tr>
+        </table>
+
+        <div class="section-title">Epidemiologi Sebaran Kasus Luka</div>
         <table>
           <thead>
             <tr><th>No</th><th>Jenis Luka / Diagnosis</th><th style="text-align:center;">Jumlah Kasus</th><th style="text-align:right;">Total Omzet</th></tr>
@@ -1820,59 +2067,6 @@
     if (ritelBebasOmzet > 0 || ritelBebasCase > 0) {
       content += `<tr><td>${idxL++}</td><td style="font-weight:bold;">Penjualan Ritel / Bebas (Tanpa Diagnosis Luka)</td><td style="text-align:center; font-weight:bold;">${ritelBebasCase}</td><td style="text-align:right; font-weight:bold;">Rp ${Math.round(ritelBebasOmzet).toLocaleString('id-ID')}</td></tr>`;
     }
-
-    content += `
-          </tbody>
-        </table>
-
-        <div class="section-title">2. Produktivitas Layanan & Tindakan Medis</div>
-        <table>
-          <thead>
-            <tr><th>No</th><th>Nama Layanan / Tindakan</th><th style="text-align:center;">Frekuensi Terpakai</th><th style="text-align:right;">Nilai Total Jasa</th></tr>
-          </thead>
-          <tbody>
-    `;
-
-    const srvDt = {};
-    dbState.layanan.forEach(l => srvDt[l.nama_tindakan] = { c: 0, o: 0 });
-    filteredVisits.forEach(vO => {
-      try {
-        JSON.parse(vO.items_json).forEach(i => {
-          if (i.type === 'jasa' && srvDt[i.name]) { srvDt[i.name].c++; srvDt[i.name].o += (pCN(i.price) * i.qty); }
-        });
-      } catch (e) {}
-    });
-
-    let idxS = 1;
-    dbState.layanan.forEach(l => {
-      content += `<tr><td>${idxS++}</td><td>${l.nama_tindakan}</td><td style="text-align:center;">${srvDt[l.nama_tindakan]?.c || 0}</td><td style="text-align:right;">Rp ${(srvDt[l.nama_tindakan]?.o || 0).toLocaleString('id-ID')}</td></tr>`;
-    });
-
-    content += `
-          </tbody>
-        </table>
-
-        <div class="section-title">3. Rekapitulasi Gaji Pokok & Komisi SDM</div>
-        <table>
-          <thead>
-            <tr><th>No</th><th>Nama Karyawan / Medis</th><th style="text-align:right;">Gaji Pokok</th><th style="text-align:right;">Total Komisi</th><th style="text-align:right;">Total Payout</th></tr>
-          </thead>
-          <tbody>
-    `;
-
-    let idxE = 1;
-    dbState.sdm.forEach(s => {
-      let kt = 0;
-      filteredVisits.filter(vO => String(vO.petugas || '') === String(s.nama_petugas || '')).forEach(vO => {
-        try {
-          JSON.parse(vO.items_json).forEach(i => {
-            if (i.type === 'jasa') kt += (pCN(i.price) * (pCN(i.komisi_persen) / 100)) + pCN(i.fee_custom);
-          });
-        } catch (e) {}
-      });
-      const gp = pCN(s.gaji_pokok);
-      content += `<tr><td>${idxE++}</td><td>${s.nama_petugas}</td><td style="text-align:right;">Rp ${gp.toLocaleString('id-ID')}</td><td style="text-align:right;">Rp ${kt.toLocaleString('id-ID')}</td><td style="text-align:right; font-weight:bold;">Rp ${(gp + kt).toLocaleString('id-ID')}</td></tr>`;
-    });
 
     content += `
           </tbody>
@@ -2029,11 +2223,10 @@
     dbState.branding.nama_klinik = v('brand-edit-title').trim();
     dbState.branding.subtitle_klinik = v('brand-edit-subtitle').trim();
     dbState.branding.logo_url = v('brand-edit-logo').trim();
-    dbState.branding.api_url = v('brand-edit-api').trim();
+    dbState.branding.api_url = cleanAndFixGasUrl(v('brand-edit-api'));
     dbState.branding.supa_url = v('brand-edit-supa-url').trim() || DEFAULT_SUPABASE_URL;
     dbState.branding.supa_key = v('brand-edit-supa-key').trim() || DEFAULT_SUPABASE_KEY;
 
-    saveConfigToSession();
     applyBranding();
     const client = await ensureSupabaseClient();
     if (client) {
@@ -2053,7 +2246,9 @@
         await client.from('system_config').upsert(payload, { onConflict: 'app_id' });
         showToast("Konfigurasi Dipancarkan ke Supabase terpusat!");
         broadcastRealtimeSignal();
-      } catch (err) { }
+      } catch (err) {
+        showToast("Gagal memancarkan ke Supabase!", false);
+      }
     }
     fetchApiData();
   }
