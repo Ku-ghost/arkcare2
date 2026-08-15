@@ -112,11 +112,11 @@
   <div id="modal-operasional-expense" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
     <div class="bg-[#011c14]/95 border-2 border-yellow-500/40 rounded-3xl max-w-sm w-full p-6 shadow-[0_0_40px_rgba(250,204,21,0.2)] backdrop-blur-xl">
       <h3 class="text-sm font-black text-white mb-2 flex items-center gap-2 text-glow"><i data-lucide="dollar-sign" class="text-yellow-400 w-5 h-5"></i> Tambah Biaya Operasional</h3>
-      <p class="text-[11px] text-eco-100/70 mb-4">Catat biaya operasional klinik (Listrik, Air, Sewa, Internet, Dll) untuk memotong Laba Bersih.</p>
+      <p class="text-[11px] text-eco-100/70 mb-4">Catat biaya operasional klinik (Listrik, Air, Sewa, Gaji Karyawan, Dll) untuk memotong Laba Bersih.</p>
       <form onsubmit="handleSavePengeluaranLain(event)" class="space-y-3">
         <div><label class="lbl">Tanggal Pengeluaran</label><input type="date" id="exp-tanggal" required class="inp"></div>
-        <div><label class="lbl">Kategori Biaya</label><select id="exp-kategori" class="inp"><option value="Listrik & Air">Listrik & Air</option><option value="Sewa Tempat">Sewa Tempat / Gedung</option><option value="Internet & Wifi">Internet & Telepon</option><option value="Kebersihan & Sampah">Kebersihan & Sampah Medis</option><option value="Lain-Lain">Pengeluaran Operasional Lain</option></select></div>
-        <div><label class="lbl">Deskripsi / Keterangan</label><input type="text" id="exp-deskripsi" required placeholder="Cth: Bayar Listrik Bulan Ini" class="inp"></div>
+        <div><label class="lbl">Kategori Biaya</label><select id="exp-kategori" class="inp"><option value="Listrik & Air">Listrik & Air</option><option value="Sewa Tempat">Sewa Tempat / Gedung</option><option value="Internet & Wifi">Internet & Telepon</option><option value="Kebersihan & Sampah">Kebersihan & Sampah Medis</option><option value="Gaji Karyawan">Gaji & Upah Karyawan</option><option value="Lain-Lain">Pengeluaran Operasional Lain</option></select></div>
+        <div><label class="lbl">Deskripsi / Keterangan</label><input type="text" id="exp-deskripsi" required placeholder="Cth: Bayar Gaji Staf / Listrik Bulan Ini" class="inp"></div>
         <div><label class="lbl">Nominal Biaya (Rp)</label><input type="number" id="exp-nominal" required placeholder="0" class="inp font-mono font-bold text-yellow-400"></div>
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeOperasionalExpenseModal()" class="btn-cancel w-auto">Batal</button>
@@ -329,29 +329,37 @@
           </div>
           <div>
             <div id="dash-laba-bersih" class="text-2xl font-black text-emerald-300 font-mono text-glow">Rp 0</div>
-            <div id="dash-margin-laba" class="text-[10px] text-emerald-400 font-bold mt-1">Margin: 0%</div>
+            <div id="dash-margin-laba" class="text-[10px] text-emerald-400 font-bold mt-1">Margin Laba Bersih: 0%</div>
           </div>
         </div>
 
         <div class="neon-glass-card p-4 flex flex-col justify-between h-36">
           <div class="flex justify-between items-start">
-            <span class="text-[10px] font-bold uppercase text-neon-teal tracking-wider text-glow">Omzet Jasa & Tindakan</span>
-            <div class="p-1.5 bg-eco-950 rounded-lg text-neon-teal"><i data-lucide="stethoscope" class="w-4 h-4"></i></div>
+            <span class="text-[10px] font-bold uppercase text-red-400 tracking-wider text-glow">Total HPP (Modal Barang)</span>
+            <div class="p-1.5 bg-eco-950 rounded-lg text-red-400"><i data-lucide="package" class="w-4 h-4"></i></div>
           </div>
           <div>
-            <div id="dash-omzet-jasa" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div>
-            <div class="text-[9px] text-eco-400 font-semibold mt-1">* Pelayanan Medis & Perawatan Luka</div>
+            <div id="dash-total-hpp-top" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div>
+            <div id="dash-hpp-subtext" class="text-[9px] font-semibold mt-1 flex flex-wrap gap-1">
+              <span class="text-red-400 font-bold">Bahan: Rp 0</span>
+              <span class="text-eco-500">|</span>
+              <span class="text-yellow-400 font-bold">Retail: Rp 0</span>
+            </div>
           </div>
         </div>
 
         <div class="neon-glass-card p-4 flex flex-col justify-between h-36">
           <div class="flex justify-between items-start">
-            <span class="text-[10px] font-bold uppercase text-yellow-500 tracking-wider text-glow">Omzet Retail & BHP</span>
-            <div class="p-1.5 bg-eco-950 rounded-lg text-yellow-500"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div>
+            <span class="text-[10px] font-bold uppercase text-yellow-500 tracking-wider text-glow">Total Beban Operasional</span>
+            <div class="p-1.5 bg-eco-950 rounded-lg text-yellow-500"><i data-lucide="receipt" class="w-4 h-4"></i></div>
           </div>
           <div>
-            <div id="dash-omzet-retail" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div>
-            <div class="text-[9px] text-eco-400 font-semibold mt-1">* Penjualan Obat, Alkes & Dressing</div>
+            <div id="dash-beban-top" class="text-xl font-bold text-white font-mono text-glow">Rp 0</div>
+            <div id="dash-beban-subtext" class="text-[9px] font-semibold mt-1 flex flex-wrap gap-1">
+              <span class="text-purple-300 font-bold">Komisi: Rp 0</span>
+              <span class="text-eco-500">|</span>
+              <span class="text-amber-400 font-bold">Ops: Rp 0</span>
+            </div>
           </div>
         </div>
       </div>
@@ -359,36 +367,41 @@
       <div class="neon-glass-card p-5 border-emerald-500/30 bg-gradient-to-br from-[#011c14] to-[#010e0a]">
         <div class="flex justify-between items-center mb-4 border-b border-eco-800/80 pb-2">
           <h3 class="text-xs font-black text-white flex items-center gap-2 text-glow">
-            <i data-lucide="pie-chart" class="text-neon-green w-4 h-4"></i> Rangkuman Laba Rugi Klinik (Profit & Loss Statement)
+            <i data-lucide="pie-chart" class="text-neon-green w-4 h-4"></i> Rangkuman Laba Rugi Klinik (Sesuai Rekap Sheet Laporan Laba)
           </h3>
-          <span class="text-[10px] font-bold text-eco-400 bg-eco-950 px-2 py-1 rounded border border-eco-800">Kalkulasi Otomatis Presisi</span>
+          <span class="text-[10px] font-bold text-eco-400 bg-eco-950 px-2 py-1 rounded border border-eco-800">Sinkron Rekap Sheet & Vol. Barang</span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
           <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
-            <span class="text-[10px] text-eco-400 font-bold uppercase block">1. Gross Revenue</span>
-            <div id="pnl-gross-revenue" class="text-base font-black text-white font-mono">Rp 0</div>
-            <span class="text-[9px] text-eco-500 block">Total Omzet Sebelum HPP</span>
+            <span class="text-[10px] text-neon-teal font-bold uppercase block">1. Total Omzet Jasa</span>
+            <div id="pnl-omzet-jasa" class="text-base font-black text-neon-teal font-mono">Rp 0</div>
+            <span class="text-[9px] text-eco-500 block">Tindakan Medis &amp; Sarana</span>
           </div>
           <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
-            <span class="text-[10px] text-red-400 font-bold uppercase block">2. Total HPP (COGS)</span>
+            <span class="text-[10px] text-yellow-400 font-bold uppercase block">2. Total Omzet Ritel/BHP</span>
+            <div id="pnl-omzet-retail" class="text-base font-black text-yellow-400 font-mono">Rp 0</div>
+            <span id="pnl-detail-retail" class="text-[9px] text-eco-500 block">Penjualan Barang &amp; Alkes</span>
+          </div>
+          <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
+            <span class="text-[10px] text-red-400 font-bold uppercase block">3. Total HPP (Modal Barang)</span>
             <div id="pnl-total-hpp" class="text-base font-black text-red-400 font-mono">Rp 0</div>
             <span id="pnl-detail-hpp" class="text-[9px] text-eco-500 block">Bahan: Rp 0 | Retail: Rp 0</span>
           </div>
           <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
-            <span class="text-[10px] text-yellow-400 font-bold uppercase block">3. Laba Kotor (Gross Profit)</span>
-            <div id="pnl-gross-profit" class="text-base font-black text-yellow-400 font-mono">Rp 0</div>
-            <span class="text-[9px] text-eco-500 block">Revenue dikurangi HPP</span>
+            <span class="text-[10px] text-emerald-400 font-bold uppercase block">4. Laba Kotor (Gross Profit)</span>
+            <div id="pnl-gross-profit" class="text-base font-black text-emerald-400 font-mono">Rp 0</div>
+            <span class="text-[9px] text-eco-500 block">Total Omzet dikurangi HPP</span>
           </div>
           <div class="p-3 rounded-xl bg-[#010c09] border border-eco-800/80 space-y-1">
-            <span class="text-[10px] text-orange-400 font-bold uppercase block">4. Total Beban Operasional</span>
-            <div id="pnl-total-beban" class="text-base font-black text-orange-400 font-mono">Rp 0</div>
-            <span id="pnl-detail-beban" class="text-[9px] text-eco-500 block">Gaji: Rp 0 | Komisi: Rp 0 | Lain: Rp 0</span>
+            <span class="text-[10px] text-purple-400 font-bold uppercase block">5. Vol. Terjual &amp; Diskon</span>
+            <div id="pnl-vol-diskon" class="text-sm font-black text-purple-300 font-mono">0 Item / Rp 0</div>
+            <span id="pnl-detail-tx" class="text-[9px] text-eco-500 block">0 Kunjungan / Transaksi Lunas</span>
           </div>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-5 space-y-6 flex flex-col">
+        <div class="lg:col-span-5 gap-6 flex flex-col h-full">
           <div class="neon-glass-card p-4 flex flex-col">
             <h3 class="text-xs font-bold text-white mb-2 flex items-center gap-2 text-glow">
               <i data-lucide="bar-chart-horizontal" class="text-neon-teal w-4 h-4"></i> Distribusi Kasus
@@ -398,11 +411,11 @@
             </div>
           </div>
 
-          <div class="neon-glass-card flex-1 flex flex-col">
-            <h3 class="text-xs font-bold text-white mb-3 flex items-center gap-2 text-glow">
+          <div class="neon-glass-card flex flex-col p-5 mt-auto">
+            <h3 class="text-xs font-bold text-white mb-3 flex items-center gap-2 text-glow shrink-0">
               <i data-lucide="award" class="text-neon-green w-4 h-4"></i> Produktivitas Layanan
             </h3>
-            <div class="overflow-x-auto overflow-y-auto flex-1 max-h-[300px] pr-1">
+            <div class="overflow-x-auto overflow-y-auto max-h-[320px] pr-1 pb-2">
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr>
@@ -417,14 +430,14 @@
           </div>
         </div>
 
-        <div class="lg:col-span-7 space-y-6 flex flex-col justify-between">
-          <div class="neon-glass-card flex flex-col">
-            <div class="flex justify-between items-center mb-3">
+        <div class="lg:col-span-7 gap-6 flex flex-col h-full">
+          <div class="neon-glass-card flex flex-col p-5">
+            <div class="flex justify-between items-center mb-3 shrink-0">
               <h3 class="text-xs font-bold text-white flex items-center gap-2 text-glow">
                 <i data-lucide="bar-chart-2" class="text-neon-green w-4 h-4"></i> Epidemiologi
               </h3>
             </div>
-            <div class="overflow-x-auto max-h-[260px]">
+            <div class="overflow-x-auto overflow-y-auto max-h-[220px] pb-2">
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr>
@@ -436,7 +449,7 @@
                 <tbody id="tbody-wound-stats"></tbody>
               </table>
             </div>
-            <div class="mt-3 flex flex-col gap-2 border-t border-eco-800 pt-2.5">
+            <div class="mt-3 flex flex-col gap-2 border-t border-eco-800 pt-2.5 shrink-0">
               <span class="text-[10px] text-eco-500 uppercase font-bold">Laporan Sebaran Kasus:</span>
               <div class="flex flex-wrap gap-2">
                 <button onclick="downloadCSVEpidemiologiUmur()" class="btn-cancel w-auto border-eco-500/50 text-white bg-gradient-to-b from-[#01140e] to-[#010c09] hover:from-eco-900 hover:to-eco-800">
@@ -449,8 +462,8 @@
             </div>
           </div>
 
-          <div class="neon-glass-card flex-1 flex flex-col justify-between">
-            <div class="flex justify-between items-center mb-3">
+          <div class="neon-glass-card flex flex-col p-5">
+            <div class="flex justify-between items-center mb-3 shrink-0">
               <h3 class="text-xs font-bold text-white flex items-center gap-2 text-glow">
                 <i data-lucide="dollar-sign" class="text-yellow-500 w-4 h-4"></i> Laporan Gaji & Komisi
               </h3>
@@ -458,7 +471,7 @@
                 <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5"></i> Cetak Slip
               </button>
             </div>
-            <div id="payroll-statistics-report" class="overflow-x-auto max-h-[190px] flex-1">
+            <div id="payroll-statistics-report" class="overflow-x-auto overflow-y-auto max-h-[180px] pb-2">
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr>
@@ -470,6 +483,18 @@
                 </thead>
                 <tbody id="tbody-employee-payslips"></tbody>
               </table>
+            </div>
+          </div>
+
+          <div class="neon-glass-card flex flex-col border-red-900/40 bg-gradient-to-br from-[#1c0101]/40 to-[#010c09] p-4 mt-auto">
+            <div class="flex justify-between items-center mb-2 border-b border-red-900/50 pb-2 shrink-0">
+              <h3 class="text-xs font-bold text-red-400 flex items-center gap-2 text-glow">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i> Peringatan Stok Menipis (Critical Stock)
+              </h3>
+              <span id="dash-critical-count" class="text-[10px] font-black text-red-400 bg-red-950 px-2 py-0.5 rounded border border-red-800">0 Items</span>
+            </div>
+            <div id="dash-critical-list" class="max-h-[130px] overflow-y-auto pr-1 text-xs">
+              <p class="text-emerald-400 italic text-xs font-bold text-center mt-2">Stok seluruh bahan medik aman.</p>
             </div>
           </div>
         </div>
@@ -563,7 +588,6 @@
   const DEFAULT_SUPABASE_URL = "https://ossqiqlryugrddnuszit.supabase.co"; 
   const DEFAULT_SUPABASE_KEY = "sb_publishable_VX0GJsaD71FJGYbUUjstKw_5s4AKhRG";
 
-  // In-Memory State Utama
   let dbState = {
     branding:{
       app_id:"arkcare01",
@@ -600,6 +624,23 @@
   const setV=(id,val)=>{if($(id))$(id).value=val;}; 
   const pCN=val=>parseCleanNumber(val);
 
+  function getLocalDateString(d = new Date()) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function normalizeDateString(dateStr) {
+    if (!dateStr) return '';
+    let s = String(dateStr).trim();
+    if (s.includes('T')) return s.split('T')[0];
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    const d = new Date(s);
+    if (isNaN(d.getTime())) return s;
+    return getLocalDateString(d);
+  }
+
   window.requestSecureAccess = function(tabId) {
     if (isOwnerLoggedIn) {
       switchTab(tabId);
@@ -625,7 +666,10 @@
       btn.classList.remove('border-eco-500/20');
     }
 
-    if (tabId === 'tab-pelaporan') renderPelaporanTab();
+    if (tabId === 'tab-pelaporan') {
+      applyDatePresetFilter();
+      renderPelaporanTab();
+    }
     if (tabId === 'tab-master') {
       renderMasterSDMTable(); renderMasterLayananTable(); renderMasterLukaTable();
       renderMasterBHPDressingTable(); renderMasterRetailTable(); renderMasterKepatuhan();
@@ -711,7 +755,7 @@
     const m = $('modal-operasional-expense');
     if (m) {
       m.classList.remove('hidden');
-      setV('exp-tanggal', new Date().toISOString().split('T')[0]);
+      setV('exp-tanggal', getLocalDateString());
       setV('exp-deskripsi', '');
       setV('exp-nominal', '');
     }
@@ -724,7 +768,7 @@
 
   function handleSavePengeluaranLain(e) {
     if (e) e.preventDefault();
-    const tgl = v('exp-tanggal') || new Date().toISOString().split('T')[0];
+    const tgl = v('exp-tanggal') || getLocalDateString();
     const kat = v('exp-kategori');
     const desk = v('exp-deskripsi').trim();
     const nom = pCN(v('exp-nominal'));
@@ -857,7 +901,6 @@
           'postgres_changes',
           { event: '*', schema: 'public', table: 'system_config' },
           (payload) => {
-            console.log("⚡ Konfigurasi Supabase Diperbarui Live!", payload);
             if (payload.new) {
               let newGas = cleanAndFixGasUrl(payload.new.gas_url || payload.new.api_url || '');
               if (newGas && newGas.startsWith('http')) {
@@ -876,7 +919,6 @@
           'broadcast',
           { event: 'SIGNAL_DATA_UPDATED' },
           (payload) => {
-            // Mencegah "Thundering Herd" dengan jeda acak 0.5 - 3.5 detik per perangkat 
             const randomDelay = Math.floor(Math.random() * 3000) + 500;
             showToast(`Perubahan dari perangkat lain, sinkronisasi dalam ${(randomDelay/1000).toFixed(1)}s...`, true);
             setTimeout(() => {
@@ -946,7 +988,6 @@
         console.warn("Supabase anchor fetch notice:", e);
       }
     }
-    // Setlah URL GAS & branding terkonfirmasi dari Supabase, baru tarik data medis dari Google Apps Script
     fetchApiData();
   }
 
@@ -970,7 +1011,7 @@
       const fetchUrl = tApi + (tApi.includes('?') ? '&' : '?') + "action=load&nocache=" + Date.now();
       
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 detik timeout prevent hang
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
       fetch(fetchUrl, { cache: 'no-store', redirect: 'follow', signal: controller.signal })
         .then(async r => {
@@ -982,7 +1023,7 @@
           try {
             return JSON.parse(textResp);
           } catch (err) {
-            throw new Error("Respon GAS bukan JSON (Limit eksekusi / URL Salah): " + textResp.substring(0, 30));
+            throw new Error("Respon GAS bukan JSON: " + textResp.substring(0, 30));
           }
         })
         .then(d => {
@@ -1025,7 +1066,14 @@
 
   function overwriteLocalWithCloudData(c) {
     ['pasien','kunjungan','sdm','layanan','luka','bhp_dressing','retail','kepatuhan_options','pengeluaran_lain','users'].forEach(k => {
-      if (Array.isArray(c[k]) && c[k].length > 0) dbState[k] = c[k];
+      if (Array.isArray(c[k]) && c[k].length > 0) {
+        dbState[k] = c[k].map(item => {
+          if (item.tanggal) item.tanggal = normalizeDateString(item.tanggal);
+          if (item.tgl_masuk) item.tgl_masuk = normalizeDateString(item.tgl_masuk);
+          if (item.tgl_lahir) item.tgl_lahir = normalizeDateString(item.tgl_lahir);
+          return item;
+        });
+      }
     });
 
     applyBranding();
@@ -1038,6 +1086,7 @@
     populateKasirRetailDropdown();
     populateMedicalRecordLookup();
     generateNextNoRM();
+    applyDatePresetFilter();
     renderPelaporanTab();
   }
 
@@ -1055,7 +1104,7 @@
     if (tApi && tApi.startsWith('http')) {
       isSavingApi = true;
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 detik timeout prevent hang
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
       fetch(tApi, {
         method: "POST",
@@ -1072,7 +1121,7 @@
         try {
             r = JSON.parse(textResp);
         } catch (err) {
-            throw new Error("Respon GAS bukan JSON (Mungkin limit Google): " + textResp.substring(0, 30));
+            throw new Error("Respon GAS bukan JSON: " + textResp.substring(0, 30));
         }
         
         if (r.success) {
@@ -1102,6 +1151,7 @@
 
   window.onload = function() {
     if (typeof lucide !== 'undefined') lucide.createIcons();
+    applyDatePresetFilter();
     pullAnchorConfigFromSupabase();
   };
 
@@ -1208,7 +1258,7 @@
     const p = {
       no_rm: v('reg-no-rm'), nik: v('reg-nik') || "Opsional", nama_lengkap: v('reg-nama'),
       tgl_lahir: v('reg-tgl-lahir'), gender: v('reg-gender'), whatsapp: v('reg-whatsapp'),
-      alamat: v('reg-alamat'), tgl_masuk: v('reg-tgl-masuk') || new Date().toISOString().split('T')[0],
+      alamat: v('reg-alamat'), tgl_masuk: v('reg-tgl-masuk') || getLocalDateString(),
       faktor_sosial: "-", komorbid: "-", alergi: "-"
     };
     if (dbState.pasien.some(x => String(x.no_rm) === String(p.no_rm) || (p.nik !== "Opsional" && String(x.nik) === String(p.nik)))) {
@@ -1238,7 +1288,7 @@
     const visits = dbState.kunjungan.filter(x => String(x.no_rm || '') === String(rm || ''));
     if (visits.length === 0) return null;
     visits.sort((a, b) => String(b.tanggal || '').localeCompare(String(a.tanggal || '')));
-    return visits[0].tanggal;
+    return normalizeDateString(visits[0].tanggal);
   }
 
   function renderTablePasien() {
@@ -1249,8 +1299,8 @@
     const dateFilter = v('pasien-date-filter');
     const tglMulai = v('pasien-tgl-mulai');
     const tglAkhir = v('pasien-tgl-akhir');
+    const todayStr = getLocalDateString();
     const now = new Date();
-    const todayStr = now.toISOString().split('T')[0];
 
     const f = dbState.pasien.filter(p => {
       const waStr = String(p.whatsapp || '');
@@ -1265,15 +1315,15 @@
       if (dateFilter === 'semua') return true;
 
       const latestVisit = getLatestVisitDate(p.no_rm);
-      const activeDate = latestVisit || p.tgl_masuk || '';
+      const activeDate = normalizeDateString(latestVisit || p.tgl_masuk);
 
       if (dateFilter === 'hari_ini') {
         return activeDate === todayStr;
       } else if (dateFilter === 'bulan_ini') {
-        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+        const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
         return activeDate >= monthStart && activeDate <= todayStr;
       } else if (dateFilter === 'tahun_ini') {
-        const yearStart = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+        const yearStart = `${now.getFullYear()}-01-01`;
         return activeDate >= yearStart && activeDate <= todayStr;
       } else if (dateFilter === 'custom') {
         if (tglMulai && activeDate < tglMulai) return false;
@@ -1285,8 +1335,8 @@
     });
 
     f.sort((a, b) => {
-      const dateA = getLatestVisitDate(a.no_rm) || a.tgl_masuk || '';
-      const dateB = getLatestVisitDate(b.no_rm) || b.tgl_masuk || '';
+      const dateA = normalizeDateString(getLatestVisitDate(a.no_rm) || a.tgl_masuk);
+      const dateB = normalizeDateString(getLatestVisitDate(b.no_rm) || b.tgl_masuk);
       return String(dateB).localeCompare(String(dateA));
     });
 
@@ -1390,12 +1440,36 @@
 
   function getUnitHpp(item) {
     if (!item) return 0;
-    let unitModal = pCN(item.hpp || item.harga_modal || item.harga_beli_grosir);
-    let sellPrice = pCN(item.price || item.harga_jual || item.harga_jual_eceran);
-    if (unitModal > sellPrice && sellPrice > 0) {
-      unitModal = Math.round(sellPrice * 0.7);
+    let rawModal = 0;
+    let price = pCN(item.price || item.harga_jual_eceran || item.harga_jual || 0);
+
+    // 1. Selalu utamakan pencarian modal terbaru dari Master Data berdasarkan Kode Item
+    if (item.code) {
+      const b = dbState.bhp_dressing.find(x => String(x.kode_item) === String(item.code));
+      const r = dbState.retail.find(x => String(x.kode_retail) === String(item.code));
+      if (b) {
+        rawModal = pCN(b.harga_beli_grosir);
+        if (price === 0) price = pCN(b.harga_jual_eceran);
+      } else if (r) {
+        rawModal = pCN(r.harga_modal);
+        if (price === 0) price = pCN(r.harga_jual);
+      }
     }
-    return unitModal;
+
+    if (!rawModal) {
+      rawModal = pCN(item.hpp || item.harga_modal || item.harga_beli_grosir || 0);
+    }
+
+    // 2. PROTEKSI CERDAS: Jika modal di Master Sheet MASIH bernilai Rp 130.000 (belum di-edit ke eceran),
+    // sedang harga jual eceran cuma Rp 5.000 - Rp 10.000,
+    // konversi otomatis Rp 130.000 / 50 gr = Rp 2.600 agar HPP tidak meledak Rp 104 Juta!
+    if (price > 0 && rawModal > price) {
+      let estEceran = Math.round(rawModal / 50);
+      if (estEceran <= price && estEceran > 0) return estEceran;
+      return Math.round(price * 0.7);
+    }
+
+    return rawModal;
   }
 
   function addBhpToCart() {
@@ -1434,7 +1508,7 @@
 
     const cK = dbState.kunjungan.filter(x => String(x.no_rm) === String(selectedPasienRM) && x.status_bayar !== 'Pending').length + 1;
     dbState.kunjungan.push({
-      id_kunjungan: generateTxId("TX"), no_rm: selectedPasienRM, tanggal: new Date().toISOString().split('T')[0],
+      id_kunjungan: generateTxId("TX"), no_rm: selectedPasienRM, tanggal: getLocalDateString(),
       kunjungan_ke: cK, petugas: v('med-petugas'), tipe_luka: v('med-tipe-luka'),
       kondisi_luka: v('med-kondisi') || "-", penyebab: v('med-penyebab') || "-",
       r_status: v('r-status') || "-", r_panjang: v('r-panjang') || "-", r_lebar: v('r-lebar') || "-", r_dalam: v('r-dalam') || "-",
@@ -1557,7 +1631,7 @@
       }
     } else {
       dbState.kunjungan.push({
-        id_kunjungan: generateTxId("RTL"), no_rm: "UMUM", tanggal: new Date().toISOString().split('T')[0],
+        id_kunjungan: generateTxId("RTL"), no_rm: "UMUM", tanggal: getLocalDateString(),
         kunjungan_ke: 0, petugas: "Kasir", tipe_luka: "Pembelian Retail", kondisi_luka: "-", penyebab: "-",
         items_json: JSON.stringify(kasirCart), jasa_sarana: sr, diskon: dk, grand_total: gt, modal_hpp: tH, status_bayar: 'Lunas'
       });
@@ -1608,8 +1682,8 @@
   function applyDatePresetFilter() {
     const preset = v('dash-filter-preset');
     const customContainer = $('custom-date-container');
+    const todayStr = getLocalDateString();
     const now = new Date();
-    const todayStr = now.toISOString().split('T')[0];
 
     if (preset === 'custom') {
       if (customContainer) customContainer.classList.remove('hidden');
@@ -1622,11 +1696,11 @@
       setV('dash-tgl-mulai', todayStr);
       setV('dash-tgl-akhir', todayStr);
     } else if (preset === 'bulan_ini') {
-      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+      const firstDay = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
       setV('dash-tgl-mulai', firstDay);
       setV('dash-tgl-akhir', todayStr);
     } else if (preset === 'tahun_ini') {
-      const firstDay = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+      const firstDay = `${now.getFullYear()}-01-01`;
       setV('dash-tgl-mulai', firstDay);
       setV('dash-tgl-akhir', todayStr);
     } else {
@@ -1647,7 +1721,7 @@
       if (st !== 'lunas') return false;
       if (preset === 'semua' || (!tglMulai && !tglAkhir)) return true;
 
-      const vt = String(vO.tanggal || '');
+      const vt = normalizeDateString(vO.tanggal);
       if (tglMulai && vt < tglMulai) return false;
       if (tglAkhir && vt > tglAkhir) return false;
       return true;
@@ -1660,6 +1734,7 @@
     let totalOmzet = 0, omzetJasa = 0, omzetRetail = 0;
     let totalHppBhp = 0, totalHppRetail = 0;
     let totalKomisiSDM = 0, totalDiskonAll = 0;
+    let totalQtyItems = 0;
 
     filteredVisits.forEach(vO => {
       let rawJasa = 0;
@@ -1676,6 +1751,7 @@
           const lineTotal = price * qty;
           const unitHpp = getUnitHpp(i);
           const lineHpp = unitHpp * qty;
+          totalQtyItems += qty;
 
           if (i.type === 'jasa') {
             rawJasa += lineTotal;
@@ -1715,27 +1791,34 @@
     });
 
     const totalHPP = totalHppBhp + totalHppRetail;
-    const labaKotor = Math.max(0, totalOmzet - totalHPP);
+    const labaKotor = totalOmzet - totalHPP;
 
-    const totalGajiPokok = (dbState.sdm || []).reduce((sum, s) => sum + pCN(s.gaji_pokok), 0);
+    const preset = v('dash-filter-preset');
+    const tglMulai = v('dash-tgl-mulai');
+    const tglAkhir = v('dash-tgl-akhir');
+
     const totalPengeluaranLain = (dbState.pengeluaran_lain || []).reduce((sum, e) => {
-      const tglMulai = v('dash-tgl-mulai'), tglAkhir = v('dash-tgl-akhir');
-      const preset = v('dash-filter-preset');
       if (preset === 'semua' || (!tglMulai && !tglAkhir)) return sum + pCN(e.nominal);
-      const vt = String(e.tanggal || '');
+      const vt = normalizeDateString(e.tanggal);
       if (tglMulai && vt < tglMulai) return sum;
       if (tglAkhir && vt > tglAkhir) return sum;
       return sum + pCN(e.nominal);
     }, 0);
 
-    const totalBebanOperasional = totalKomisiSDM + totalGajiPokok + totalDiskonAll + totalPengeluaranLain;
-    const labaBersih = totalOmzet - (totalHPP + totalBebanOperasional);
+    const totalBebanOperasional = totalKomisiSDM + totalPengeluaranLain;
+    const labaBersih = labaKotor - totalBebanOperasional;
     const marginLaba = totalOmzet > 0 ? ((labaBersih / totalOmzet) * 100).toFixed(1) : 0;
 
     if ($('dash-omzet')) $('dash-omzet').innerText = "Rp " + Math.round(totalOmzet).toLocaleString('id-ID');
-    if ($('dash-omzet-jasa')) $('dash-omzet-jasa').innerText = "Rp " + Math.round(omzetJasa).toLocaleString('id-ID');
-    if ($('dash-omzet-retail')) $('dash-omzet-retail').innerText = "Rp " + Math.round(omzetRetail).toLocaleString('id-ID');
-    
+    if ($('dash-total-hpp-top')) $('dash-total-hpp-top').innerText = "Rp " + Math.round(totalHPP).toLocaleString('id-ID');
+    if ($('dash-hpp-subtext')) {
+      $('dash-hpp-subtext').innerHTML = `<span class="text-red-400 font-mono font-bold">Bahan: Rp ${Math.round(totalHppBhp).toLocaleString('id-ID')}</span> <span class="text-eco-500">|</span> <span class="text-yellow-400 font-mono font-bold">Retail: Rp ${Math.round(totalHppRetail).toLocaleString('id-ID')}</span>`;
+    }
+    if ($('dash-beban-top')) $('dash-beban-top').innerText = "Rp " + Math.round(totalBebanOperasional).toLocaleString('id-ID');
+    if ($('dash-beban-subtext')) {
+      $('dash-beban-subtext').innerHTML = `<span class="text-purple-300 font-mono font-bold">Komisi: Rp ${Math.round(totalKomisiSDM).toLocaleString('id-ID')}</span> <span class="text-eco-500">|</span> <span class="text-amber-400 font-mono font-bold">Ops: Rp ${Math.round(totalPengeluaranLain).toLocaleString('id-ID')}</span>`;
+    }
+
     if ($('dash-laba-bersih')) {
       $('dash-laba-bersih').innerText = "Rp " + Math.round(labaBersih).toLocaleString('id-ID');
       const cLb = $('card-laba-bersih');
@@ -1749,14 +1832,21 @@
         }
       }
     }
-    if ($('dash-margin-laba')) $('dash-margin-laba').innerText = `Margin Laba Bersih: ${marginLaba}%`;
+    if ($('dash-margin-laba')) {
+      let ketBeban = totalBebanOperasional === 0 
+         ? " (*Sama dg Laba Kotor krn Beban Ops Rp 0)" 
+         : ` (*Setelah dipotong Beban Rp ${Math.round(totalBebanOperasional).toLocaleString('id-ID')})`;
+      $('dash-margin-laba').innerText = `Margin Laba Bersih: ${marginLaba}% ${ketBeban}`;
+    }
 
-    if ($('pnl-gross-revenue')) $('pnl-gross-revenue').innerText = "Rp " + Math.round(totalOmzet).toLocaleString('id-ID');
+    if ($('pnl-omzet-jasa')) $('pnl-omzet-jasa').innerText = "Rp " + Math.round(omzetJasa).toLocaleString('id-ID');
+    if ($('pnl-omzet-retail')) $('pnl-omzet-retail').innerText = "Rp " + Math.round(omzetRetail).toLocaleString('id-ID');
+    if ($('pnl-detail-retail')) $('pnl-detail-retail').innerText = `Jual: Rp ${Math.round(omzetRetail).toLocaleString('id-ID')} | Modal: Rp ${Math.round(totalHPP).toLocaleString('id-ID')}`;
     if ($('pnl-total-hpp')) $('pnl-total-hpp').innerText = "Rp " + Math.round(totalHPP).toLocaleString('id-ID');
     if ($('pnl-detail-hpp')) $('pnl-detail-hpp').innerText = `Bahan: Rp ${Math.round(totalHppBhp).toLocaleString('id-ID')} | Retail: Rp ${Math.round(totalHppRetail).toLocaleString('id-ID')}`;
     if ($('pnl-gross-profit')) $('pnl-gross-profit').innerText = "Rp " + Math.round(labaKotor).toLocaleString('id-ID');
-    if ($('pnl-total-beban')) $('pnl-total-beban').innerText = "Rp " + Math.round(totalBebanOperasional).toLocaleString('id-ID');
-    if ($('pnl-detail-beban')) $('pnl-detail-beban').innerText = `Gaji: Rp ${Math.round(totalGajiPokok).toLocaleString('id-ID')} | Komisi: Rp ${Math.round(totalKomisiSDM).toLocaleString('id-ID')} | Ops: Rp ${Math.round(totalPengeluaranLain).toLocaleString('id-ID')}`;
+    if ($('pnl-vol-diskon')) $('pnl-vol-diskon').innerText = `${totalQtyItems} Item / Rp ${Math.round(totalDiskonAll).toLocaleString('id-ID')}`;
+    if ($('pnl-detail-tx')) $('pnl-detail-tx').innerText = `${filteredVisits.length} Kunjungan / Transaksi Lunas`;
 
     const c = dbState.bhp_dressing.filter(b => pCN(b.stok_gudang) <= pCN(b.stok_min));
     if ($('dash-critical-count')) $('dash-critical-count').innerText = c.length + " Items";
@@ -1939,18 +2029,18 @@
     });
 
     const totalHPP = totalHppBhp + totalHppRetail;
-    const labaKotor = Math.max(0, totalOmzet - totalHPP);
-    const totalGajiPokok = (dbState.sdm || []).reduce((sum, s) => sum + pCN(s.gaji_pokok), 0);
+    const labaKotor = totalOmzet - totalHPP;
+
     const totalPengeluaranLain = (dbState.pengeluaran_lain || []).reduce((sum, e) => {
       if (preset === 'semua' || (!tglMulai && !tglAkhir)) return sum + pCN(e.nominal);
-      const vt = String(e.tanggal || '');
+      const vt = normalizeDateString(e.tanggal);
       if (tglMulai && vt < tglMulai) return sum;
       if (tglAkhir && vt > tglAkhir) return sum;
       return sum + pCN(e.nominal);
     }, 0);
 
-    const totalBebanOperasional = totalKomisiSDM + totalGajiPokok + totalDiskonAll + totalPengeluaranLain;
-    const labaBersih = totalOmzet - (totalHPP + totalBebanOperasional);
+    const totalBebanOperasional = totalKomisiSDM + totalPengeluaranLain;
+    const labaBersih = labaKotor - totalBebanOperasional;
     const marginLaba = totalOmzet > 0 ? ((labaBersih / totalOmzet) * 100).toFixed(1) : 0;
 
     const w = window.open('', '_blank');
@@ -2015,10 +2105,9 @@
             <td>4. TOTAL BEBAN OPERASIONAL & SDM</td>
             <td style="text-align:right;">- Rp ${Math.round(totalBebanOperasional).toLocaleString('id-ID')}</td>
           </tr>
-          <tr class="row-sub"><td> - Beban Gaji Pokok SDM</td><td style="text-align:right;">Rp ${Math.round(totalGajiPokok).toLocaleString('id-ID')}</td></tr>
-          <tr class="row-sub"><td> - Beban Komisi Medis SDM</td><td style="text-align:right;">Rp ${Math.round(totalKomisiSDM).toLocaleString('id-ID')}</td></tr>
-          <tr class="row-sub"><td> - Beban Diskon Pelayanan</td><td style="text-align:right;">Rp ${Math.round(totalDiskonAll).toLocaleString('id-ID')}</td></tr>
-          <tr class="row-sub"><td> - Beban Operasional Tambahan (Listrik/Air/Sewa)</td><td style="text-align:right;">Rp ${Math.round(totalPengeluaranLain).toLocaleString('id-ID')}</td></tr>
+          <tr class="row-sub"><td> - Beban Komisi SDM</td><td style="text-align:right;">Rp ${Math.round(totalKomisiSDM).toLocaleString('id-ID')}</td></tr>
+          <tr class="row-sub"><td> - Beban Diskon Pelayanan (Informasi)</td><td style="text-align:right;">Rp ${Math.round(totalDiskonAll).toLocaleString('id-ID')}</td></tr>
+          <tr class="row-sub"><td> - Beban Operasional & Gaji (Input Manual)</td><td style="text-align:right;">Rp ${Math.round(totalPengeluaranLain).toLocaleString('id-ID')}</td></tr>
 
           <tr class="row-total">
             <td>LABA BERSIH SISA (NET PROFIT) [Margin: ${marginLaba}%]</td>
@@ -2200,7 +2289,7 @@
   function handleSavePasienMaster(e) {
     e.preventDefault(); if (editPasienIndex === null) return;
     const p = dbState.pasien[editPasienIndex];
-    p.tgl_masuk = v('mp-tgl-masuk') || p.tgl_masuk || new Date().toISOString().split('T')[0];
+    p.tgl_masuk = v('mp-tgl-masuk') || p.tgl_masuk || getLocalDateString();
     p.nik = v('mp-nik').trim() || "Opsional"; p.nama_lengkap = v('mp-nama').trim();
     p.whatsapp = v('mp-whatsapp').trim(); p.alamat = v('mp-alamat').trim();
     p.faktor_sosial = v('mp-sosial').trim() || "-"; p.alergi = v('mp-alergi').trim() || "-";
@@ -2256,7 +2345,7 @@
   function backupDatabase() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbState, null, 2));
     const dlAnchorElem = document.createElement('a'); dlAnchorElem.setAttribute("href", dataStr);
-    dlAnchorElem.setAttribute("download", `smartclinic_backup_${new Date().toISOString().slice(0, 10)}.json`);
+    dlAnchorElem.setAttribute("download", `smartclinic_backup_${getLocalDateString()}.json`);
     dlAnchorElem.click(); showToast("Database berhasil diunduh!");
   }
 
