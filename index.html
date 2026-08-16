@@ -401,7 +401,7 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-5 gap-6 flex flex-col h-full">
+        <div class="lg:col-span-5 space-y-6">
           <div class="neon-glass-card p-4 flex flex-col">
             <h3 class="text-xs font-bold text-white mb-2 flex items-center gap-2 text-glow">
               <i data-lucide="bar-chart-horizontal" class="text-neon-teal w-4 h-4"></i> Distribusi Kasus
@@ -411,11 +411,11 @@
             </div>
           </div>
 
-          <div class="neon-glass-card flex flex-col p-5 mt-auto">
-            <h3 class="text-xs font-bold text-white mb-3 flex items-center gap-2 text-glow shrink-0">
+          <div class="neon-glass-card flex flex-col p-5">
+            <h3 class="text-xs font-bold text-white mb-3 flex items-center gap-2 text-glow">
               <i data-lucide="award" class="text-neon-green w-4 h-4"></i> Produktivitas Layanan
             </h3>
-            <div class="overflow-x-auto overflow-y-auto max-h-[320px] pr-1 pb-2">
+            <div class="overflow-x-auto overflow-y-auto max-h-[300px] pr-1 pb-2">
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr>
@@ -430,11 +430,11 @@
           </div>
         </div>
 
-        <div class="lg:col-span-7 gap-6 flex flex-col h-full">
+        <div class="lg:col-span-7 space-y-6">
           <div class="neon-glass-card flex flex-col p-5">
-            <div class="flex justify-between items-center mb-3 shrink-0">
+            <div class="flex justify-between items-center mb-3">
               <h3 class="text-xs font-bold text-white flex items-center gap-2 text-glow">
-                <i data-lucide="bar-chart-2" class="text-neon-green w-4 h-4"></i> Epidemiologi
+                <i data-lucide="bar-chart-2" class="text-neon-green w-4 h-4"></i> Epidemiologi (Sebaran Kasus)
               </h3>
             </div>
             <div class="overflow-x-auto overflow-y-auto max-h-[220px] pb-2">
@@ -449,7 +449,7 @@
                 <tbody id="tbody-wound-stats"></tbody>
               </table>
             </div>
-            <div class="mt-3 flex flex-col gap-2 border-t border-eco-800 pt-2.5 shrink-0">
+            <div class="mt-3 flex flex-col gap-2 border-t border-eco-800 pt-2.5">
               <span class="text-[10px] text-eco-500 uppercase font-bold">Laporan Sebaran Kasus:</span>
               <div class="flex flex-wrap gap-2">
                 <button onclick="downloadCSVEpidemiologiUmur()" class="btn-cancel w-auto border-eco-500/50 text-white bg-gradient-to-b from-[#01140e] to-[#010c09] hover:from-eco-900 hover:to-eco-800">
@@ -463,7 +463,7 @@
           </div>
 
           <div class="neon-glass-card flex flex-col p-5">
-            <div class="flex justify-between items-center mb-3 shrink-0">
+            <div class="flex justify-between items-center mb-3">
               <h3 class="text-xs font-bold text-white flex items-center gap-2 text-glow">
                 <i data-lucide="dollar-sign" class="text-yellow-500 w-4 h-4"></i> Laporan Gaji & Komisi
               </h3>
@@ -471,7 +471,7 @@
                 <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5"></i> Cetak Slip
               </button>
             </div>
-            <div id="payroll-statistics-report" class="overflow-x-auto overflow-y-auto max-h-[180px] pb-2">
+            <div id="payroll-statistics-report" class="overflow-x-auto overflow-y-auto max-h-[160px] pb-2">
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr>
@@ -486,8 +486,8 @@
             </div>
           </div>
 
-          <div class="neon-glass-card flex flex-col border-red-900/40 bg-gradient-to-br from-[#1c0101]/40 to-[#010c09] p-4 mt-auto">
-            <div class="flex justify-between items-center mb-2 border-b border-red-900/50 pb-2 shrink-0">
+          <div class="neon-glass-card flex flex-col border-red-900/40 bg-gradient-to-br from-[#1c0101]/40 to-[#010c09] p-4">
+            <div class="flex justify-between items-center mb-2 border-b border-red-900/50 pb-2">
               <h3 class="text-xs font-bold text-red-400 flex items-center gap-2 text-glow">
                 <i data-lucide="alert-triangle" class="w-4 h-4"></i> Peringatan Stok Menipis (Critical Stock)
               </h3>
@@ -1423,8 +1423,31 @@
     if (tl) tl.innerHTML = h; if (tlp) tlp.innerHTML = h;
   }
 
-  function populateMedisDropdowns() { const pt = $('med-petugas'), tl = $('med-tipe-luka'); if (pt) pt.innerHTML = dbState.sdm.map(s => `<option value="${s.nama_petugas}">${s.nama_petugas}</option>`).join(''); if (tl) tl.innerHTML = dbState.luka.map(l => `<option value="${l.nama_luka}">${l.nama_luka}</option>`).join(''); }
-  function populateBillingDropdowns() { const js = $('billing-jasa-select'), bh = $('billing-bhp-select'); if (js) js.innerHTML = dbState.layanan.map(l => `<option value="${l.kode_jasa}">${l.nama_tindakan} - Rp ${pCN(l.tarif).toLocaleString('id-ID')}</option>`).join(''); if (bh) bh.innerHTML = dbState.bhp_dressing.map(b => `<option value="${b.kode_item}">${b.nama_item} [${b.kategori}] (Stok: ${b.stok_gudang}) - Rp ${pCN(b.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join(''); autoPopulateBhpPrice(); }
+  function populateMedisDropdowns() {
+    const pt = $('med-petugas'), tl = $('med-tipe-luka');
+    if (pt) {
+      const sortedSDM = [...dbState.sdm].sort((a, b) => String(a.nama_petugas || '').localeCompare(String(b.nama_petugas || ''), 'id', { sensitivity: 'base' }));
+      pt.innerHTML = sortedSDM.map(s => `<option value="${s.nama_petugas}">${s.nama_petugas}</option>`).join('');
+    }
+    if (tl) {
+      const sortedLuka = [...dbState.luka].sort((a, b) => String(a.nama_luka || '').localeCompare(String(b.nama_luka || ''), 'id', { sensitivity: 'base' }));
+      tl.innerHTML = sortedLuka.map(l => `<option value="${l.nama_luka}">${l.nama_luka}</option>`).join('');
+    }
+  }
+
+  function populateBillingDropdowns() {
+    const js = $('billing-jasa-select'), bh = $('billing-bhp-select');
+    if (js) {
+      const sortedLayanan = [...dbState.layanan].sort((a, b) => String(a.nama_tindakan || '').localeCompare(String(b.nama_tindakan || ''), 'id', { sensitivity: 'base' }));
+      js.innerHTML = sortedLayanan.map(l => `<option value="${l.kode_jasa}">${l.nama_tindakan} - Rp ${pCN(l.tarif).toLocaleString('id-ID')}</option>`).join('');
+    }
+    if (bh) {
+      const sortedBhp = [...dbState.bhp_dressing].sort((a, b) => String(a.nama_item || '').localeCompare(String(b.nama_item || ''), 'id', { sensitivity: 'base' }));
+      bh.innerHTML = sortedBhp.map(b => `<option value="${b.kode_item}">${b.nama_item} [${b.kategori}] (Stok: ${b.stok_gudang}) - Rp ${pCN(b.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join('');
+    }
+    autoPopulateBhpPrice();
+  }
+
   function autoPopulateBhpPrice() { const sv = v('billing-bhp-select'); const i = dbState.bhp_dressing.find(b => String(b.kode_item) === String(sv)); setV('billing-bhp-custom-price', i ? pCN(i.harga_jual_eceran) : 0); }
   function populateTimeDropdowns() { const mt = dbState.master_time; const sO = (id, a) => { const e = $(id); if (e && a) e.innerHTML = a.map(x => `<option value="${x}">${x}</option>`).join(''); }; sO('m-level-eksudat', mt.eksudat_level); sO('m-jenis-eksudat', mt.eksudat_jenis); populateKepatuhanSelect('s-nutrisi', 'nutrisi'); populateKepatuhanSelect('s-keluarga', 'keluarga'); populateKepatuhanSelect('s-kontrol', 'kontrol'); }
   function populateKepatuhanSelect(id, c) { const e = $(id); if (!e) return; e.innerHTML = dbState.kepatuhan_options.filter(x => x.kategori === c).map(o => `<option value="${o.opsi}">${o.opsi}</option>`).join(''); }
@@ -1565,7 +1588,17 @@
 
   function populateKasirRetailDropdown() {
     const rs = $('retail-select'); if (!rs) return;
-    rs.innerHTML = dbState.retail.map(r => `<option value="RTL-${r.kode_retail}">${r.nama_produk} (Stok: ${r.stok}) - Rp${pCN(r.harga_jual).toLocaleString('id-ID')}</option>`).join('') + dbState.bhp_dressing.map(d => `<option value="DRS-${d.kode_item}">${d.nama_item} [${d.kategori}] (Stok: ${d.stok_gudang}) - Rp${pCN(d.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join('');
+    const sortedRetail = [...dbState.retail].sort((a, b) => String(a.kode_retail || '').localeCompare(String(b.kode_retail || ''), 'id', { numeric: true }));
+    const sortedBhp = [...dbState.bhp_dressing].sort((a, b) => String(a.nama_item || '').localeCompare(String(b.nama_item || ''), 'id', { sensitivity: 'base' }));
+    
+    rs.innerHTML = `
+      <optgroup label="🛍️ Produk Retail / Apotek (Master Retail)">
+        ${sortedRetail.map(r => `<option value="RTL-${r.kode_retail}">${r.kode_retail} - ${r.nama_produk} (Stok: ${r.stok}) - Rp${pCN(r.harga_jual).toLocaleString('id-ID')}</option>`).join('')}
+      </optgroup>
+      <optgroup label="🩺 Bahan Medik / BHP & Dressing (Master BHP)">
+        ${sortedBhp.map(d => `<option value="DRS-${d.kode_item}">${d.kode_item} - ${d.nama_item} [${d.kategori}] (Stok: ${d.stok_gudang}) - Rp${pCN(d.harga_jual_eceran).toLocaleString('id-ID')}</option>`).join('')}
+      </optgroup>
+    `;
   }
 
   function addRetailToCart() {
@@ -1631,8 +1664,9 @@
       }
     } else {
       dbState.kunjungan.push({
-        id_kunjungan: generateTxId("RTL"), no_rm: "UMUM", tanggal: getLocalDateString(),
+        id_kunjungan: generateTxId("RTL"), no_rm: "RITEL BEBAS", tanggal: getLocalDateString(),
         kunjungan_ke: 0, petugas: "Kasir", tipe_luka: "Pembelian Retail", kondisi_luka: "-", penyebab: "-",
+        r_status: "-", r_panjang: "-", r_lebar: "-", r_dalam: "-", t_jaringan: "-",
         items_json: JSON.stringify(kasirCart), jasa_sarana: sr, diskon: dk, grand_total: gt, modal_hpp: tH, status_bayar: 'Lunas'
       });
     }
@@ -1647,21 +1681,65 @@
 
   function renderKasirHistory() {
     const ct = $('kasir-history-list'); if (!ct) return;
-    const ln = dbState.kunjungan.filter(x => x.status_bayar === 'Lunas' || x.status_bayar === 'lunas').sort((a, b) => String(b.id_kunjungan).localeCompare(String(a.id_kunjungan)));
+    const ln = dbState.kunjungan.filter(x => String(x.status_bayar || '').toLowerCase() === 'lunas').sort((a, b) => String(b.id_kunjungan).localeCompare(String(a.id_kunjungan)));
     if (!ln.length) { ct.innerHTML = `<p class="text-[10px] text-eco-500 italic font-bold text-center mt-4">Belum ada riwayat lunas hari ini.</p>`; return; }
+    
     ct.innerHTML = ln.map(vO => {
       let itemsDesc = vO.tipe_luka;
-      try { const parsed = JSON.parse(vO.items_json); if (parsed.length > 0) itemsDesc = parsed.map(i => i.name).join(', '); } catch (e) { }
-      return `<div class="p-3 border border-eco-800/80 rounded-xl bg-[#010e0a]/80 flex flex-col gap-1.5 text-[9px] shadow-sm"><div class="flex justify-between items-center"><span class="font-black tracking-widest text-white text-[11px]">${String(vO.no_rm) === 'UMUM' ? 'Retail Umum' : vO.no_rm}</span><span class="text-neon-green font-mono font-bold bg-eco-950 px-1.5 py-0.5 rounded">${vO.tanggal}</span></div><div class="flex justify-between items-center pt-1 mt-1 border-t border-eco-900"><span class="text-neon-teal truncate w-2/3 text-[10px] font-bold">${itemsDesc}</span><span class="font-black text-neon-green text-[11px] font-mono tracking-widest">Rp ${pCN(vO.grand_total).toLocaleString('id-ID')}</span></div></div>`;
+      let isBhpOnly = false;
+      let isRetailOnly = false;
+
+      try { 
+        const parsed = typeof vO.items_json === 'string' ? JSON.parse(vO.items_json) : vO.items_json;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          itemsDesc = parsed.map(i => `${i.name} (x${i.qty})`).join(', ');
+          const types = parsed.map(i => i.type);
+          if (types.every(t => t === 'bhp' || t === 'dressing')) isBhpOnly = true;
+          if (types.every(t => t === 'retail')) isRetailOnly = true;
+        }
+      } catch (e) { }
+
+      const ps = dbState.pasien.find(p => String(p.no_rm) === String(vO.no_rm));
+      const isDirectSales = String(vO.id_kunjungan || '').startsWith('RTL') || String(vO.no_rm) === 'UMUM' || String(vO.no_rm) === 'RITEL BEBAS';
+      
+      let displayName = "";
+      let badgeType = "";
+
+      if (!isDirectSales) {
+        // Transaksi 1: Pasien RM (Tindakan, BHP, Dressing)
+        displayName = `${ps ? ps.nama_lengkap : 'Pasien Medis'} <span class="text-eco-400 font-mono text-[9px] font-bold">(${vO.no_rm})</span>`;
+        badgeType = `<span class="px-2 py-0.5 rounded-full bg-teal-950/90 text-neon-teal border border-neon-teal/50 text-[8px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1"><i data-lucide="stethoscope" class="w-2.5 h-2.5"></i> Kunjungan RM</span>`;
+      } else if (isBhpOnly) {
+        // Transaksi 2: Penjualan BHP Bebas
+        displayName = 'Penjualan Langsung BHP / Dressing';
+        badgeType = `<span class="px-2 py-0.5 rounded-full bg-blue-950/90 text-blue-400 border border-blue-500/50 text-[8px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1"><i data-lucide="package" class="w-2.5 h-2.5"></i> Penjualan BHP</span>`;
+      } else {
+        // Transaksi 3: Penjualan Retail Bebas
+        displayName = 'Penjualan Retail / Apotek';
+        badgeType = `<span class="px-2 py-0.5 rounded-full bg-amber-950/90 text-amber-400 border border-amber-500/50 text-[8px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1"><i data-lucide="shopping-bag" class="w-2.5 h-2.5"></i> Penjualan Retail</span>`;
+      }
+
+      return `<div class="p-3 border border-eco-800/80 rounded-xl bg-[#010e0a]/80 flex flex-col gap-1.5 text-[9px] shadow-sm hover:border-eco-600/50 transition duration-150"><div class="flex justify-between items-center gap-1"><div class="flex items-center gap-1.5 truncate max-w-[190px]"><span class="font-black tracking-wider text-white text-[11px] truncate">${displayName}</span></div><span class="text-neon-green font-mono font-bold bg-eco-950 px-1.5 py-0.5 rounded text-[9px] shrink-0">${vO.tanggal}</span></div><div class="flex items-center justify-between pt-0.5">${badgeType}</div><div class="flex justify-between items-center pt-1.5 mt-1 border-t border-eco-900/80"><span class="text-eco-100 truncate w-2/3 text-[10px] font-semibold" title="${itemsDesc}">${itemsDesc}</span><span class="font-black text-neon-green text-[11px] font-mono tracking-widest">Rp ${pCN(vO.grand_total).toLocaleString('id-ID')}</span></div></div>`;
     }).join('');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
   function downloadLaporanKasir() {
-    const ln = dbState.kunjungan.filter(x => x.status_bayar === 'Lunas' || x.status_bayar === 'lunas');
-    let c = "ID,Waktu Transaksi,RM,Nama/Ket,Total Bayar\n";
+    const ln = dbState.kunjungan.filter(x => String(x.status_bayar || '').toLowerCase() === 'lunas');
+    let c = "ID Transaksi,Tanggal,No RM,Nama / Keterangan,Daftar Item,Total Bayar\n";
     ln.forEach(vO => {
       const p = dbState.pasien.find(x => String(x.no_rm) === String(vO.no_rm));
-      c += `${vO.id_kunjungan},"${vO.tanggal}",${vO.no_rm},"${p ? p.nama_lengkap : vO.tipe_luka}",${vO.grand_total}\n`;
+      let itemStr = vO.tipe_luka;
+      try {
+        const parsed = typeof vO.items_json === 'string' ? JSON.parse(vO.items_json) : vO.items_json;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          itemStr = parsed.map(i => `${i.name} (x${i.qty})`).join('; ');
+        }
+      } catch(e){}
+      const isRitel = String(vO.no_rm) === 'RITEL BEBAS' || String(vO.no_rm) === 'UMUM' || String(vO.id_kunjungan).startsWith('RTL');
+      const namaKet = isRitel ? 'Penjualan Retail Kasir' : (p ? p.nama_lengkap : vO.tipe_luka);
+      const rmVal = isRitel ? 'RITEL BEBAS' : vO.no_rm;
+      c += `${vO.id_kunjungan},"${vO.tanggal}",${rmVal},"${namaKet}","${itemStr}",${vO.grand_total}\n`;
     });
     const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([c], { type: 'text/csv' }));
     l.download = `Laporan_Kasir_${Date.now()}.csv`; l.click();
@@ -1731,13 +1809,14 @@
   function renderPelaporanTab() {
     const filteredVisits = getFilteredVisits();
 
-    let totalOmzet = 0, omzetJasa = 0, omzetRetail = 0;
+    let totalOmzet = 0, omzetJasa = 0, omzetBhp = 0, omzetRetail = 0;
     let totalHppBhp = 0, totalHppRetail = 0;
     let totalKomisiSDM = 0, totalDiskonAll = 0;
     let totalQtyItems = 0;
 
     filteredVisits.forEach(vO => {
       let rawJasa = 0;
+      let rawBhp = 0;
       let rawRetail = 0;
       const sarana = pCN(vO.jasa_sarana);
       const diskon = pCN(vO.diskon);
@@ -1758,16 +1837,19 @@
             const komisiPct = pCN(i.komisi_persen);
             const feeCustom = pCN(i.fee_custom);
             totalKomisiSDM += ((price * (komisiPct / 100)) + feeCustom) * qty;
-          } else {
+          } else if (i.type === 'retail') {
             rawRetail += lineTotal;
-            if (i.type === 'retail') totalHppRetail += lineHpp;
-            else totalHppBhp += lineHpp;
+            totalHppRetail += lineHpp;
+          } else {
+            // bhp / dressing
+            rawBhp += lineTotal;
+            totalHppBhp += lineHpp;
           }
         });
       } catch (e) { }
 
       rawJasa += sarana;
-      const grossTotal = rawJasa + rawRetail;
+      const grossTotal = rawJasa + rawBhp + rawRetail;
       let netVisitTotal = Math.round(pCN(vO.grand_total));
 
       if (netVisitTotal === 0 && grossTotal > 0) {
@@ -1775,21 +1857,22 @@
       }
 
       let netJasa = rawJasa;
+      let netBhp = rawBhp;
       let netRetail = rawRetail;
 
       if (diskon > 0 && grossTotal > 0) {
         netJasa = Math.round(rawJasa - (diskon * (rawJasa / grossTotal)));
-        netRetail = netVisitTotal - netJasa;
-      } else {
-        netJasa = Math.round(netJasa);
-        netRetail = Math.round(netRetail);
+        netBhp = Math.round(rawBhp - (diskon * (rawBhp / grossTotal)));
+        netRetail = netVisitTotal - netJasa - netBhp;
       }
 
       omzetJasa += netJasa;
+      omzetBhp += netBhp;
       omzetRetail += netRetail;
       totalOmzet += netVisitTotal;
     });
 
+    const omzetBarangTotal = omzetBhp + omzetRetail;
     const totalHPP = totalHppBhp + totalHppRetail;
     const labaKotor = totalOmzet - totalHPP;
 
@@ -1812,7 +1895,7 @@
     if ($('dash-omzet')) $('dash-omzet').innerText = "Rp " + Math.round(totalOmzet).toLocaleString('id-ID');
     if ($('dash-total-hpp-top')) $('dash-total-hpp-top').innerText = "Rp " + Math.round(totalHPP).toLocaleString('id-ID');
     if ($('dash-hpp-subtext')) {
-      $('dash-hpp-subtext').innerHTML = `<span class="text-red-400 font-mono font-bold">Bahan: Rp ${Math.round(totalHppBhp).toLocaleString('id-ID')}</span> <span class="text-eco-500">|</span> <span class="text-yellow-400 font-mono font-bold">Retail: Rp ${Math.round(totalHppRetail).toLocaleString('id-ID')}</span>`;
+      $('dash-hpp-subtext').innerHTML = `<span class="text-red-400 font-mono font-bold">BHP: Rp ${Math.round(totalHppBhp).toLocaleString('id-ID')}</span> <span class="text-eco-500">|</span> <span class="text-yellow-400 font-mono font-bold">Ritel: Rp ${Math.round(totalHppRetail).toLocaleString('id-ID')}</span>`;
     }
     if ($('dash-beban-top')) $('dash-beban-top').innerText = "Rp " + Math.round(totalBebanOperasional).toLocaleString('id-ID');
     if ($('dash-beban-subtext')) {
@@ -1840,18 +1923,13 @@
     }
 
     if ($('pnl-omzet-jasa')) $('pnl-omzet-jasa').innerText = "Rp " + Math.round(omzetJasa).toLocaleString('id-ID');
-    if ($('pnl-omzet-retail')) $('pnl-omzet-retail').innerText = "Rp " + Math.round(omzetRetail).toLocaleString('id-ID');
-    if ($('pnl-detail-retail')) $('pnl-detail-retail').innerText = `Jual: Rp ${Math.round(omzetRetail).toLocaleString('id-ID')} | Modal: Rp ${Math.round(totalHPP).toLocaleString('id-ID')}`;
+    if ($('pnl-omzet-retail')) $('pnl-omzet-retail').innerText = "Rp " + Math.round(omzetBarangTotal).toLocaleString('id-ID');
+    if ($('pnl-detail-retail')) $('pnl-detail-retail').innerText = `BHP: Rp ${Math.round(omzetBhp).toLocaleString('id-ID')} | Retail: Rp ${Math.round(omzetRetail).toLocaleString('id-ID')}`;
     if ($('pnl-total-hpp')) $('pnl-total-hpp').innerText = "Rp " + Math.round(totalHPP).toLocaleString('id-ID');
-    if ($('pnl-detail-hpp')) $('pnl-detail-hpp').innerText = `Bahan: Rp ${Math.round(totalHppBhp).toLocaleString('id-ID')} | Retail: Rp ${Math.round(totalHppRetail).toLocaleString('id-ID')}`;
+    if ($('pnl-detail-hpp')) $('pnl-detail-hpp').innerText = `BHP: Rp ${Math.round(totalHppBhp).toLocaleString('id-ID')} | Retail: Rp ${Math.round(totalHppRetail).toLocaleString('id-ID')}`;
     if ($('pnl-gross-profit')) $('pnl-gross-profit').innerText = "Rp " + Math.round(labaKotor).toLocaleString('id-ID');
     if ($('pnl-vol-diskon')) $('pnl-vol-diskon').innerText = `${totalQtyItems} Item / Rp ${Math.round(totalDiskonAll).toLocaleString('id-ID')}`;
     if ($('pnl-detail-tx')) $('pnl-detail-tx').innerText = `${filteredVisits.length} Kunjungan / Transaksi Lunas`;
-
-    const c = dbState.bhp_dressing.filter(b => pCN(b.stok_gudang) <= pCN(b.stok_min));
-    if ($('dash-critical-count')) $('dash-critical-count').innerText = c.length + " Items";
-    const cl = $('dash-critical-list');
-    if (cl) cl.innerHTML = c.length ? c.map(b => `<div class="flex justify-between items-center text-red-200 border-b border-red-900/30 pb-1 mb-1 text-[10px]"><span class="font-bold truncate max-w-[120px]">${b.nama_item}</span><span class="font-black text-red-400 font-mono bg-red-950/50 px-1.5 py-0.5 rounded border border-red-800/50 text-[9px]">${b.stok_gudang} <span class="text-[8px] text-red-500">(Min: ${b.stok_min})</span></span></div>`).join('') : `<p class="text-emerald-400 italic text-xs font-bold text-center mt-3">Stok seluruh bahan medik aman.</p>`;
 
     renderWoundDistributionStats(filteredVisits);
     renderServiceProductivity(filteredVisits);
